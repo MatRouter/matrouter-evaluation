@@ -1,0 +1,60 @@
+{
+  "schema_version": "matrouter.paper-case-spec/7",
+  "case_name": "lifepo4-stability",
+  "formula": "LiFePO4",
+  "research_question_ids": ["RQ1", "RQ2", "RQ3"],
+  "rq2_common_record_projection": {
+    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
+    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
+    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
+    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
+    "null_rule": "missing formula, value, or unit remains null",
+    "forbidden_transformations": ["requery", "selection", "ranking", "deduplication", "aggregation", "unit_conversion", "property_remapping", "type_inference", "scientific_judgment"]
+  },
+  "rq3_method_applicability": {
+    "status": "applicable",
+    "expected_method_names": ["compute_phase_diagrams"],
+    "success_policy": "at_least_one",
+    "reason": "A complete exact Materials Project compatibility-mixed entry set can enter the explicit phase-diagram method without reconstructing or mixing inputs."
+  },
+  "scientific_question": "What multi-source formation-energy and source-native stability evidence is available for LiFePO4, and what does one exact frame-compatible Materials Project entry set support under an explicit convex-hull calculation?",
+  "stage_1": {
+    "evidence_kind": "source_record",
+    "source_scope": "all_qualified",
+    "record_scope": "exhaust_upstream",
+    "record_safety_limit_per_route": 60,
+    "max_pages_per_route": 100,
+    "max_elapsed_seconds_per_route": 300.0,
+    "max_normalized_bytes_per_route": 100000000,
+    "public_bundle_item_limit": 512,
+    "public_bundle_canonical_byte_limit": 16000000
+  },
+  "stage_2_targets": [],
+  "explicit_method_input_route": {
+    "evidence_kind": "thermochemical_entries",
+    "operation": "get_thermochemical_entries",
+    "source": "materials_project",
+    "chemical_system": ["Fe", "Li", "O", "P"],
+    "thermo_type": "GGA_GGA+U_R2SCAN",
+    "entry_limit": 2000,
+    "scientific_role": "Preregistered exact thermochemical method input; the primary aggregate Bundle carries source-native formation-energy and stability fields without repeated per-record enrichment.",
+    "selection_timing": "Fixed before the live run; never replaced dynamically.",
+    "scope_note": "This chemical-system route is separate from record-target Stage 2. It retrieves one complete exact Materials Project GGA/GGA+U/r2SCAN compatibility-mixed entry set under the public 2000-entry ceiling; the exact thermo_type, dataset snapshot, correction scheme, frame, and completeness remain bound to the Bundle item, and incompleteness forbids a hull panel."
+  },
+  "retrieval_strategy": "One aggregate_source_records call uses bounded parallel cross-source execution (at most eight workers) over every parsed qualified execution route, aggregates in stable order, and returns the primary cross-source Bundle; per-source pagination remains sequential. The public 512-item/16-MB Bundle capacity is shared by execution route, typed partial and truncated outcomes remain limitations, and no claim is made that every upstream record was retrieved. MaterialsGalaxy summary is one provider-level execution route; child dataset identities on returned records remain exact provenance and are not separate outcomes. No per-record enrichment is performed. A separate preregistered thermochemical follow-up Bundle may feed one hull only when its exact single-source, single-frame compatible entry set is complete.",
+  "context_differences": [
+    "Formation energy is distinct from energy above hull and a source-native stability label.",
+    "The phase-diagram input is the Materials Project GGA/GGA+U/r2SCAN compatibility-mixed frame for thermo_type GGA_GGA+U_R2SCAN and its exact dataset snapshot; it is not one functional or one homogeneous DFT method.",
+    "The 1e-6 eV/atom on-hull threshold is a numerical classification tolerance, not DFT uncertainty, physical accuracy, or a confidence interval; continuous energy_above_hull_eV_per_atom remains the quantitative result.",
+    "An explicit finite-entry-set hull is distinct from finite-temperature stability, universal stability, synthesizability, or kinetic accessibility."
+  ],
+  "allowed_statement": "Report source-native energetic fields under their own definitions and report continuous energy above hull plus the tolerance-relative on-hull classification only for the exact Materials Project GGA/GGA+U/r2SCAN compatibility-mixed entry set, dataset snapshot, frame, implementation, and 1e-6 eV/atom numerical tolerance.",
+  "prohibited_statement": "Do not describe the compatibility-mixed frame as one functional or one kind of DFT, treat 1e-6 eV/atom as uncertainty or confidence, infer hull stability from negative formation energy, mix sources or energy frames, identify an olivine or other phase from formula alone, or generalize the finite exact-set result to finite-temperature stability, universal stability, or synthesizability.",
+  "missing_evidence": [
+    "Source records with unknown hull construction or correction context cannot support cross-source numerical comparison.",
+    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
+    "The exact compatible-entry route reports no finite-temperature free energies, kinetic accessibility, or experimental synthesis evidence.",
+    "A failed or incomplete thermochemical route is failed or incomplete evidence, not a verified-empty result and not a hull input."
+  ],
+  "next_action": "Use the exported continuous energy_above_hull_eV_per_atom values with the exact entry-set/frame/snapshot identifiers; any finite-temperature, phase-identity, or synthesizability claim requires separate evidence."
+}

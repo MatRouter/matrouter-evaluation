@@ -1,0 +1,86 @@
+{
+  "schema_version": "matrouter.paper-case-spec/7",
+  "case_name": "mos2-band-gap",
+  "formula": "MoS2",
+  "research_question_ids": ["RQ1", "RQ2", "RQ3"],
+  "rq2_common_record_projection": {
+    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
+    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
+    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
+    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
+    "null_rule": "missing formula, value, or unit remains null",
+    "forbidden_transformations": ["requery", "selection", "ranking", "deduplication", "aggregation", "unit_conversion", "property_remapping", "type_inference", "scientific_judgment"]
+  },
+  "rq3_method_applicability": {
+    "status": "applicable",
+    "expected_method_names": ["match_structures", "render_band_structure", "render_density_of_states"],
+    "success_policy": "all_preregistered",
+    "reason": "Two preregistered exact structures can enter one transparent StructureMatcher call, and complete exact MP band/DOS artifacts can each be rendered once without hidden retrieval or case logic inside MatRouter core."
+  },
+  "scientific_question": "What multi-source structural and electronic evidence is available for MoS2, with bulk/monolayer, phase, functional, SOC, directness, and calculation/experiment context kept distinct?",
+  "stage_1": {
+    "evidence_kind": "source_record",
+    "source_scope": "all_qualified",
+    "record_scope": "exhaust_upstream",
+    "record_safety_limit_per_route": 60,
+    "max_pages_per_route": 100,
+    "max_elapsed_seconds_per_route": 300.0,
+    "max_normalized_bytes_per_route": 100000000,
+    "public_bundle_item_limit": 512,
+    "public_bundle_canonical_byte_limit": 16000000
+  },
+  "stage_2_targets": [
+    {
+      "qualified_source_route": "c2db",
+      "source_id": "1MoS2-1",
+      "scientific_role": "Preregistered 2D p-6m2 PBE+SOC source-summary band-gap and context record; C2DB exposes no band-structure or DOS artifact route for this record.",
+      "selection_timing": "Fixed before the live run from the declared scientific role and source context; never replaced dynamically.",
+      "enrichment_routes": []
+    },
+    {
+      "qualified_source_route": "materials_project",
+      "source_id": "mp-2815",
+      "scientific_role": "Preregistered bulk P6_3/mmc (space group 194) exact electronic-artifact demonstration target.",
+      "selection_timing": "Fixed before the live run from the declared scientific role and source context; never replaced dynamically.",
+      "enrichment_routes": [
+        {"evidence_kind": "structure", "operation": "get_structure"},
+        {"evidence_kind": "band_structure", "operation": "get_band_structure"},
+        {"evidence_kind": "density_of_states", "operation": "get_density_of_states"}
+      ]
+    },
+    {
+      "qualified_source_route": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_644246",
+      "scientific_role": "Preregistered exact AFLOW 3D periodic six-site structure for one transparent structural comparison with Materials Project mp-2815; other structures are outside this method input.",
+      "selection_timing": "Fixed before the live run from the declared exact structural comparison; never replaced dynamically.",
+      "enrichment_routes": [
+        {"evidence_kind": "structure", "operation": "get_structure"}
+      ]
+    }
+  ],
+  "explicit_structure_method": {
+    "method": "match_structures",
+    "first": {"qualified_source_route": "aflow", "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_644246"},
+    "second": {"qualified_source_route": "materials_project", "source_id": "mp-2815"},
+    "parameters": {"ltol": 0.2, "stol": 0.3, "angle_tol": 5.0, "primitive_cell": true, "scale": true, "attempt_supercell": false, "allow_subset": false, "comparator": "element", "supercell_size": "num_sites", "ignored_species": [], "symmetric": true, "skip_structure_reduction": false},
+    "interpretation_limit": "A match states only that these two exact structures match under these parameters. It does not establish electronic, magnetic, or topological phase identity."
+  },
+  "retrieval_strategy": "One aggregate_source_records call uses bounded parallel cross-source execution (at most eight workers) over every parsed qualified execution route, aggregates in stable order, and returns the primary cross-source Bundle; per-source pagination remains sequential. The public 512-item/16-MB Bundle capacity is shared by execution route, typed partial and truncated outcomes remain limitations, and no claim is made that every upstream record was retrieved. MaterialsGalaxy summary is one provider-level execution route; child dataset identities on returned records remain exact provenance and are not separate outcomes. Exact follow-up uses only three preregistered targets: C2DB 1MoS2-1 remains source-summary context; Materials Project mp-2815 supplies one structure, band structure, and DOS; and AFLOW ICSD 644246 supplies one structure. Follow-up Bundles are not merged with the primary Bundle. Missing targets or failed routes remain gaps and are never replaced dynamically.",
+  "context_differences": [
+    "Formula identity does not establish bulk versus monolayer or a polytype.",
+    "Computed and experimental records, functionals, SOC settings, and direct/indirect gaps are not interchangeable.",
+    "A scalar band gap is not a band structure or density of states.",
+    "COD and MaterialsGalaxy CODX experimental crystal structures are structural evidence, not experimental band-gap observations."
+  ],
+  "allowed_statement": "Describe this result as a capacity-bounded multi-source evidence catalog. Report each source-qualified gap, structure, and exact spectral artifact only with its preserved dimensional, phase, method, functional, SOC, and modality context. State only that the preregistered AFLOW and Materials Project exact bulk structures match under the declared StructureMatcher parameters; this does not establish electronic, magnetic, or topological phase identity. An explicit spectral render is a derived view of the same exact artifact and adds no source evidence.",
+  "prohibited_statement": "Do not report a universal MoS2 band gap or a phase-resolved MoS2 gap answer, merge records by formula, infer a shared 2H bulk, 1H monolayer, or other phase without explicit structure matching, count COD/CODX experimental structures as experimental band-gap observations, or treat retrieval/rendering as independent experimental validation.",
+  "missing_evidence": [
+    "This run retrieved no band-gap observation explicitly identified as experimental; COD and CODX experimental structures do not supply an experimental band gap.",
+    "Only the preregistered AFLOW and Materials Project exact bulk structures enter one fixed-parameter match; phase equivalence remains unresolved for every other cross-source record, the 2D C2DB target, and different polytypes.",
+    "The result is a capacity-bounded multi-source evidence catalog, not a phase-resolved MoS2 gap answer.",
+    "Any context field absent from the source remains unknown.",
+    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
+    "A missing parsed band/DOS artifact is not evidence that the source has no spectrum."
+  ],
+  "next_action": "Any phase-resolved comparison beyond the one preregistered AFLOW-to-Materials-Project exact-structure match requires separately declared exact inputs; obtain separately identified experimental band-gap observations for an experiment-computation comparison and do not collapse this evidence to one MoS2 gap."
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "matrouter.paper-product-identity/6",
+  "status": "verified_pypi_release",
+  "package_name": "matrouter",
+  "package_version": "0.9.0",
+  "public_VERSION": "0.9.0",
+  "product_commit": "f81296c730769f3a49ca23be0137935f81eef11c",
+  "release_tag": "v0.9.0",
+  "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.9.0",
+  "release_published_at": "2026-08-09T19:48:06Z",
+  "pypi_url": "https://pypi.org/project/matrouter/0.9.0/",
+  "wheel_filename": "matrouter-0.9.0-py3-none-any.whl",
+  "wheel_size_bytes": 289089,
+  "wheel_sha256": "cf8b60a8a0d80872ddeedc65d09331a7b9aaafb0ab704bce14e41c13019b9ab1",
+  "sdist_filename": "matrouter-0.9.0.tar.gz",
+  "sdist_size_bytes": 682560,
+  "sdist_sha256": "81e4418f35bf18fe5047ea21df8efa35eb96f525b1f857de0e23a33f5ea6513b",
+  "pypi_provenance": {
+    "publisher": "publish.yml on MatRouter/matrouter",
+    "source_repository_commit": "f81296c730769f3a49ca23be0137935f81eef11c",
+    "source_repository_ref": "refs/tags/v0.9.0",
+    "publication_workflow": "publish.yml@f81296c730769f3a49ca23be0137935f81eef11c",
+    "trigger_event": "release",
+    "trusted_publishing": true
+  },
+  "distribution_metadata": {
+    "metadata_version": "2.4",
+    "name": "matrouter",
+    "version": "0.9.0",
+    "requires_python": ">=3.11",
+    "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
+    "repository": "https://github.com/MatRouter/matrouter"
+  },
+  "runtime_dependencies": {
+    "mp-api": "0.46.4",
+    "emmet-core": "0.87.1",
+    "pymatgen-core": "2026.5.18",
+    "pymatgen": "2026.5.4"
+  },
+  "product_contract_identity": {
+    "matrouter_owned_identity_epochs": false,
+    "retired_fields_absent": ["schema_version", "payload_schema_id", "contract_version"],
+    "compatibility_reader_or_alias": false
+  },
+  "route_contract": {
+    "route_candidate_output_sources": true,
+    "materials_galaxy_summary_execution_route": "materialsgalaxy",
+    "materials_galaxy_child_record_sources_are_provenance": true,
+    "aggregate_max_parallel_source_workers": 8,
+    "stable_order_aggregation": true,
+    "per_source_pagination": "sequential"
+  },
+  "core_profile": {
+    "tool_count": 13,
+    "tools": [
+      "begin_evidence_run",
+      "list_source_files",
+      "download_source_file",
+      "inspect_evidence_capabilities",
+      "create_evidence_requirement",
+      "route_evidence_requirements",
+      "aggregate_source_records",
+      "execute_evidence_route",
+      "assemble_evidence_bundle",
+      "match_structures",
+      "compute_phase_diagrams",
+      "render_band_structure",
+      "render_density_of_states"
+    ],
+    "terminal_object": "EvidenceBundle"
+  }
+}

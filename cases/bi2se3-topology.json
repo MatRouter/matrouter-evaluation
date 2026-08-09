@@ -1,0 +1,69 @@
+{
+  "schema_version": "matrouter.paper-case-spec/7",
+  "case_name": "bi2se3-topology",
+  "formula": "Bi2Se3",
+  "research_question_ids": ["RQ1", "RQ2", "RQ3"],
+  "rq2_common_record_projection": {
+    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
+    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
+    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
+    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
+    "null_rule": "missing formula, value, or unit remains null",
+    "forbidden_transformations": ["requery", "selection", "ranking", "deduplication", "aggregation", "unit_conversion", "property_remapping", "type_inference", "scientific_judgment"]
+  },
+  "rq3_method_applicability": {
+    "status": "not_applicable",
+    "expected_method_names": [],
+    "success_policy": "not_applicable",
+    "reason": "MatRouter exposes no general explicit topology-validation method; this case evaluates exact source-native SOC-conditioned topology acquisition only."
+  },
+  "scientific_question": "What source-native SOC-conditioned topology data does MaterialsGalaxy report for Bi2Se3, and how do other qualified structural and electronic records broaden the physical context without becoming a universal topology verdict?",
+  "stage_1": {
+    "evidence_kind": "source_record",
+    "source_scope": "all_qualified",
+    "record_scope": "exhaust_upstream",
+    "record_safety_limit_per_route": 60,
+    "max_pages_per_route": 100,
+    "max_elapsed_seconds_per_route": 300.0,
+    "max_normalized_bytes_per_route": 100000000,
+    "public_bundle_item_limit": 512,
+    "public_bundle_canonical_byte_limit": 16000000
+  },
+  "stage_2_targets": [
+    {
+      "qualified_source_route": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-35598",
+      "scientific_role": "Preregistered R-3m phase record used by the source-native no-SOC/SOC descriptive comparison.",
+      "selection_timing": "Fixed before the live run from the declared phase-by-SOC table; never replaced dynamically.",
+      "enrichment_routes": [
+        {"evidence_kind": "topology_no_soc", "operation": "get_material_property"},
+        {"evidence_kind": "topology_soc", "operation": "get_material_property"}
+      ]
+    },
+    {
+      "qualified_source_route": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-2145449",
+      "scientific_role": "Preregistered Pnma phase record used by the source-native no-SOC/SOC descriptive comparison.",
+      "selection_timing": "Fixed before the live run from the declared phase-by-SOC table; never replaced dynamically.",
+      "enrichment_routes": [
+        {"evidence_kind": "topology_no_soc", "operation": "get_material_property"},
+        {"evidence_kind": "topology_soc", "operation": "get_material_property"}
+      ]
+    }
+  ],
+  "retrieval_strategy": "One aggregate_source_records call uses bounded parallel cross-source execution (at most eight workers) over every parsed qualified execution route, aggregates in stable order, and returns the primary cross-source Bundle; per-source pagination remains sequential. The public 512-item/16-MB Bundle capacity is shared by execution route, typed partial and truncated outcomes remain limitations, and no claim is made that every upstream record was retrieved. MaterialsGalaxy summary is one provider-level execution route; child dataset identities on returned records remain exact provenance and are not separate outcomes. Exact follow-up enriches only preregistered MaterialsGalaxy records mg-35598 and mg-2145449 with source-native no-SOC and SOC topology entries. Follow-up Bundles are not merged with the primary Bundle, missing targets are never replaced, and no topology validator is added.",
+  "context_differences": [
+    "Formula identity does not prove the same crystal phase across sources.",
+    "Source-native topology labels depend on the source definition, method, SOC setting, and exact record.",
+    "MaterialsGalaxy reports distinct R-3m and Pnma records for the same formula; their no-SOC/SOC comparison is a descriptive view of existing artifacts, not new evidence.",
+    "Structural, scalar electronic, and topology records can be complementary while remaining non-comparable."
+  ],
+  "allowed_statement": "State that MaterialsGalaxy reports each preserved topology class and indicator under its exact record, source-native structure identity, and SOC context. Present the R-3m/Pnma by no-SOC/SOC table only as a deterministic descriptive projection of those same Bundle artifacts, alongside separately attributed evidence from other qualified source routes.",
+  "prohibited_statement": "Do not claim MatRouter recomputed topology invariants or surface states or independently validated topology classifications, promote one source label to universal truth, treat the derived comparison table as new evidence, infer trivial topology from missing artifacts, or merge records solely by Bi2Se3 formula.",
+  "missing_evidence": [
+    "Missing SOC, method, phase, invariant, or surface-state context remains unknown rather than negative evidence.",
+    "No cross-source structure matching was executed, so cross-source phase equivalence remains unresolved.",
+    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim."
+  ],
+  "next_action": "Any cross-source phase matching, topology-invariant recomputation, or surface-state analysis remains a separate downstream method over exact phase-compatible inputs."
+}

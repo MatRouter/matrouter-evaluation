@@ -1,0 +1,997 @@
+{
+  "schema_version": "matrouter.paper-manifest/10",
+  "experiment_id": "matrouter-v0.9.0-three-scientific-cases",
+  "status": "three_case_frozen_protocol_complete",
+  "case_count": 3,
+  "paper_results_eligible": true,
+  "paper_results_eligibility_semantics": "Protocol eligibility under the frozen case gates; not validation of scientific truth, accuracy, significance, or external reproducibility.",
+  "ineligibility_reasons": [],
+  "protocol_version": "matrouter.paper-three-case-protocol",
+  "research_questions": {
+    "RQ1": "Does one all-qualified aggregate Bundle contain records from multiple heterogeneous sources and providers while preserving a typed SourceOutcome for every qualified route?",
+    "RQ2": "Compared with a deterministic six-field common-record projection from the exact same primary aggregate Bundle bytes, what execution, completeness, context, provenance, and artifact information does the full Bundle preserve?",
+    "RQ3": "Can preregistered exact-target follow-up artifacts enter explicit methods directly without hidden requery inside those methods?"
+  },
+  "rq3_method_applicability": {
+    "mos2-band-gap": {
+      "status": "applicable",
+      "expected_method_names": [
+        "match_structures",
+        "render_band_structure",
+        "render_density_of_states"
+      ],
+      "success_policy": "all_preregistered",
+      "reason": "Two preregistered exact structures can enter one transparent StructureMatcher call, and complete exact MP band/DOS artifacts can each be rendered once without hidden retrieval or case logic inside MatRouter core."
+    },
+    "lifepo4-stability": {
+      "status": "applicable",
+      "expected_method_names": [
+        "compute_phase_diagrams"
+      ],
+      "success_policy": "at_least_one",
+      "reason": "A complete exact Materials Project compatibility-mixed entry set can enter the explicit phase-diagram method without reconstructing or mixing inputs."
+    },
+    "bi2se3-topology": {
+      "status": "not_applicable",
+      "expected_method_names": [],
+      "success_policy": "not_applicable",
+      "reason": "MatRouter exposes no general explicit topology-validation method; this case evaluates exact source-native SOC-conditioned topology acquisition only."
+    }
+  },
+  "core_boundary": "capability/route truth -> SourceOutcome -> canonical EvidenceBundle",
+  "reference_assessments_enabled": false,
+  "release_identity": {
+    "schema_version": "matrouter.paper-product-identity/6",
+    "status": "verified_pypi_release",
+    "package_name": "matrouter",
+    "package_version": "0.9.0",
+    "public_VERSION": "0.9.0",
+    "product_commit": "f81296c730769f3a49ca23be0137935f81eef11c",
+    "release_tag": "v0.9.0",
+    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.9.0",
+    "release_published_at": "2026-08-09T19:48:06Z",
+    "pypi_url": "https://pypi.org/project/matrouter/0.9.0/",
+    "wheel_filename": "matrouter-0.9.0-py3-none-any.whl",
+    "wheel_size_bytes": 289089,
+    "wheel_sha256": "cf8b60a8a0d80872ddeedc65d09331a7b9aaafb0ab704bce14e41c13019b9ab1",
+    "sdist_filename": "matrouter-0.9.0.tar.gz",
+    "sdist_size_bytes": 682560,
+    "sdist_sha256": "81e4418f35bf18fe5047ea21df8efa35eb96f525b1f857de0e23a33f5ea6513b",
+    "pypi_provenance": {
+      "publisher": "publish.yml on MatRouter/matrouter",
+      "source_repository_commit": "f81296c730769f3a49ca23be0137935f81eef11c",
+      "source_repository_ref": "refs/tags/v0.9.0",
+      "publication_workflow": "publish.yml@f81296c730769f3a49ca23be0137935f81eef11c",
+      "trigger_event": "release",
+      "trusted_publishing": true
+    },
+    "distribution_metadata": {
+      "metadata_version": "2.4",
+      "name": "matrouter",
+      "version": "0.9.0",
+      "requires_python": ">=3.11",
+      "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
+      "repository": "https://github.com/MatRouter/matrouter"
+    },
+    "runtime_dependencies": {
+      "mp-api": "0.46.4",
+      "emmet-core": "0.87.1",
+      "pymatgen-core": "2026.5.18",
+      "pymatgen": "2026.5.4"
+    },
+    "product_contract_identity": {
+      "matrouter_owned_identity_epochs": false,
+      "retired_fields_absent": [
+        "schema_version",
+        "payload_schema_id",
+        "contract_version"
+      ],
+      "compatibility_reader_or_alias": false
+    },
+    "route_contract": {
+      "route_candidate_output_sources": true,
+      "materials_galaxy_summary_execution_route": "materialsgalaxy",
+      "materials_galaxy_child_record_sources_are_provenance": true,
+      "aggregate_max_parallel_source_workers": 8,
+      "stable_order_aggregation": true,
+      "per_source_pagination": "sequential"
+    },
+    "core_profile": {
+      "tool_count": 13,
+      "tools": [
+        "begin_evidence_run",
+        "list_source_files",
+        "download_source_file",
+        "inspect_evidence_capabilities",
+        "create_evidence_requirement",
+        "route_evidence_requirements",
+        "aggregate_source_records",
+        "execute_evidence_route",
+        "assemble_evidence_bundle",
+        "match_structures",
+        "compute_phase_diagrams",
+        "render_band_structure",
+        "render_density_of_states"
+      ],
+      "terminal_object": "EvidenceBundle"
+    }
+  },
+  "capability_preflight": {
+    "matrouter_optimade_providers_is_wildcard": true,
+    "credentialed_provider_configuration": {
+      "materials_project": true,
+      "mpds": true,
+      "materialsgalaxy": true
+    },
+    "declared_source_authority_count": 40,
+    "ready_pair_count": 203,
+    "requires_configuration_pair_count": 0,
+    "optimade_child_route_count": 21,
+    "optimade_child_routes": [
+      "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "optimade:optimade.materialscloud.org/main/mc2d",
+      "optimade:optimade.materialscloud.org/main/2dtopo",
+      "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+      "optimade:optimade.materialscloud.org/main/curated-cofs",
+      "optimade:optimade.materialscloud.org/main/stoceriaitf",
+      "optimade:optimade.materialscloud.org/main/autowannier",
+      "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+      "optimade:optimade.materialscloud.org/archive/ed-g2",
+      "optimade:optimade.materialscloud.org/archive/1z-pd",
+      "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "optimade:optimade.materialscloud.org/archive/jk-9v",
+      "optimade:optimade.materialscloud.org/archive/zt-z4",
+      "optimade:mpddoptimade.phaseslab.org",
+      "optimade:optimade.odbx.science",
+      "optimade:optimade-misc.odbx.science",
+      "optimade:optimade-gnome.odbx.science",
+      "optimade:optimade.openmaterialsdb.se",
+      "optimade:optimade.2dmatpedia.org"
+    ],
+    "optimade_exclusions": {
+      "unavailable": [
+        "alexandria",
+        "cmr",
+        "mpod"
+      ],
+      "out_of_scope": [
+        "psdi"
+      ],
+      "duplicate": [
+        "atomgpt"
+      ],
+      "native_adapter_duplicates": [
+        "mp",
+        "mpds",
+        "oqmd",
+        "aflow",
+        "jarvis",
+        "alexandria",
+        "nmd",
+        "cod",
+        "tcod"
+      ]
+    },
+    "optimade_provider_warnings": [
+      "OPTIMADE child exmpl from provider exmpl has no valid base URL.",
+      "OPTIMADE child matcloud from provider matcloud has no valid base URL."
+    ],
+    "aggregate_route_snapshots": {
+      "mos2-band-gap": [
+        {
+          "qualified_source": "jarvis_dft",
+          "output_sources": [
+            "jarvis_dft"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc2d",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc2d"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/zt-z4",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/zt-z4"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/1z-pd",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/1z-pd"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/curated-cofs",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/curated-cofs"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/stoceriaitf",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/stoceriaitf"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materials_project",
+          "output_sources": [
+            "materials_project"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "nomad",
+          "output_sources": [
+            "nomad"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materialsgalaxy",
+          "output_sources": [
+            "materialsgalaxy:CODX",
+            "materialsgalaxy:ferroelectric",
+            "materialsgalaxy:generated_structures",
+            "materialsgalaxy:generated_topo_crystals",
+            "materialsgalaxy:layered_structures",
+            "materialsgalaxy:nonlinear_optical",
+            "materialsgalaxy:sc_growth",
+            "materialsgalaxy:topo_crystals",
+            "materialsgalaxy:topo_phonons"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/jk-9v",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/jk-9v"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:mpddoptimade.phaseslab.org",
+          "output_sources": [
+            "optimade:mpddoptimade.phaseslab.org"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/m0-zg"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/2dtopo",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/2dtopo"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "tcod",
+          "output_sources": [
+            "tcod"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "mpds",
+          "output_sources": [
+            "mpds"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade-misc.odbx.science",
+          "output_sources": [
+            "optimade:optimade-misc.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade-gnome.odbx.science",
+          "output_sources": [
+            "optimade:optimade-gnome.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "oqmd",
+          "output_sources": [
+            "oqmd"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.openmaterialsdb.se",
+          "output_sources": [
+            "optimade:optimade.openmaterialsdb.se"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "c2db",
+          "output_sources": [
+            "c2db"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.odbx.science",
+          "output_sources": [
+            "optimade:optimade.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/autowannier",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/autowannier"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "cod",
+          "output_sources": [
+            "cod"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/pyrene-mofs"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "alexandria",
+          "output_sources": [
+            "alexandria"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.2dmatpedia.org",
+          "output_sources": [
+            "optimade:optimade.2dmatpedia.org"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "aflow",
+          "output_sources": [
+            "aflow"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/ed-g2",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/ed-g2"
+          ],
+          "state": "ready"
+        }
+      ],
+      "lifepo4-stability": [
+        {
+          "qualified_source": "oqmd",
+          "output_sources": [
+            "oqmd"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materials_project",
+          "output_sources": [
+            "materials_project"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/m0-zg"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "nomad",
+          "output_sources": [
+            "nomad"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "cod",
+          "output_sources": [
+            "cod"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/pyrene-mofs"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "jarvis_dft",
+          "output_sources": [
+            "jarvis_dft"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/stoceriaitf",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/stoceriaitf"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:mpddoptimade.phaseslab.org",
+          "output_sources": [
+            "optimade:mpddoptimade.phaseslab.org"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materialsgalaxy",
+          "output_sources": [
+            "materialsgalaxy:CODX",
+            "materialsgalaxy:ferroelectric",
+            "materialsgalaxy:generated_structures",
+            "materialsgalaxy:generated_topo_crystals",
+            "materialsgalaxy:layered_structures",
+            "materialsgalaxy:nonlinear_optical",
+            "materialsgalaxy:sc_growth",
+            "materialsgalaxy:topo_crystals",
+            "materialsgalaxy:topo_phonons"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/1z-pd",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/1z-pd"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/zt-z4",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/zt-z4"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "alexandria",
+          "output_sources": [
+            "alexandria"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/autowannier",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/autowannier"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc2d",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc2d"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "tcod",
+          "output_sources": [
+            "tcod"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/curated-cofs",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/curated-cofs"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.openmaterialsdb.se",
+          "output_sources": [
+            "optimade:optimade.openmaterialsdb.se"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "c2db",
+          "output_sources": [
+            "c2db"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.2dmatpedia.org",
+          "output_sources": [
+            "optimade:optimade.2dmatpedia.org"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/ed-g2",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/ed-g2"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "mpds",
+          "output_sources": [
+            "mpds"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade-misc.odbx.science",
+          "output_sources": [
+            "optimade:optimade-misc.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/2dtopo",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/2dtopo"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/jk-9v",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/jk-9v"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "aflow",
+          "output_sources": [
+            "aflow"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.odbx.science",
+          "output_sources": [
+            "optimade:optimade.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade-gnome.odbx.science",
+          "output_sources": [
+            "optimade:optimade-gnome.odbx.science"
+          ],
+          "state": "ready"
+        }
+      ],
+      "bi2se3-topology": [
+        {
+          "qualified_source": "optimade:optimade-gnome.odbx.science",
+          "output_sources": [
+            "optimade:optimade-gnome.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "oqmd",
+          "output_sources": [
+            "oqmd"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/pyrene-mofs"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materials_project",
+          "output_sources": [
+            "materials_project"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/m0-zg"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "aflow",
+          "output_sources": [
+            "aflow"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "nomad",
+          "output_sources": [
+            "nomad"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:mpddoptimade.phaseslab.org",
+          "output_sources": [
+            "optimade:mpddoptimade.phaseslab.org"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/curated-cofs",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/curated-cofs"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/ed-g2",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/ed-g2"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.openmaterialsdb.se",
+          "output_sources": [
+            "optimade:optimade.openmaterialsdb.se"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.odbx.science",
+          "output_sources": [
+            "optimade:optimade.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/2dtopo",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/2dtopo"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.2dmatpedia.org",
+          "output_sources": [
+            "optimade:optimade.2dmatpedia.org"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materialsgalaxy",
+          "output_sources": [
+            "materialsgalaxy:CODX",
+            "materialsgalaxy:ferroelectric",
+            "materialsgalaxy:generated_structures",
+            "materialsgalaxy:generated_topo_crystals",
+            "materialsgalaxy:layered_structures",
+            "materialsgalaxy:nonlinear_optical",
+            "materialsgalaxy:sc_growth",
+            "materialsgalaxy:topo_crystals",
+            "materialsgalaxy:topo_phonons"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/1z-pd",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/1z-pd"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "jarvis_dft",
+          "output_sources": [
+            "jarvis_dft"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "mpds",
+          "output_sources": [
+            "mpds"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "cod",
+          "output_sources": [
+            "cod"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/mc2d",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/mc2d"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "c2db",
+          "output_sources": [
+            "c2db"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade-misc.odbx.science",
+          "output_sources": [
+            "optimade:optimade-misc.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/jk-9v",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/jk-9v"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "tcod",
+          "output_sources": [
+            "tcod"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/autowannier",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/autowannier"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "alexandria",
+          "output_sources": [
+            "alexandria"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/archive/zt-z4",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/archive/zt-z4"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "optimade:optimade.materialscloud.org/main/stoceriaitf",
+          "output_sources": [
+            "optimade:optimade.materialscloud.org/main/stoceriaitf"
+          ],
+          "state": "ready"
+        }
+      ]
+    },
+    "qualified_aggregate_execution_route_count": 32
+  },
+  "live_run_duration_seconds": 239.798,
+  "runner_sha256": "425176c6d0e39dfdf411ead25aff6722af5325679c238f69b282564236a72204",
+  "case_results": [
+    {
+      "case_name": "mos2-band-gap",
+      "raw_path": "raw/0.9.0/mos2-band-gap.json",
+      "raw_sha256": "fd72e779d5b92349f739d29c2acbc44802ce78546da9e8fb9c5a9f0e9afb7c4a",
+      "result_path": "results/cases/mos2-band-gap.json",
+      "result_sha256": "ab980ba437dd3415dec338088c5bc98cbf74f135d46491374419168e6696ab70",
+      "bundle_ids": [
+        "sha256:2495229d02d7de3c7779d1f58fe83cf92e66b221beef2bda3ca533190b7481fb",
+        "sha256:05e0f45fbc231b77c42985529075ec78bb252dda0397e5ebe477bd2dee7e6c4b",
+        "sha256:56e611084771c9769ea0d6cafe3342676357720a705fcbee6f0259d7000ca04d"
+      ],
+      "case_spec_sha256": "d9c934f0cec8c606c950366679923534d6e4dbecc00fdd166238e778b9096962",
+      "paper_result_status": "protocol_eligible"
+    },
+    {
+      "case_name": "lifepo4-stability",
+      "raw_path": "raw/0.9.0/lifepo4-stability.json",
+      "raw_sha256": "55c85640e5dffa507e47825528587e6719c55559383e9fd981ffc7846b98d58f",
+      "result_path": "results/cases/lifepo4-stability.json",
+      "result_sha256": "e6cd0b9069a20c6b1c0e4b98ba38c5ac3d09612292d4888d4f13a3943b3248a6",
+      "bundle_ids": [
+        "sha256:682695615f9203821c6c8ca9eddf8307c8666bb23f6334630b2789b969f84201",
+        "sha256:d9287e8a8789aea5bb85a84879a8d4e77ec072e42e5b992b347f49d800197bc2"
+      ],
+      "case_spec_sha256": "e0026a0f6e9d3ad08108da90155f54b6754f02dbc83c29602970d7497491c13c",
+      "paper_result_status": "protocol_eligible"
+    },
+    {
+      "case_name": "bi2se3-topology",
+      "raw_path": "raw/0.9.0/bi2se3-topology.json",
+      "raw_sha256": "233403457150485a7b899f05d6a74fcda32d8cec332b6bb6eb62f57c3a8cc1b7",
+      "result_path": "results/cases/bi2se3-topology.json",
+      "result_sha256": "2f7e12eb42c2eb5537d0e6f1e43882dab1ab05584ea94542dbadbeff657f87cf",
+      "bundle_ids": [
+        "sha256:209645db1caba8c30eb8b0758059f35a536dd98cdb3f7f22a768d4f65650750e",
+        "sha256:ed2c77e29b82cf4205ab998e8c19d4d79dbc8e5aa87aa6eeee23d45271ab907c"
+      ],
+      "case_spec_sha256": "974584e843d3bbba7b4a12d7db23f67912ffbb14e8bf8be2d5ca7cecc13ab7fa",
+      "paper_result_status": "protocol_eligible"
+    }
+  ],
+  "exports": [
+    {
+      "path": "results/cases.csv",
+      "sha256": "c04b35607d21a1e098e5573bda430a8ea4653e468eae56255a7dd17bf1039a30"
+    },
+    {
+      "path": "results/coverage.csv",
+      "sha256": "597b0ba0d2c4d852a7c576399c061d04d856c55ce101fc31a203a9c5778fbcd5"
+    },
+    {
+      "path": "results/observations.csv",
+      "sha256": "9155bd98960991612bcc01130bd3c266f0a230dc867d25c757c8424c554c903d"
+    },
+    {
+      "path": "results/structures.csv",
+      "sha256": "59ea88ba79eff4e02c2295ec93456fe21375b0e6596a2413a1b5e57875505905"
+    },
+    {
+      "path": "results/artifacts.csv",
+      "sha256": "fa86ea34ac2877b3661816c7c3d66311608f90e1a84600887670737123c1860e"
+    },
+    {
+      "path": "results/phase-diagram-entries.csv",
+      "sha256": "5ccc9dbeb1142ad7910038395cc57b8b6319a58e4b3bf2707fc633f3b6ee3ad5"
+    },
+    {
+      "path": "results/topology-soc-comparison.csv",
+      "sha256": "35f49ab565cbb22692d852ba39c5a2a4bc2f4b46b489a85aa213236d414c3f73"
+    },
+    {
+      "path": "results/figure-ready.json",
+      "sha256": "1edd06f689af4dd0528ef341f6534df87739aef2264a91bde8888c74658059fb"
+    },
+    {
+      "path": "results/product-blockers.json",
+      "sha256": "f6adbb50cbb10b8e130569fab951cd5064778b969f04fb936d5c84be96189834"
+    },
+    {
+      "path": "results/internal-protocol-review.json",
+      "sha256": "858adade42f209ba8a702d88cf78453ab3876a89cdf50d22e4745c1c19cc6ce5"
+    },
+    {
+      "path": "results/common-record-projections/bi2se3-topology.json",
+      "sha256": "df28ff67c6ff2ab2317b74afc7206767aee3a995e29f6fb6b37f5589afc6ca64"
+    },
+    {
+      "path": "results/common-record-projections/lifepo4-stability.json",
+      "sha256": "df40367b4c94587053f8a5739d344edd68a23fc7b0c4905bee78bf3c0d5ced5f"
+    },
+    {
+      "path": "results/common-record-projections/mos2-band-gap.json",
+      "sha256": "d70b4fcdbb15a594f7bd819dad8b94ddb86b2b064c74cc0246db7bfc0db66f2d"
+    },
+    {
+      "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-ae3a2102683a.svg",
+      "sha256": "1527492348bff6995204526ed95f15e9bc2e1109d1c7b9e70b15d5b6374b58a3"
+    },
+    {
+      "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-band.svg",
+      "sha256": "d02e1da06ed933c17bc5267e8504f9d8164b8b6552cf49ce3057c910afef8b02"
+    },
+    {
+      "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-dos.svg",
+      "sha256": "1ca3aafbcd962165129e2b213321f44c3606558c6f0730f7418a73803885a239"
+    }
+  ]
+}

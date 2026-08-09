@@ -1,0 +1,1508 @@
+{
+  "schema_version": "matrouter.paper-common-record-projection/2",
+  "description": "Deterministic descriptive information-loss counterfactual from normalized property_observations occurrences inside SourceRecordItem.record_json in the exact same primary aggregate Bundle; not a query, baseline system, OPTIMADE proxy, score, or scientific judgment.",
+  "source_bundle_id": "sha256:2495229d02d7de3c7779d1f58fe83cf92e66b221beef2bda3ca533190b7481fb",
+  "source_bundle_canonical_sha256": "9afb17dc5c1daa0ad5b063f65226e7f030d6706c656a25bfaab6459eb8b960d7",
+  "source_bundle_canonical_byte_count": 547939,
+  "projection_fields": [
+    "source",
+    "source_id",
+    "formula",
+    "property",
+    "value",
+    "unit"
+  ],
+  "row_order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
+  "occurrence_multiplicity_preserved": true,
+  "null_policy": "missing formula, value, or unit remains null",
+  "transformations": [],
+  "row_count": 175,
+  "rows_canonical_sha256": "7ded791dcbe23f5bc69b522b221f46b238370133e41600e281341fa89f1958b1",
+  "rows": [
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_49801",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.2384,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005276747",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005276747",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.27922624,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440942",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 5.306,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440942",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.5885321016666663,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440942",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.4726478193422376,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005429498",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0463,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005429498",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.6447464,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "jarvis_dft",
+      "source_id": "JVASP-228#field=mbj_bandgap",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "jarvis_dft",
+      "source_id": "JVASP-228#field=optb88vdw_bandgap",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "jarvis_dft",
+      "source_id": "JVASP-228",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.2625,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "jarvis_dft",
+      "source_id": "JVASP-228",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.69909,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1443504",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.947,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1443504",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0023943450000039057,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1443504",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.0587855760089,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_24000",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.253,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_105091",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.195,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_84180",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.2417,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_644246",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.2412,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_40081",
+      "formula": "Mo1S2",
+      "property": "band_gap_eV",
+      "value": 1.332,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1241285",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1241285",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.6761886566666659,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1241285",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.384991264342238,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm011707349",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.4901,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm011707349",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0006497725,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc2d",
+      "source_id": "ec7170ae-72c2-490a-871a-d7d46ce20c0f",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0291458614637197,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaacgmbn",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.4639999999999997,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1027525",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.003681534999998348,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1027525",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.9624610102083343,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1027525",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafjilg",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.3361,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1018809",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.002389239999999404,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1018809",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.9637533052083332,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1018809",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1473447",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1473447",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.3109377974999994,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1473447",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.7502421235089045,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1439760",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 5.154,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1439760",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.5969983674999995,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1439760",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.46418155350890444,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002380588",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002380588",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.2763999,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002181839",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.3314,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002181839",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.000511975,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002352990",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002352990",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.8783013,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002181837",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0562,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002181837",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.1831284,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "nomad",
+      "source_id": "-ErsCZ0WbY8-CR-8bqFNIoqBrSfw#band_gap=0",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.2282,
+      "unit": "eV"
+    },
+    {
+      "source": "nomad",
+      "source_id": "-ErsCZ0WbY8-CR-8bqFNIoqBrSfw#band_gap=1",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.2282,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafxgpx",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.4648999999999996,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-2815",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0016927283333316723,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-2815",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.964449816875001,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-2815",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "source_id": "camd-oqmd_5068",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.274796651666669,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "source_id": "camd-oqmd_5068",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.780354832675571,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "5068",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "5068",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.28082508833333286,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "5068",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.780354832675571,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-1",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.58,
+      "unit": "eV"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-1",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-1",
+      "formula": "MoS2",
+      "property": "heat_of_formation_per_atom_eV",
+      "value": -0.921,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "48063",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.171,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "48063",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.009021581666663891,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "48063",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.05215833934224,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005541302",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.5568,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005541302",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.000653965,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "source_id": "camd-oqmd_7011",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0029969116666699325,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "source_id": "camd-oqmd_7011",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.05215457267557,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafbymo",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-558544",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.27971718666666945,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-558544",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.6864253585416643,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-558544",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1444459",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.946,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1444459",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0020905600000038493,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1444459",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.0590893610089,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm001850481",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm001850481",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.41352642,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005243021",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.4785,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005243021",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.00078120665,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-2",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-2",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.277,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-2",
+      "formula": "MoS2",
+      "property": "heat_of_formation_per_atom_eV",
+      "value": -0.644,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-58889",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.9106788177339915,
+      "unit": "eV"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-58889",
+      "formula": "MoS2",
+      "property": "topology_class_no_soc",
+      "value": "Triv_Ins",
+      "unit": null
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-58889",
+      "formula": "MoS2",
+      "property": "topology_class_soc",
+      "value": "Triv_Ins",
+      "unit": null
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafbblj",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1042086",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.6475009966666683,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1042086",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.31864154854166554,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1042086",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafblyn",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.6605999999999999,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1023924",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.01443991333333372,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1023924",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.9517026318749989,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1023924",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440312",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440312",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.18983662583333327,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440312",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.8713432951755706,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_601647",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.2194,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaaficae",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.5539,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1023939",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.007235794999999712,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1023939",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.9589067502083329,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1023939",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "source_id": "camd-oqmd_4501",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "source_id": "camd-oqmd_4501",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.05515148434224,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "45906",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.012,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "45906",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.013391438333334005,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "45906",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.04778848267557,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_38401",
+      "formula": "Mo1S2",
+      "property": "band_gap_eV",
+      "value": 1.2687,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005235495",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.3681,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005235495",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.000653515,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "nomad",
+      "source_id": "-B4E6JXJAJsPFR5X0kjhbiyR4wTj#band_gap=0",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.2585,
+      "unit": "eV"
+    },
+    {
+      "source": "nomad",
+      "source_id": "-B4E6JXJAJsPFR5X0kjhbiyR4wTj#band_gap=1",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.2585,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_43695",
+      "formula": "Mo1S2",
+      "property": "band_gap_eV",
+      "value": 1.1517,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_31067",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.2695,
+      "unit": "eV"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_644259",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.2619,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaaceiqh",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-990083",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.16635681870370433,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-990083",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.7997857265046293,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-990083",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafaych",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.5093,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1025874",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.004413344444444078,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1025874",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.9617292007638886,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1025874",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc2d",
+      "source_id": "d25962ea-3c39-4e86-9333-2baf8f31a1a8",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.62050656833567,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005278810",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.2568,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005278810",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0067437734,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1443429",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.493,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1443429",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.00438243833333396,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1443429",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.05679748267557,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_43560",
+      "formula": "Mo1S2",
+      "property": "band_gap_eV",
+      "value": 1.2771,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafdjlh",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.3839000000000006,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1434",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1434",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.9661425452083326,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1434",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": true,
+      "unit": null
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005281643",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm005281643",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.26560324,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm003160930",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.5726,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm003160930",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_95569",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.1885,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1473606",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1473606",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.18471183499999932,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1473606",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.8764680860089046,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaaduxrd",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1405065",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.2675430358333326,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1405065",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.6985995093750006,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1405065",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "oqmd",
+      "source_id": "7011",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.343,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "7011",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.009025348333333794,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "7011",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.05215457267557,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_95570",
+      "formula": "Mo2S4",
+      "property": "band_gap_eV",
+      "value": 1.1596,
+      "unit": "eV"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-58752",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.9263090909090907,
+      "unit": "eV"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-58752",
+      "formula": "MoS2",
+      "property": "topology_class_no_soc",
+      "value": "Triv_Ins",
+      "unit": null
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-58752",
+      "formula": "MoS2",
+      "property": "topology_class_soc",
+      "value": "Triv_Ins",
+      "unit": null
+    },
+    {
+      "source": "oqmd",
+      "source_id": "4501",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.293,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "4501",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.006028436666663861,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "4501",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -1.05515148434224,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "aaafcmtt",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1238797",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.2963038133333349,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1238797",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.6698387318749989,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materials_project",
+      "source_id": "mp-1238797",
+      "formula": "MoS2",
+      "property": "is_stable",
+      "value": false,
+      "unit": null
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-3",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-3",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.615,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "c2db",
+      "source_id": "1MoS2-3",
+      "formula": "MoS2",
+      "property": "heat_of_formation_per_atom_eV",
+      "value": -0.306,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440176",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440176",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.2839693983333329,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "oqmd",
+      "source_id": "1440176",
+      "formula": "MoS2",
+      "property": "formation_energy_per_atom_eV",
+      "value": -0.777210522675571,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "aflow",
+      "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_644249",
+      "formula": "Mo1S2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002181840",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 1.419,
+      "unit": "eV"
+    },
+    {
+      "source": "alexandria",
+      "source_id": "agm002181840",
+      "formula": "MoS2",
+      "property": "energy_above_hull_eV",
+      "value": 0.0005769744,
+      "unit": "eV/atom"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-5937",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.0,
+      "unit": "eV"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-5937",
+      "formula": "MoS2",
+      "property": "topology_class_no_soc",
+      "value": "HSP_SM",
+      "unit": null
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-5937",
+      "formula": "MoS2",
+      "property": "topology_class_soc",
+      "value": "TI",
+      "unit": null
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-5861",
+      "formula": "MoS2",
+      "property": "band_gap_eV",
+      "value": 0.8105421052631581,
+      "unit": "eV"
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-5861",
+      "formula": "MoS2",
+      "property": "topology_class_no_soc",
+      "value": "Triv_Ins",
+      "unit": null
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "source_id": "mg-5861",
+      "formula": "MoS2",
+      "property": "topology_class_soc",
+      "value": "Triv_Ins",
+      "unit": null
+    }
+  ],
+  "full_bundle_item_kind_counts": {
+    "execution_warning": 2,
+    "source_outcome": 32,
+    "source_record": 143
+  },
+  "dropped_non_source_record_item_kind_counts": {
+    "execution_warning": 2,
+    "source_outcome": 32
+  },
+  "information_loss_categories": {
+    "execution": {
+      "removed_fields": [
+        "routes/readiness/output_sources",
+        "attempt",
+        "SourceOutcome",
+        "warnings",
+        "trace"
+      ],
+      "affected_item_kind_counts": {
+        "source_outcome": 32,
+        "execution_warning": 2,
+        "execution_trace": 0
+      },
+      "route_count": 32
+    },
+    "completeness": {
+      "removed_fields": [
+        "source_scope",
+        "record_scope",
+        "operational_budget",
+        "RecordCompleteness",
+        "capacity_truncation",
+        "missing_declarations"
+      ],
+      "affected_item_kind_counts": {
+        "source_outcome": 32
+      },
+      "requirement_count": 1
+    },
+    "context": {
+      "removed_fields": [
+        "structure_anchor",
+        "dimensionality",
+        "method/functional",
+        "SOC/spin",
+        "observable_type",
+        "temperature/pressure",
+        "correction/reference_state/energy_frame",
+        "source_native_definition"
+      ],
+      "affected_item_kind_counts": {
+        "source_record": 143,
+        "structure": 0
+      },
+      "projected_property_observation_occurrence_count": 175
+    },
+    "provenance": {
+      "removed_fields": [
+        "qualified_source_route",
+        "provider/adapter/dataset_snapshot",
+        "native_field",
+        "retrieval_time/citation",
+        "transformation/lineage"
+      ],
+      "affected_item_kind_counts": {
+        "source_record": 143
+      },
+      "projected_property_observation_occurrence_count": 175
+    },
+    "artifacts": {
+      "removed_fields": [
+        "exact_payload",
+        "content_digest/integrity",
+        "artifact_binding",
+        "exact_method_input",
+        "derived_file"
+      ],
+      "affected_item_kind_counts": {
+        "structure": 0,
+        "scientific_artifact": 0,
+        "thermochemical_entry_set": 0
+      }
+    }
+  },
+  "scores": null
+}
