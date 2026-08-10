@@ -10,14 +10,16 @@ weighted score, or additional material case.
 
 ## Common research questions
 
-- **RQ1:** does one `all_qualified` aggregate Bundle contain records from
-  multiple heterogeneous sources and providers while preserving a typed
-  `SourceOutcome` for every qualified route?
-- **RQ2:** compared with the deterministic six-field common-record projection
-  from the exact same primary Bundle bytes, what execution, completeness,
-  context, provenance, and artifact information does the full Bundle preserve?
-- **RQ3:** can preregistered exact-target follow-up artifacts enter explicit
-  methods directly without hidden requery inside those methods?
+- **RQ1:** Within the declared catalog, configuration, scope, and budgets, does
+  one all-qualified aggregate attempt every capability-matched route and
+  preserve each typed outcome and `RecordCompleteness`?
+- **RQ2:** What material-data landscape does the cross-source aggregate provide
+  for the case—sources, data categories, scientific contexts, specialist data,
+  and explicit gaps—and how does that landscape guide the next research step?
+- **RQ3:** Can an Agent use the aggregate to locate preregistered exact
+  source-bound records and artifacts for explicit lightweight methods, while
+  making unsupported heavy calculations an explicit external handoff rather
+  than a proxy result?
 
 RQ3 applicability is recorded in every case spec and result:
 
@@ -49,17 +51,14 @@ Their immutable Bundles feed artifacts and methods but are not merged into the
 primary Bundle and do not supplement its headline record count. Route counts
 are operational coverage, not independent evidence counts.
 
-The RQ2 common-record projection copies only `source`, `source_id`, `formula`,
-`property`, `value`, and `unit` from normalized `property_observations`
-occurrences already stored in each primary-Bundle
-`SourceRecordItem.record_json`. It preserves Bundle item order, canonical
-property-key order, observations-list order, and occurrence multiplicity.
-Observation-specific provenance identity takes precedence over the containing
-record identity; missing values remain null. It performs no query, filtering,
-ranking, remapping, conversion, deduplication, aggregation, or inference.
-Non-projectable item kinds produce no pseudo-rows; the companion summary reports
-their loss under execution, completeness, context, provenance, and artifact
-categories without a score.
+RQ2 is reported as a deterministic source-contribution map and case-task trace.
+For every exact record source actually present, it identifies the provider
+group, contributing data categories and properties, a stable-order
+representative record, scientific context, route outcome, and completeness.
+Case claims name their supporting source contributions. The trace does not use
+a single-source baseline, completeness score, field count, or scientific-truth
+judgment. Bundle identity, provenance, and context remain validation and
+attribution mechanisms rather than standalone scientific results.
 
 ## Scientific boundaries
 
@@ -85,15 +84,9 @@ Bi2Se3 routes structure, band gap, and source-native no-SOC/SOC topology. The
 R-3m/Pnma by SOC table reports MaterialsGalaxy data already in the Bundle;
 MatRouter did not recompute invariants, surface states, or phase equivalence.
 
-`paper_results_eligible` means only frozen protocol eligibility, not validation
-of scientific truth. A ready Stage-1 route with `adapter_exception`, or an
-evident non-authorization request/protocol HTTP 400/404/405/422, is an unresolved
-product blocker and makes the case ineligible. HTTP 401/402/403 entitlement or
-configuration failures, 429, timeouts, 5xx, and ordinary upstream warnings stay
-typed but are not automatically called product bugs.
-`results/internal-protocol-review.json` is a deterministic internal protocol
-and scientific-boundary checklist; it is not independent AI review, expert
-adjudication, external review, or peer review.
+Protocol eligibility and file digests remain internal reproducibility checks;
+they are not scientific findings. The internal protocol review is not an AI,
+expert, external, or peer review.
 
 ## Repository interface
 
@@ -101,8 +94,12 @@ adjudication, external review, or peer review.
   interface.
 - `cases/`: three case specs and scientific boundaries.
 - `raw/0.9.0/`: immutable release-bound captures.
-- `results/`: derived case capsules, direct paper-analysis CSV/JSON/SVG files,
-  product blockers, and the internal protocol review.
+- `results/`: derived case capsules, material-landscape case traces, direct
+  analysis CSV/JSON/SVG files, product blockers, and the internal protocol
+  review.
+- `results/figure-ready.json`: compact case/task, route-outcome, cross-source
+  insight, exact-follow-up, method, handoff, and scientific-boundary summaries;
+  detailed records and provenance remain in the case traces and audit exports.
 - `product-identity.release.json`: verified PyPI release identity.
 - `pyproject.toml` and `uv.lock`: non-package uv environment configuration.
 

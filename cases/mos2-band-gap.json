@@ -1,15 +1,29 @@
 {
-  "schema_version": "matrouter.paper-case-spec/7",
+  "schema_version": "matrouter.paper-case-spec/10",
   "case_name": "mos2-band-gap",
   "formula": "MoS2",
   "research_question_ids": ["RQ1", "RQ2", "RQ3"],
-  "rq2_common_record_projection": {
-    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
-    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
-    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
-    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
-    "null_rule": "missing formula, value, or unit remains null",
-    "forbidden_transformations": ["requery", "selection", "ranking", "deduplication", "aggregation", "unit_conversion", "property_remapping", "type_inference", "scientific_judgment"]
+  "material_landscape": {
+    "cross_source_union_adds": [
+      {
+        "statement": "The aggregate places COD crystal records beside AFLOW and Materials Project computed structure records, exposing multiple source-qualified structural and phase candidates without treating formula identity as phase identity.",
+        "supporting_contributions": [
+          {"source": "cod", "data_categories": ["structure_or_phase"]},
+          {"source": "aflow", "data_categories": ["structure_or_phase"]},
+          {"source": "materials_project", "data_categories": ["structure_or_phase"]}
+        ]
+      },
+      {
+        "statement": "The same landscape includes 2D C2DB electronic context and bulk or three-dimensional electronic records from Materials Project and NOMAD, so the dimensionality, method, functional, and SOC context actually returned by those sources can be inspected before selecting exact follow-ups; direct, indirect, or optical gap modality remains a gap when the source does not declare it.",
+        "supporting_contributions": [
+          {"source": "c2db", "data_categories": ["structure_or_phase", "electronic_property"]},
+          {"source": "materials_project", "data_categories": ["structure_or_phase", "electronic_property"]},
+          {"source": "nomad", "data_categories": ["structure_or_phase", "electronic_property"]}
+        ]
+      }
+    ],
+    "researcher_use": "Use the cross-source landscape to separate 2D and bulk candidates and their calculation contexts, then inspect only the preregistered exact structures and Materials Project spectral artifacts needed for the declared comparison and plots.",
+    "external_handoff": "A phase-resolved experiment-computation comparison or new many-body/DFT calculation requires separately identified experimental gap data and external electronic-structure workflows over phase-matched inputs."
   },
   "rq3_method_applicability": {
     "status": "applicable",
@@ -72,13 +86,14 @@
     "A scalar band gap is not a band structure or density of states.",
     "COD and MaterialsGalaxy CODX experimental crystal structures are structural evidence, not experimental band-gap observations."
   ],
-  "allowed_statement": "Describe this result as a capacity-bounded multi-source evidence catalog. Report each source-qualified gap, structure, and exact spectral artifact only with its preserved dimensional, phase, method, functional, SOC, and modality context. State only that the preregistered AFLOW and Materials Project exact bulk structures match under the declared StructureMatcher parameters; this does not establish electronic, magnetic, or topological phase identity. An explicit spectral render is a derived view of the same exact artifact and adds no source evidence.",
+  "allowed_statement": "Describe this result as a capacity-bounded multi-source structural and electronic landscape. Report each source-qualified gap, structure, and exact spectral artifact only with the dimensional, phase, method, functional, SOC, directness, or modality context its source actually declares; do not infer a missing direct, indirect, or optical designation. State only that the preregistered AFLOW and Materials Project exact bulk structures match under the declared StructureMatcher parameters; this does not establish electronic, magnetic, or topological phase identity. An explicit spectral render is a derived view of the same exact artifact and adds no source evidence.",
   "prohibited_statement": "Do not report a universal MoS2 band gap or a phase-resolved MoS2 gap answer, merge records by formula, infer a shared 2H bulk, 1H monolayer, or other phase without explicit structure matching, count COD/CODX experimental structures as experimental band-gap observations, or treat retrieval/rendering as independent experimental validation.",
   "missing_evidence": [
     "This run retrieved no band-gap observation explicitly identified as experimental; COD and CODX experimental structures do not supply an experimental band gap.",
+    "The returned band-gap observations do not declare direct, indirect, or optical modality; that context remains unresolved rather than inferred.",
     "Only the preregistered AFLOW and Materials Project exact bulk structures enter one fixed-parameter match; phase equivalence remains unresolved for every other cross-source record, the 2D C2DB target, and different polytypes.",
-    "The result is a capacity-bounded multi-source evidence catalog, not a phase-resolved MoS2 gap answer.",
-    "Any context field absent from the source remains unknown.",
+    "The result is a capacity-bounded multi-source material landscape, not a phase-resolved MoS2 gap answer.",
+    "Any calculation or phase context absent from a returned source-qualified record remains unknown.",
     "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
     "A missing parsed band/DOS artifact is not evidence that the source has no spectrum."
   ],

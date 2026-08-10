@@ -1,15 +1,30 @@
 {
-  "schema_version": "matrouter.paper-case-spec/7",
+  "schema_version": "matrouter.paper-case-spec/10",
   "case_name": "bi2se3-topology",
   "formula": "Bi2Se3",
   "research_question_ids": ["RQ1", "RQ2", "RQ3"],
-  "rq2_common_record_projection": {
-    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
-    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
-    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
-    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
-    "null_rule": "missing formula, value, or unit remains null",
-    "forbidden_transformations": ["requery", "selection", "ranking", "deduplication", "aggregation", "unit_conversion", "property_remapping", "type_inference", "scientific_judgment"]
+  "material_landscape": {
+    "cross_source_union_adds": [
+      {
+        "statement": "The aggregate combines general crystal and electronic records from COD, Materials Project, NOMAD, AFLOW, and other qualified sources with MaterialsGalaxy/Materiae source-native topology records for the same formula.",
+        "supporting_contributions": [
+          {"source": "cod", "data_categories": ["structure_or_phase"]},
+          {"source": "materials_project", "data_categories": ["structure_or_phase", "electronic_property"]},
+          {"source": "nomad", "data_categories": ["electronic_property"]},
+          {"source": "aflow", "data_categories": ["structure_or_phase", "electronic_property"]},
+          {"source": "materialsgalaxy:topo_crystals", "data_categories": ["structure_or_phase", "source_native_topology"]}
+        ]
+      },
+      {
+        "statement": "MaterialsGalaxy contributes exact R-3m and Pnma topology labels under no-SOC and SOC request contexts, while the broader aggregate supplies separately attributed structural and scalar electronic context rather than an independent topology verdict.",
+        "supporting_contributions": [
+          {"source": "materialsgalaxy:topo_crystals", "data_categories": ["source_native_topology"]},
+          {"source": "materials_project", "data_categories": ["structure_or_phase", "electronic_property"]}
+        ]
+      }
+    ],
+    "researcher_use": "Use the general cross-source landscape to identify candidate phases and electronic context, then inspect the two preregistered MaterialsGalaxy records as source-native SOC-conditioned reports without treating them as independently verified topology.",
+    "external_handoff": "Independent validation requires phase-compatible DFT and Wannier-based workflows such as WannierTools to recompute invariants and surface states; MatRouter exposes no topology validator and no unrelated lightweight method substitutes for that calculation."
   },
   "rq3_method_applicability": {
     "status": "not_applicable",
@@ -58,12 +73,12 @@
     "MaterialsGalaxy reports distinct R-3m and Pnma records for the same formula; their no-SOC/SOC comparison is a descriptive view of existing artifacts, not new evidence.",
     "Structural, scalar electronic, and topology records can be complementary while remaining non-comparable."
   ],
-  "allowed_statement": "State that MaterialsGalaxy reports each preserved topology class and indicator under its exact record, source-native structure identity, and SOC context. Present the R-3m/Pnma by no-SOC/SOC table only as a deterministic descriptive projection of those same Bundle artifacts, alongside separately attributed evidence from other qualified source routes.",
+  "allowed_statement": "State that MaterialsGalaxy reports each captured topology class and indicator under its exact record, source-native structure identity, and SOC context. Present the R-3m/Pnma by no-SOC/SOC table only as a deterministic descriptive view of those same Bundle artifacts, alongside separately attributed evidence from other qualified source routes.",
   "prohibited_statement": "Do not claim MatRouter recomputed topology invariants or surface states or independently validated topology classifications, promote one source label to universal truth, treat the derived comparison table as new evidence, infer trivial topology from missing artifacts, or merge records solely by Bi2Se3 formula.",
   "missing_evidence": [
     "Missing SOC, method, phase, invariant, or surface-state context remains unknown rather than negative evidence.",
     "No cross-source structure matching was executed, so cross-source phase equivalence remains unresolved.",
     "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim."
   ],
-  "next_action": "Any cross-source phase matching, topology-invariant recomputation, or surface-state analysis remains a separate downstream method over exact phase-compatible inputs."
+  "next_action": "Select phase-compatible exact inputs, then hand off independent topology-invariant and surface-state validation to external DFT and Wannier-based workflows such as WannierTools; cross-source phase matching remains a separately declared analysis."
 }

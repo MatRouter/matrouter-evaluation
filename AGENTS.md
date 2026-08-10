@@ -11,19 +11,20 @@ from an evaluation task.
 
 The repository root contains exactly three cases: MoS2 electronic evidence,
 LiFePO4 thermodynamic evidence, and Bi2Se3 source-native topology evidence. The
-single active protocol identity is `matrouter.paper-three-case-protocol` and
-terminates at canonical `EvidenceBundle` truth. It is release-bound to the
-formally published MatRouter v0.9.0 identity.
+single active protocol identity is `matrouter.paper-three-case-protocol` and is
+release-bound to the formally published MatRouter v0.9.0 identity. Canonical
+`EvidenceBundle` objects provide stored evidence and exact method inputs; the
+scientific result is each case's source-supported material landscape and trace.
 
-- RQ1 tests whether one all-qualified aggregate Bundle contains heterogeneous
-  source/provider records and a typed outcome for every qualified route.
-- RQ2 compares that Bundle with a deterministic six-field projection of the
-  normalized `property_observations` occurrences already stored inside its
-  `SourceRecordItem.record_json` containers, exposing lost execution,
-  completeness, context, provenance, and artifact information.
-- RQ3 tests direct exact-target artifact use when a method is applicable.
-  MoS2 and LiFePO4 declare applicable methods. Bi2Se3 is explicitly
-  `not_applicable` because MatRouter exposes no topology-validation method.
+- RQ1 asks whether one all-qualified aggregate attempts every capability-matched
+  route within the declared catalog, configuration, scope, and budgets, while
+  preserving typed outcomes and `RecordCompleteness`.
+- RQ2 maps the source-supported material-data landscape: contributing sources,
+  data categories, scientific contexts, specialist data, gaps, and the next
+  research step. It is not a field-count or scientific-truth metric.
+- RQ3 tests whether preregistered exact source-bound records and artifacts enter
+  applicable lightweight methods directly, while unsupported heavy calculations
+  remain explicit external handoffs. Bi2Se3 has no MatRouter topology validator.
 
 Each case calls `aggregate_source_records` once with `all_qualified +
 exhaust_upstream`. MatRouter v0.9.0 performs bounded parallel cross-source

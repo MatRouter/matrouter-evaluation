@@ -27,7 +27,7 @@ class CapsuleTests(unittest.TestCase):
             experiment.load_json(manifest_path) if manifest_path.is_file() else None
         )
         if cls.manifest and cls.manifest.get("schema_version") == (
-            "matrouter.paper-manifest/10"
+            "matrouter.paper-manifest/13"
         ):
             cls.results = {
                 case_name: experiment.load_json(
@@ -182,9 +182,9 @@ class CapsuleTests(unittest.TestCase):
         self.assertEqual(
             tuple(experiment.COMMON_RESEARCH_QUESTIONS), ("RQ1", "RQ2", "RQ3")
         )
-        self.assertIn(
-            "exact same primary aggregate Bundle bytes",
+        self.assertEqual(
             experiment.COMMON_RESEARCH_QUESTIONS["RQ2"],
+            "What material-data landscape does the cross-source aggregate provide for the case—sources, data categories, scientific contexts, specialist data, and explicit gaps—and how does that landscape guide the next research step?",
         )
         for case_name in experiment.CASES:
             spec = experiment.case_spec(case_name)
@@ -200,6 +200,10 @@ class CapsuleTests(unittest.TestCase):
                 spec["stage_1"]["public_bundle_canonical_byte_limit"], 16_000_000
             )
             self.assertIsInstance(spec["stage_2_targets"], list)
+            landscape = spec["material_landscape"]
+            self.assertTrue(landscape["cross_source_union_adds"])
+            self.assertTrue(landscape["researcher_use"])
+            self.assertTrue(landscape["external_handoff"])
         mos2 = experiment.case_spec("mos2-band-gap")
         self.assertEqual(
             [
@@ -732,147 +736,61 @@ class CapsuleTests(unittest.TestCase):
             ):
                 experiment.validate()
 
-    def test_projection_is_same_bundle_source_record_occurrence_counterfactual(
-        self,
-    ) -> None:
+    def test_rq2_material_landscape_is_source_supported_and_non_scoring(self) -> None:
         source = (ROOT / "experiment.py").read_text()
         for forbidden in (
             "exact_evidence_bundle_count",
             "per_source_closure",
         ):
             self.assertNotIn(forbidden, source)
-        source_record = {
-            "item_id": "source-record-1",
-            "item_kind": "source_record",
-            "record_json": experiment.canonical_json(
-                {
-                    "formula": "MoS2",
-                    "source": "container-a",
-                    "source_id": "record-a",
-                    "property_observations": {
-                        "beta_property": {
-                            "observations": [
-                                {
-                                    "value": 3.0,
-                                    "unit": "eV",
-                                    "provenance": {
-                                        "evidence_source": "observation-source",
-                                        "evidence_source_id": "observation-3",
-                                    },
-                                },
-                                {
-                                    "value": 2.0,
-                                    "unit": "eV",
-                                    "provenance": {
-                                        "evidence_source": "observation-source",
-                                        "evidence_source_id": "observation-2",
-                                    },
-                                },
-                                {
-                                    "value": 2.0,
-                                    "unit": "eV",
-                                    "provenance": {
-                                        "evidence_source": "observation-source",
-                                        "evidence_source_id": "observation-2",
-                                    },
-                                },
-                            ]
-                        },
-                        "alpha_property": {
-                            "value": 1.0,
-                            "unit": "eV/atom",
-                            "provenance": {},
-                        },
-                    },
-                }
-            ),
-        }
-        no_observation_record = {
-            "item_id": "source-record-2",
-            "item_kind": "source_record",
-            "record_json": experiment.canonical_json(
-                {
-                    "formula": "Bi2Se3",
-                    "source": "container-b",
-                    "source_id": "record-b",
-                }
-            ),
-        }
-        null_record = {
-            "item_id": "source-record-3",
-            "item_kind": "source_record",
-            "record_json": experiment.canonical_json(
-                {
-                    "source": "container-c",
-                    "source_id": "record-c",
-                    "property_observations": {"gamma_property": {}},
-                }
-            ),
-        }
-        bundle = {
-            "bundle_id": "sha256:" + "a" * 64,
-            "requirements": [{"requirement_id": "r1"}],
-            "routes": [{"qualified_source": "source-a"}],
-            "items": [
-                source_record,
-                no_observation_record,
-                null_record,
-                {"item_kind": "structure"},
-                {"item_kind": "source_outcome"},
-            ],
-        }
-        projection = experiment._common_record_projection(bundle)
-        self.assertIn(
-            "_normalized_property_occurrences",
-            inspect.getsource(experiment._common_record_projection),
-        )
-        self.assertIn(
-            "_normalized_property_occurrences",
-            inspect.getsource(experiment._paper_scientific_rows),
-        )
-        self.assertEqual(projection["source_bundle_id"], bundle["bundle_id"])
-        self.assertEqual(
-            projection["source_bundle_canonical_sha256"],
-            experiment.sha256_bytes(experiment.canonical_bytes(bundle)),
-        )
-        self.assertEqual(projection["row_count"], 5)
-        self.assertEqual(
-            [row["property"] for row in projection["rows"]],
-            [
-                "alpha_property",
-                "beta_property",
-                "beta_property",
-                "beta_property",
-                "gamma_property",
-            ],
-        )
-        self.assertEqual(
-            [row["value"] for row in projection["rows"]], [1.0, 3.0, 2.0, 2.0, None]
-        )
-        self.assertEqual(projection["rows"][0]["source"], "container-a")
-        self.assertEqual(projection["rows"][0]["source_id"], "record-a")
-        self.assertEqual(projection["rows"][1]["source"], "observation-source")
-        self.assertEqual(projection["rows"][1]["source_id"], "observation-3")
-        self.assertEqual(projection["rows"][2], projection["rows"][3])
-        self.assertIsNone(projection["rows"][4]["formula"])
-        self.assertIsNone(projection["rows"][4]["value"])
-        self.assertIsNone(projection["rows"][4]["unit"])
-        self.assertEqual(
-            projection["dropped_non_source_record_item_kind_counts"],
-            {"source_outcome": 1, "structure": 1},
-        )
-        self.assertEqual(
-            set(projection["information_loss_categories"]),
-            {"execution", "completeness", "context", "provenance", "artifacts"},
-        )
-        self.assertIsNone(projection["scores"])
-        if self.results:
-            self.assertTrue(
-                all(
-                    result["common_record_projection"]["row_count"] > 0
-                    for result in self.results.values()
-                )
+        for case_name in experiment.CASES:
+            result = experiment.load_json(
+                ROOT / "results" / "cases" / f"{case_name}.json"
             )
+            spec = experiment.case_spec(case_name)
+            result["task_spec"] = spec
+            trace = experiment._material_landscape_trace(result, spec)
+            self.assertEqual(
+                trace["primary_aggregate_bundle_id"],
+                result["primary_result_bundle_id"],
+            )
+            self.assertEqual(
+                trace["route_outcome_summary"]["qualified"],
+                trace["route_outcome_summary"]["attempted"],
+            )
+            self.assertGreaterEqual(len(trace["contributing_exact_sources"]), 2)
+            contributions = {
+                row["source"]: row for row in trace["contributing_exact_sources"]
+            }
+            for row in contributions.values():
+                self.assertTrue(row["provider"])
+                self.assertTrue(row["data_categories"])
+                self.assertIn("state", row["record_completeness"])
+                self.assertIn(
+                    "not selected by value or scientific favorability",
+                    row["representative_record"]["selection_rule"],
+                )
+            for claim in trace["what_cross_source_union_adds"]:
+                for support in claim["supporting_contributions"]:
+                    self.assertLessEqual(
+                        set(support["data_categories"]),
+                        set(contributions[support["source"]]["data_categories"]),
+                    )
+            self.assertNotIn("score", json.dumps(trace).lower())
+            self.assertNotIn("baseline", json.dumps(trace).lower())
+
+        unsupported = copy.deepcopy(spec)
+        unsupported["material_landscape"]["cross_source_union_adds"][0][
+            "supporting_contributions"
+        ].append({"source": "missing-source", "data_categories": ["material_identity"]})
+        with self.assertRaisesRegex(ValueError, "unsupported cross-source"):
+            experiment._material_landscape_trace(result, unsupported)
+
+        mos2_statement = experiment.case_spec("mos2-band-gap")["material_landscape"][
+            "cross_source_union_adds"
+        ][1]["statement"]
+        self.assertIn("context actually returned by those sources", mos2_statement)
+        self.assertIn("modality remains a gap", mos2_statement)
 
     def test_independent_review_is_non_vacuous_for_applicable_methods(self) -> None:
         source = inspect.getsource(experiment.write_internal_protocol_review)
@@ -1124,45 +1042,43 @@ class CapsuleTests(unittest.TestCase):
             [row["case_name"] for row in figure["cases"]], list(experiment.CASES)
         )
         self.assertIn(
-            "_validate_paper_observation_projection_consistency",
+            "_validate_paper_observation_export_consistency",
             inspect.getsource(experiment.validate),
         )
         with (ROOT / "results" / "observations.csv").open(newline="") as handle:
             observation_rows = list(csv.DictReader(handle))
         figure_cases = {row["case_name"]: row for row in figure["cases"]}
+        experiment._validate_paper_observation_export_consistency(self.results)
         for case_name in experiment.CASES:
-            projection_rows = self.results[case_name]["common_record_projection"][
-                "rows"
-            ]
-            csv_projection_rows = [
-                {
-                    "source": row["source"],
-                    "source_id": row["source_id"],
-                    "formula": row["formula"] or None,
-                    "property": row["property"],
-                    "value": json.loads(row["value_json"]),
-                    "unit": row["unit"] or None,
-                }
-                for row in observation_rows
-                if row["case_name"] == case_name
-            ]
-            figure_projection_rows = [
-                {
-                    "source": row["source"],
-                    "source_id": row["source_id"],
-                    "formula": row["formula"],
-                    "property": row["property"],
-                    "value": json.loads(row["value_json"]),
-                    "unit": row["unit"],
-                }
-                for row in figure_cases[case_name]["observations"]
-            ]
-            self.assertEqual(csv_projection_rows, projection_rows)
-            self.assertEqual(figure_projection_rows, projection_rows)
+            trace = self.results[case_name]["material_landscape"]
             self.assertEqual(
-                len(figure_cases[case_name]["observations"]),
-                self.results[case_name]["common_record_projection"]["row_count"],
+                figure_cases[case_name]["scientific_task"], trace["scientific_task"]
             )
+            self.assertEqual(
+                figure_cases[case_name]["data_categories_actually_present"],
+                trace["data_categories_actually_present"],
+            )
+            self.assertEqual(
+                len(figure_cases[case_name]["cross_source_union_insights"]), 2
+            )
+            self.assertNotIn("observations", figure_cases[case_name])
+            self.assertNotIn("structures", figure_cases[case_name])
+            self.assertNotIn("artifacts", figure_cases[case_name])
+            self.assertNotIn("material_landscape", figure_cases[case_name])
+        figure_text = json.dumps(figure, sort_keys=True)
+        for forbidden in (
+            "bundle_id",
+            "item_id",
+            "payload_sha256",
+            "runner_sha256",
+            "schema_version",
+            "paper_results_eligible",
+            "descriptor_json",
+        ):
+            self.assertNotIn(forbidden, figure_text)
+        self.assertLess(
+            (ROOT / "results" / "figure-ready.json").stat().st_size, 100_000
+        )
         jarvis_rows = [
             row
             for row in observation_rows
@@ -1191,10 +1107,8 @@ class CapsuleTests(unittest.TestCase):
         self.assertEqual(len(phase_rows), 974)
         self.assertEqual(len(topology_rows), 4)
         self.assertFalse((ROOT / "results" / "provider-database-scopes.csv").is_file())
-        self.assertEqual(
-            figure["paper_results_eligibility_semantics"],
-            experiment.PAPER_ELIGIBILITY_SEMANTICS,
-        )
+        self.assertNotIn("paper_results_eligibility_semantics", figure)
+        self.assertTrue(all("paper_results_eligible" not in row for row in rows))
 
     def test_active_protocol_code_has_no_retired_version_compatibility_branch(
         self,

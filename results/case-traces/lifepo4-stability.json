@@ -1,0 +1,1327 @@
+{
+  "case_name": "lifepo4-stability",
+  "scientific_task": "What multi-source formation-energy and source-native stability evidence is available for LiFePO4, and what does one exact frame-compatible Materials Project entry set support under an explicit convex-hull calculation?",
+  "primary_aggregate_bundle_id": "sha256:682695615f9203821c6c8ca9eddf8307c8666bb23f6334630b2789b969f84201",
+  "declared_source_scope": {
+    "catalog_and_configuration": "MatRouter v0.9.0 capability catalog under the captured runtime configuration",
+    "evidence_kind": "source_record",
+    "source_scope": "all_qualified",
+    "record_scope": "exhaust_upstream",
+    "record_safety_limit_per_route": 60,
+    "max_pages_per_route": 100,
+    "max_elapsed_seconds_per_route": 300.0,
+    "max_normalized_bytes_per_route": 100000000,
+    "public_bundle_item_limit": 512,
+    "public_bundle_canonical_byte_limit": 16000000,
+    "scope_limit": "All capability-matched execution routes were attempted within the declared budgets; this is not every real-world database or every upstream record."
+  },
+  "route_outcome_summary": {
+    "qualified": 32,
+    "ready": 32,
+    "attempted": 32,
+    "status_counts": {
+      "empty": 13,
+      "failed": 3,
+      "partial": 6,
+      "succeeded": 10
+    },
+    "record_completeness_counts": {
+      "complete": 9,
+      "empty": 10,
+      "failed": 3,
+      "truncated": 7,
+      "upstream_total_unknown": 3
+    },
+    "outcomes": [
+      {
+        "source": "aflow",
+        "status": "partial",
+        "record_count": 15,
+        "reason_code": "evidence_bundle_item_capacity_reached",
+        "completeness": "truncated",
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      {
+        "source": "alexandria",
+        "status": "partial",
+        "record_count": 15,
+        "reason_code": "evidence_bundle_item_capacity_reached",
+        "completeness": "truncated",
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      {
+        "source": "c2db",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "empty_result_observed",
+        "completeness": "upstream_total_unknown",
+        "truncation_reason": null
+      },
+      {
+        "source": "cod",
+        "status": "succeeded",
+        "record_count": 11,
+        "reason_code": "records_returned",
+        "completeness": "upstream_total_unknown",
+        "truncation_reason": null
+      },
+      {
+        "source": "jarvis_dft",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "empty_result_observed",
+        "completeness": "truncated",
+        "truncation_reason": "max_pages_reached"
+      },
+      {
+        "source": "materials_project",
+        "status": "partial",
+        "record_count": 15,
+        "reason_code": "evidence_bundle_item_capacity_reached",
+        "completeness": "truncated",
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      {
+        "source": "materialsgalaxy",
+        "status": "partial",
+        "record_count": 15,
+        "reason_code": "evidence_bundle_item_capacity_reached",
+        "completeness": "truncated",
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      {
+        "source": "mpds",
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "upstream_http_error",
+        "completeness": "failed",
+        "truncation_reason": null
+      },
+      {
+        "source": "nomad",
+        "status": "partial",
+        "record_count": 15,
+        "reason_code": "evidence_bundle_item_capacity_reached",
+        "completeness": "truncated",
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      {
+        "source": "optimade:mpddoptimade.phaseslab.org",
+        "status": "partial",
+        "record_count": 15,
+        "reason_code": "evidence_bundle_item_capacity_reached",
+        "completeness": "truncated",
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      {
+        "source": "optimade:optimade-gnome.odbx.science",
+        "status": "succeeded",
+        "record_count": 1,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade-misc.odbx.science",
+        "status": "succeeded",
+        "record_count": 3,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.2dmatpedia.org",
+        "status": "succeeded",
+        "record_count": 2,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/archive/1z-pd",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/archive/ed-g2",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/archive/jk-9v",
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "adapter_warning",
+        "completeness": "failed",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+        "status": "succeeded",
+        "record_count": 3,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/archive/zt-z4",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/2dtopo",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/autowannier",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/curated-cofs",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/mc2d",
+        "status": "succeeded",
+        "record_count": 1,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+        "status": "succeeded",
+        "record_count": 3,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+        "status": "succeeded",
+        "record_count": 6,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+        "status": "succeeded",
+        "record_count": 4,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/stoceriaitf",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.odbx.science",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:optimade.openmaterialsdb.se",
+        "status": "succeeded",
+        "record_count": 3,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
+      },
+      {
+        "source": "oqmd",
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "upstream_http_unavailable",
+        "completeness": "failed",
+        "truncation_reason": null
+      },
+      {
+        "source": "tcod",
+        "status": "empty",
+        "record_count": 0,
+        "reason_code": "empty_result_observed",
+        "completeness": "upstream_total_unknown",
+        "truncation_reason": null
+      }
+    ]
+  },
+  "contributing_exact_sources": [
+    {
+      "source": "cod",
+      "provider": "COD",
+      "execution_route": "cod",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "upstream_total_unknown",
+        "returned_count": 11,
+        "upstream_total": null,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": null,
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 11,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:09fe9828e3cf06943b53d97b33989e8f7a460f3021cdac5bb91f0977cf7955fc",
+        "source_id": "2300352",
+        "formula": "Fe1.006 Li1.006 O4 P",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "P n m a",
+            "space_group_number": 62
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "materialsgalaxy:generated_structures",
+      "provider": "MaterialsGalaxy",
+      "execution_route": "materialsgalaxy",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": 25,
+        "pages_fetched": 1,
+        "last_cursor": "1",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 6,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:0cf6277b374621efad6189bafc477cad92df2fbcaf8f1d3e3c8ce959be7ad62f",
+        "source_id": "mg-3835083",
+        "formula": "LiFePO4",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "Imma",
+            "space_group_number": 74
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "materials_project",
+      "provider": "Materials Project",
+      "execution_route": "materials_project",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": null,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 15,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV",
+        "is_stable"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:0df67b33f05e2ee2c872da27f4499de6922d4e2fc2db05010e7766d76d611067",
+        "source_id": "mp-772138",
+        "formula": "LiFePO4",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "P1",
+            "space_group_number": 1
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "is_stable",
+              "context": {
+                "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "materials_project",
+            "source_id": "aaabuhxw",
+            "formula": "LiFePO4",
+            "property": "band_gap_eV",
+            "value": 3.2872,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-772138",
+            "formula": "LiFePO4",
+            "property": "energy_above_hull_eV",
+            "value": 0.050687277142857035,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-772138",
+            "formula": "LiFePO4",
+            "property": "formation_energy_per_atom_eV",
+            "value": -2.4292087375680262,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-772138",
+            "formula": "LiFePO4",
+            "property": "is_stable",
+            "value": false,
+            "unit": null,
+            "semantic": "thermodynamic_stability_label",
+            "context": {
+              "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:mpddoptimade.phaseslab.org",
+      "provider": "mpddoptimade.phaseslab.org",
+      "execution_route": "optimade:mpddoptimade.phaseslab.org",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": null,
+        "pages_fetched": 1,
+        "last_cursor": "http://mpddoptimade.phaseslab.org/v1/structures",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 15,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:0e3f0f4fa62e9b39418731c0358ca7f89efc8389043305a028e8da76939a9cfa",
+        "source_id": "mpdd-60754422b003796270efe5df",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "nomad",
+      "provider": "NOMAD",
+      "execution_route": "nomad",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": 246,
+        "pages_fetched": 1,
+        "last_cursor": "3lxiQzu284zkfrjB6zxH9kvADL26",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 15,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:10a3c9e5fec6bbb31f9ad2a49c8a4acee0918324ca812cb4b9321f28e51552d2",
+        "source_id": "2VKkBrC9dRHx8MXzCn0CPbflF-Y5",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "Fdd2",
+            "space_group_number": 43,
+            "dimensionality": "3D"
+          },
+          "method_or_observable": {
+            "method_name": "DFT",
+            "dft_method_context": {
+              "hubbard_kanamori_models": [
+                {
+                  "energy_conversion": {
+                    "divisor": 1.602176634e-19,
+                    "from_unit": "J",
+                    "to_unit": "eV"
+                  },
+                  "source_energy_values_J": {
+                    "u_J": 8.491536160199999e-19,
+                    "u_effective_J": 8.491536160199999e-19
+                  },
+                  "u_eV": 5.3,
+                  "u_effective_eV": 5.3
+                }
+              ]
+            }
+          },
+          "property_contexts": [
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "code": "VASP",
+                "dimensionality": "3D",
+                "functional": [
+                  "GGA_C_PBE",
+                  "GGA_X_PBE"
+                ],
+                "gap_observable_level": "nomad_results_summary_normalizer_output",
+                "method_family": "DFT",
+                "spin": {
+                  "source_channel_index": 0
+                }
+              }
+            },
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "code": "VASP",
+                "dimensionality": "3D",
+                "functional": [
+                  "GGA_C_PBE",
+                  "GGA_X_PBE"
+                ],
+                "gap_observable_level": "nomad_results_summary_normalizer_output",
+                "method_family": "DFT",
+                "spin": {
+                  "source_channel_index": 1
+                }
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "nomad",
+            "source_id": "2VKkBrC9dRHx8MXzCn0CPbflF-Y5#band_gap=0",
+            "formula": "FeLiO4P",
+            "property": "band_gap_eV",
+            "value": 3.8536,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "code": "VASP",
+              "dimensionality": "3D",
+              "functional": [
+                "GGA_C_PBE",
+                "GGA_X_PBE"
+              ],
+              "gap_observable_level": "nomad_results_summary_normalizer_output",
+              "method_family": "DFT",
+              "spin": {
+                "source_channel_index": 0
+              }
+            }
+          },
+          {
+            "source": "nomad",
+            "source_id": "2VKkBrC9dRHx8MXzCn0CPbflF-Y5#band_gap=1",
+            "formula": "FeLiO4P",
+            "property": "band_gap_eV",
+            "value": 3.8536,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "code": "VASP",
+              "dimensionality": "3D",
+              "functional": [
+                "GGA_C_PBE",
+                "GGA_X_PBE"
+              ],
+              "gap_observable_level": "nomad_results_summary_normalizer_output",
+              "method_family": "DFT",
+              "spin": {
+                "source_channel_index": 1
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "alexandria",
+      "provider": "Alexandria",
+      "execution_route": "alexandria",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": null,
+        "pages_fetched": 1,
+        "last_cursor": "0.04459522,agm005271219",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 15,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "energy_above_hull_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:12f9d74519f1b3c76e4ec44c1fee85c8807559c843524081fa3ce0eb782f9930",
+        "source_id": "agm005287464",
+        "formula": "LiFePO4",
+        "context": {
+          "structure_or_phase": {
+            "space_group_number": 33
+          },
+          "method_or_observable": {
+            "functional_status": "not_provided"
+          },
+          "property_contexts": []
+        },
+        "observations": [
+          {
+            "source": "alexandria",
+            "source_id": "agm005287464",
+            "formula": "LiFePO4",
+            "property": "band_gap_eV",
+            "value": 3.5732,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {}
+          },
+          {
+            "source": "alexandria",
+            "source_id": "agm005287464",
+            "formula": "LiFePO4",
+            "property": "energy_above_hull_eV",
+            "value": 0.008679204,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {}
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.openmaterialsdb.se",
+      "provider": "optimade.openmaterialsdb.se",
+      "execution_route": "optimade:optimade.openmaterialsdb.se",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 3,
+        "upstream_total": 3,
+        "pages_fetched": 1,
+        "last_cursor": "http://optimade.openmaterialsdb.se/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 3,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:130f9864107904919f7b58b69b122615986f2a076c02fb022eba1f86daf6b8c7",
+        "source_id": "33869",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 6,
+        "upstream_total": 6,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v1/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 6,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:20a391e82bc59895d9d6e51e480f5c1d570ca65bdbe8b0b88fba847757f92070",
+        "source_id": "c93551a9-eb79-4530-b2c6-629267adc003",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 3,
+        "upstream_total": 3,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/archive/m0-zg/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 3,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:2fb2fe4562eeea8f031d2432bd8a0b64ebe9fee73741d3c1f7799701b9bc02c3",
+        "source_id": "MAT00036806",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "materialsgalaxy:CODX",
+      "provider": "MaterialsGalaxy",
+      "execution_route": "materialsgalaxy",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": 25,
+        "pages_fetched": 1,
+        "last_cursor": "1",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 9,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:4036ee37ce47765a7f2521770a525dddc9d394664068c48d01d7a522b1dd72a3",
+        "source_id": "mg-3742696",
+        "formula": "LiFePO4",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "Pnma",
+            "space_group_number": 62,
+            "dimensionality": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "aflow",
+      "provider": "AFLOW",
+      "execution_route": "aflow",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": null,
+        "pages_fetched": 1,
+        "last_cursor": "1",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 15,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:434057ce2710f431e2a7aa8e4f69387e2d07fe52fa761d05b91e5fa14a3a31fc",
+        "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/ORC/Fe1Li1O4P1_ICSD_181342",
+        "formula": "Fe4Li4O16P4",
+        "context": {
+          "structure_or_phase": {
+            "space_group_number": 62,
+            "prototype": "Fe1Li1O4P1_ICSD_181342"
+          },
+          "method_or_observable": {
+            "dft_type": [
+              "PAW_PBE"
+            ]
+          },
+          "property_contexts": [
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "method_family": "DFT",
+                "workflow": "AFLOW automated calculation"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "aflow",
+            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/ORC/Fe1Li1O4P1_ICSD_181342",
+            "formula": "Fe4Li4O16P4",
+            "property": "band_gap_eV",
+            "value": 3.6372,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "method_family": "DFT",
+              "workflow": "AFLOW automated calculation"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 3,
+        "upstream_total": 3,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbe-v1/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 3,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:58b625156f9a82c78c0cda2b1ffb4d20428e9b4735027af0b06d8a6564b248e8",
+        "source_id": "18b0bc24-f80b-44ef-8a61-1f1c8f7f6d9d",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "provider": "optimade-misc.odbx.science",
+      "execution_route": "optimade:optimade-misc.odbx.science",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 3,
+        "upstream_total": 3,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade-misc.odbx.science/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 3,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:5ae19fc3c5f52fa6b440da0631ec6f4ff2242bffa7d2aebd645749cd2ce380fd",
+        "source_id": "camd-oqmd_6955",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "energy_above_hull_eV",
+              "context": {
+                "hull_construction": "global convex hull spanned by all other structures in the database"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "optimade:optimade-misc.odbx.science",
+            "source_id": "camd-oqmd_6955",
+            "formula": "FeLiO4P",
+            "property": "energy_above_hull_eV",
+            "value": 0.0,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {
+              "hull_construction": "global convex hull spanned by all other structures in the database"
+            }
+          },
+          {
+            "source": "optimade:optimade-misc.odbx.science",
+            "source_id": "camd-oqmd_6955",
+            "formula": "FeLiO4P",
+            "property": "formation_energy_per_atom_eV",
+            "value": -2.40994314262703,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {}
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.2dmatpedia.org",
+      "provider": "optimade.2dmatpedia.org",
+      "execution_route": "optimade:optimade.2dmatpedia.org",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 2,
+        "upstream_total": 2,
+        "pages_fetched": 1,
+        "last_cursor": "http://optimade.2dmatpedia.org/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 2,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:6cd6679b207cefee886d8de594eeede15317cac1bdc33431e0eaa63c88fc9948",
+        "source_id": "2dm-5337",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc2d",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc2d",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 1,
+        "upstream_total": 1,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc2d/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 1,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:714590f72b4ca5a0c0bf7b9b1bc439df3b2583f3c6ee7d34df30d4964ff32cc1",
+        "source_id": "7b6518cd-f819-4e22-8ced-1a068ae8f52b",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": [
+          {
+            "source": "optimade:optimade.materialscloud.org/main/mc2d",
+            "source_id": "7b6518cd-f819-4e22-8ced-1a068ae8f52b",
+            "formula": "FeLiO4P",
+            "property": "band_gap_eV",
+            "value": 0.693163317264323,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {}
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 4,
+        "upstream_total": 4,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v2/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 4,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:7e0855b01278f1f8871635c8340c8a499b410e1a38436652167ee465b9495d2a",
+        "source_id": "3fe1b084-e021-4424-a806-768a993893c0",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade-gnome.odbx.science",
+      "provider": "optimade-gnome.odbx.science",
+      "execution_route": "optimade:optimade-gnome.odbx.science",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 1,
+        "upstream_total": 1,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade-gnome.odbx.science/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 1,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "formation_energy_per_atom_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:bcec32192ed22260e7b92eafab90ac29c182d33d120049ba9d785aa9cea2ffcb",
+        "source_id": "ebe63467b8",
+        "formula": "FeLiO4P",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "Pnma",
+            "space_group_number": 62,
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "formation_energy_per_atom_eV",
+              "context": {
+                "functional": "PBE",
+                "method_family": "DFT"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "optimade:optimade-gnome.odbx.science",
+            "source_id": "ebe63467b8",
+            "formula": "FeLiO4P",
+            "property": "formation_energy_per_atom_eV",
+            "value": -2.4818,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {
+              "functional": "PBE",
+              "method_family": "DFT"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "provider_groups": [
+    "AFLOW",
+    "Alexandria",
+    "COD",
+    "Materials Project",
+    "MaterialsGalaxy",
+    "NOMAD",
+    "mpddoptimade.phaseslab.org",
+    "optimade-gnome.odbx.science",
+    "optimade-misc.odbx.science",
+    "optimade.2dmatpedia.org",
+    "optimade.materialscloud.org",
+    "optimade.openmaterialsdb.se"
+  ],
+  "data_categories_actually_present": [
+    "electronic_property",
+    "material_identity",
+    "structure_or_phase",
+    "thermodynamic_property"
+  ],
+  "what_cross_source_union_adds": [
+    {
+      "statement": "The aggregate places COD and MaterialsGalaxy structure records beside computed structures from Materials Project, making structural candidates visible before any thermodynamic conclusion is attempted.",
+      "supporting_contributions": [
+        {
+          "source": "cod",
+          "data_categories": [
+            "structure_or_phase"
+          ]
+        },
+        {
+          "source": "materialsgalaxy:generated_structures",
+          "data_categories": [
+            "structure_or_phase"
+          ]
+        },
+        {
+          "source": "materials_project",
+          "data_categories": [
+            "structure_or_phase"
+          ]
+        }
+      ]
+    },
+    {
+      "statement": "Materials Project and OPTIMADE ODBX records contribute source-qualified formation-energy or hull-related quantities with their own semantics, allowing the researcher to distinguish catalog evidence from the later exact compatible-entry hull calculation.",
+      "supporting_contributions": [
+        {
+          "source": "materials_project",
+          "data_categories": [
+            "thermodynamic_property"
+          ]
+        },
+        {
+          "source": "optimade:optimade-misc.odbx.science",
+          "data_categories": [
+            "thermodynamic_property"
+          ]
+        }
+      ]
+    }
+  ],
+  "exact_followups": {
+    "target_audit": {
+      "preregistered_target_count": 0,
+      "found_target_count": 0,
+      "missing_target_count": 0,
+      "expected_enrichment_route_count": 0,
+      "executed_enrichment_route_count": 0,
+      "succeeded_enrichment_route_count": 0,
+      "failed_or_unavailable_enrichment_route_count": 0,
+      "targets": [],
+      "qualified_source_route_count": 32,
+      "target_followup_run_count": 0,
+      "passed": true
+    },
+    "artifacts": [],
+    "thermochemical_entry_sets": [
+      {
+        "item_id": "sha256:1325006c55d5e37836c94b51e4de14ad1c1e2bc00d0726b3125fe02c2c9133b2",
+        "source": "materials_project",
+        "source_id": "sha256:b9924149249de771d1fe5bb81c84556a342817ec877f25a9006a4627f1266f71",
+        "entry_count": 974
+      }
+    ],
+    "methods": [
+      {
+        "method_name": "compute_phase_diagrams",
+        "succeeded": true,
+        "input_bundle_ids": [
+          "sha256:d9287e8a8789aea5bb85a84879a8d4e77ec072e42e5b992b347f49d800197bc2"
+        ],
+        "exact_input_item_ids": [
+          "sha256:1325006c55d5e37836c94b51e4de14ad1c1e2bc00d0726b3125fe02c2c9133b2"
+        ],
+        "result": {
+          "entry_count": 974,
+          "input_manifest_id": "sha256:74f73211e2b7286c28074ee08e83b0435b1f3bb8af0f9cf2e1fbd87c7e2b8f28",
+          "entry_set_item_id": "sha256:1325006c55d5e37836c94b51e4de14ad1c1e2bc00d0726b3125fe02c2c9133b2",
+          "dataset": "materials_project.database/2026.04.13/compatible-entry-set/b9924149249de771d1fe5bb81c84556a342817ec877f25a9006a4627f1266f71",
+          "thermo_type": "GGA_GGA+U_R2SCAN",
+          "energy_frame": {
+            "correction_scheme": "mp-api get_entries_in_chemsys(compatible_only=True); per-entry corrections preserved in serialized ComputedEntry records",
+            "energy_model": "Materials Project compatible entries for thermo_types=GGA_GGA+U_R2SCAN",
+            "energy_quantity": "corrected_total_energy",
+            "frame_id": "sha256:1d1c9e01fc91bf9a906dcc67a7efb072d5bcec3ed887acc3ca15901f67695f09",
+            "pressure_GPa": null,
+            "pressure_status": "not_reported",
+            "reference_state": "materials_project.database/2026.04.13/compatible-entry-set/b9924149249de771d1fe5bb81c84556a342817ec877f25a9006a4627f1266f71; exact entry_set_id=sha256:b9924149249de771d1fe5bb81c84556a342817ec877f25a9006a4627f1266f71",
+            "temperature_K": null,
+            "temperature_status": "not_reported",
+            "unit": "eV"
+          },
+          "method_parameters": {
+            "on_hull_tolerance_eV_per_atom": 1e-06
+          },
+          "plot_artifact": {
+            "artifact_id": "sha256:45e95f47413189439559b4487b6a0f68674292f0cdd6bd6a3ea1275029c624e3",
+            "plot_request_id": "sha256:ae3a2102683a80fed29f0518bd20aae2d0a16ebcfad679834df67d93eafbbc9f",
+            "input_manifest_id": "sha256:74f73211e2b7286c28074ee08e83b0435b1f3bb8af0f9cf2e1fbd87c7e2b8f28",
+            "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-ae3a2102683a.svg",
+            "image_format": "svg",
+            "content_sha256": "1527492348bff6995204526ed95f15e9bc2e1109d1c7b9e70b15d5b6374b58a3",
+            "byte_size": 122879
+          }
+        }
+      }
+    ]
+  },
+  "researcher_use": "Use the aggregate to inventory source-native structures and energetic statements, then rely on the separately acquired complete Materials Project compatibility-mixed entry set for the one frame-bound convex-hull calculation.",
+  "actionable_next_step": "Use the exported continuous energy_above_hull_eV_per_atom values with the exact entry-set/frame/snapshot identifiers; any finite-temperature, phase-identity, or synthesizability claim requires separate evidence.",
+  "external_handoff": "Finite-temperature free energies, kinetic accessibility, reaction pathways, and synthesizability require external phonon, thermodynamic, kinetic, or experimental workflows; the zero-temperature hull is not a proxy for them.",
+  "unresolved_gaps": [
+    "Source records with unknown hull construction or correction context cannot support cross-source numerical comparison.",
+    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
+    "The exact compatible-entry route reports no finite-temperature free energies, kinetic accessibility, or experimental synthesis evidence.",
+    "A failed or incomplete thermochemical route is failed or incomplete evidence, not a verified-empty result and not a hull input."
+  ],
+  "prohibited_claims": "Do not describe the compatibility-mixed frame as one functional or one kind of DFT, treat 1e-6 eV/atom as uncertainty or confidence, infer hull stability from negative formation energy, mix sources or energy frames, identify an olivine or other phase from formula alone, or generalize the finite exact-set result to finite-temperature stability, universal stability, or synthesizability."
+}

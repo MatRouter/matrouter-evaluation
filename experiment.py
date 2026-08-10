@@ -31,27 +31,9 @@ FINAL_RELEASE_BINDING = {
     "release_tag": "v0.9.0",
 }
 COMMON_RESEARCH_QUESTIONS = {
-    "RQ1": "Does one all-qualified aggregate Bundle contain records from multiple heterogeneous sources and providers while preserving a typed SourceOutcome for every qualified route?",
-    "RQ2": "Compared with a deterministic six-field common-record projection from the exact same primary aggregate Bundle bytes, what execution, completeness, context, provenance, and artifact information does the full Bundle preserve?",
-    "RQ3": "Can preregistered exact-target follow-up artifacts enter explicit methods directly without hidden requery inside those methods?",
-}
-COMMON_RECORD_PROJECTION_SPEC = {
-    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
-    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
-    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
-    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
-    "null_rule": "missing formula, value, or unit remains null",
-    "forbidden_transformations": [
-        "requery",
-        "selection",
-        "ranking",
-        "deduplication",
-        "aggregation",
-        "unit_conversion",
-        "property_remapping",
-        "type_inference",
-        "scientific_judgment",
-    ],
+    "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
+    "RQ2": "What material-data landscape does the cross-source aggregate provide for the case—sources, data categories, scientific contexts, specialist data, and explicit gaps—and how does that landscape guide the next research step?",
+    "RQ3": "Can an Agent use the aggregate to locate preregistered exact source-bound records and artifacts for explicit lightweight methods, while making unsupported heavy calculations an explicit external handoff rather than a proxy result?",
 }
 RAW = ROOT / "raw"
 RESULTS = ROOT / "results"
@@ -280,12 +262,28 @@ def case_spec(case_name: str) -> dict[str, Any]:
     spec = load_json(ROOT / "cases" / f"{case_name}.json")
     if spec.get("case_name") != case_name:
         raise ValueError(f"{case_name}: case identity mismatch")
-    if spec.get("schema_version") != "matrouter.paper-case-spec/7":
+    if spec.get("schema_version") != "matrouter.paper-case-spec/10":
         raise ValueError(f"{case_name}: case schema mismatch")
     if spec.get("research_question_ids") != list(COMMON_RESEARCH_QUESTIONS):
         raise ValueError(f"{case_name}: common research-question binding mismatch")
-    if spec.get("rq2_common_record_projection") != COMMON_RECORD_PROJECTION_SPEC:
-        raise ValueError(f"{case_name}: RQ2 common-record projection mismatch")
+    landscape = spec.get("material_landscape")
+    if not isinstance(landscape, dict):
+        raise TypeError(f"{case_name}: material-landscape declaration is missing")
+    for field in (
+        "cross_source_union_adds",
+        "researcher_use",
+        "external_handoff",
+    ):
+        if not landscape.get(field):
+            raise ValueError(f"{case_name}: material-landscape {field} is missing")
+    for claim in landscape["cross_source_union_adds"]:
+        if not claim.get("statement") or not claim.get("supporting_contributions"):
+            raise ValueError(f"{case_name}: source-contribution claim is invalid")
+        if any(
+            not support.get("source") or not support.get("data_categories")
+            for support in claim["supporting_contributions"]
+        ):
+            raise ValueError(f"{case_name}: source-contribution support is invalid")
     applicability = spec.get("rq3_method_applicability")
     if not isinstance(applicability, dict) or applicability.get("status") not in {
         "applicable",
@@ -818,10 +816,10 @@ def _aggregate_summary(bundle: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _normalized_property_occurrences(
+def _property_occurrences(
     bundle: dict[str, Any],
 ) -> Iterator[dict[str, Any]]:
-    """Yield normalized property occurrences once, in canonical Bundle order."""
+    """Yield normalized property occurrences for the paper observation export."""
     for item in bundle["items"]:
         if item["item_kind"] != "source_record":
             continue
@@ -849,7 +847,7 @@ def _normalized_property_occurrences(
                     "item": item,
                     "record": record,
                     "observation": observation,
-                    "projection_row": {
+                    "observation_fields": {
                         "source": provenance.get("evidence_source") or container_source,
                         "source_id": provenance.get("evidence_source_id")
                         or container_source_id,
@@ -861,123 +859,315 @@ def _normalized_property_occurrences(
                 }
 
 
-def _common_record_projection(bundle: dict[str, Any]) -> dict[str, Any]:
-    """Project normalized property occurrences from SourceRecordItem containers."""
-    rows = [
-        occurrence["projection_row"]
-        for occurrence in _normalized_property_occurrences(bundle)
+def _record_data_categories(record: dict[str, Any]) -> list[str]:
+    categories = {"material_identity"}
+    metadata = record.get("source_metadata") or {}
+    if any(
+        record.get(key) is not None
+        for key in ("nsites", "space_group_number", "space_group_symbol")
+    ) or any(
+        metadata.get(key) is not None
+        for key in (
+            "dimensionality",
+            "nperiodic_dimensions",
+            "layer_group_symbol",
+            "prototype",
+        )
+    ):
+        categories.add("structure_or_phase")
+    for property_name in record.get("property_observations") or {}:
+        if property_name == "band_gap_eV":
+            categories.add("electronic_property")
+        if property_name.startswith("topology_class_"):
+            categories.add("source_native_topology")
+        if property_name in {
+            "energy_above_hull_eV",
+            "formation_energy_per_atom_eV",
+            "formation_enthalpy_per_atom_eV",
+            "heat_of_formation_per_atom_eV",
+            "is_stable",
+        }:
+            categories.add("thermodynamic_property")
+    return sorted(categories)
+
+
+def _compact_observation_context(observation: dict[str, Any]) -> dict[str, Any]:
+    relevant_keys = {
+        "code",
+        "dimensionality",
+        "functional",
+        "gap_character",
+        "gap_observable_level",
+        "hull_construction",
+        "method_family",
+        "modality",
+        "relativity_method",
+        "soc",
+        "spin",
+        "stability_definition",
+        "thermo_type",
+        "workflow",
+    }
+    return {
+        key: value
+        for key, value in (observation.get("context") or {}).items()
+        if key in relevant_keys
+        and value is not None
+        and len(canonical_json(value)) <= 500
+    }
+
+
+def _record_context_summary(record: dict[str, Any]) -> dict[str, Any]:
+    metadata = record.get("source_metadata") or {}
+    structure_context = {
+        key: value
+        for key, value in {
+            "space_group_symbol": record.get("space_group_symbol"),
+            "space_group_number": record.get("space_group_number"),
+            "dimensionality": metadata.get("dimensionality"),
+            "nperiodic_dimensions": metadata.get("nperiodic_dimensions"),
+            "layer_group_symbol": metadata.get("layer_group_symbol"),
+            "prototype": metadata.get("prototype"),
+        }.items()
+        if value is not None
+    }
+    method_context = {
+        key: metadata[key]
+        for key in (
+            "dft_type",
+            "functional_status",
+            "method_name",
+            "dft_method_context",
+            "magnetic",
+        )
+        if metadata.get(key) is not None and len(canonical_json(metadata[key])) <= 500
+    }
+    observation_contexts: list[dict[str, Any]] = []
+    for property_name, value in (record.get("property_observations") or {}).items():
+        occurrences = value.get("observations") if isinstance(value, dict) else None
+        if occurrences is None:
+            occurrences = [value]
+        for observation in occurrences:
+            if not isinstance(observation, dict):
+                continue
+            context = _compact_observation_context(observation)
+            if context:
+                observation_contexts.append(
+                    {"property": property_name, "context": context}
+                )
+    return {
+        "structure_or_phase": structure_context,
+        "method_or_observable": method_context,
+        "property_contexts": observation_contexts,
+    }
+
+
+def _representative_record(
+    item: dict[str, Any], record: dict[str, Any]
+) -> dict[str, Any]:
+    observations = []
+    for occurrence in _property_occurrences(
+        {
+            "items": [item],
+        }
+    ):
+        fields = occurrence["observation_fields"]
+        observation = occurrence["observation"]
+        observations.append(
+            {
+                **fields,
+                "semantic": observation.get("semantic"),
+                "context": _compact_observation_context(observation),
+            }
+        )
+    return {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": item["item_id"],
+        "source_id": record["source_id"],
+        "formula": record.get("formula"),
+        "context": _record_context_summary(record),
+        "observations": observations,
+    }
+
+
+def _source_contribution_map(bundle: dict[str, Any]) -> list[dict[str, Any]]:
+    from matrouter.evidence_contracts import SourceRecordItem
+
+    routes = bundle["routes"]
+    outcomes_by_route = {
+        item["route_id"]: item["outcome"]
+        for item in _bundle_items(bundle, "source_outcome")
+    }
+    contributions: dict[str, dict[str, Any]] = {}
+    for item in _bundle_items(bundle, "source_record"):
+        identity = SourceRecordItem.model_validate(wire(item)).identity
+        record = json.loads(item["record_json"])
+        matching_routes = [
+            route
+            for route in routes
+            if identity.source == route["qualified_source"]
+            or identity.source in route.get("output_sources", [])
+        ]
+        if len(matching_routes) != 1:
+            raise ValueError(
+                f"{identity.source}:{identity.source_id}: exact execution route is ambiguous"
+            )
+        route = matching_routes[0]
+        outcome = outcomes_by_route.get(route["route_id"])
+        if outcome is None:
+            raise ValueError(f"{identity.source}: contributing source has no outcome")
+        contribution = contributions.setdefault(
+            identity.source,
+            {
+                "source": identity.source,
+                "provider": identity.provider,
+                "execution_route": route["qualified_source"],
+                "route_status": outcome["status"],
+                "record_completeness": outcome["record_completeness"],
+                "record_count_in_primary_bundle": 0,
+                "data_categories": set(),
+                "property_names": set(),
+                "representative_record": _representative_record(item, record),
+            },
+        )
+        contribution["record_count_in_primary_bundle"] += 1
+        contribution["data_categories"].update(_record_data_categories(record))
+        contribution["property_names"].update(
+            (record.get("property_observations") or {}).keys()
+        )
+    return [
+        {
+            **row,
+            "data_categories": sorted(row["data_categories"]),
+            "property_names": sorted(row["property_names"]),
+        }
+        for row in contributions.values()
     ]
 
-    item_kind_counts = Counter(item["item_kind"] for item in bundle["items"])
-    dropped_item_kind_counts = {
-        kind: count
-        for kind, count in sorted(item_kind_counts.items())
-        if kind != "source_record"
-    }
-    loss_categories = {
-        "execution": {
-            "removed_fields": [
-                "routes/readiness/output_sources",
-                "attempt",
-                "SourceOutcome",
-                "warnings",
-                "trace",
-            ],
-            "affected_item_kind_counts": {
-                kind: item_kind_counts.get(kind, 0)
-                for kind in ("source_outcome", "execution_warning", "execution_trace")
-            },
-            "route_count": len(bundle["routes"]),
-        },
-        "completeness": {
-            "removed_fields": [
-                "source_scope",
-                "record_scope",
-                "operational_budget",
-                "RecordCompleteness",
-                "capacity_truncation",
-                "missing_declarations",
-            ],
-            "affected_item_kind_counts": {
-                "source_outcome": item_kind_counts.get("source_outcome", 0)
-            },
-            "requirement_count": len(bundle["requirements"]),
-        },
-        "context": {
-            "removed_fields": [
-                "structure_anchor",
-                "dimensionality",
-                "method/functional",
-                "SOC/spin",
-                "observable_type",
-                "temperature/pressure",
-                "correction/reference_state/energy_frame",
-                "source_native_definition",
-            ],
-            "affected_item_kind_counts": {
-                "source_record": item_kind_counts.get("source_record", 0),
-                "structure": item_kind_counts.get("structure", 0),
-            },
-            "projected_property_observation_occurrence_count": len(rows),
-        },
-        "provenance": {
-            "removed_fields": [
-                "qualified_source_route",
-                "provider/adapter/dataset_snapshot",
-                "native_field",
-                "retrieval_time/citation",
-                "transformation/lineage",
-            ],
-            "affected_item_kind_counts": {
-                "source_record": item_kind_counts.get("source_record", 0),
-            },
-            "projected_property_observation_occurrence_count": len(rows),
-        },
-        "artifacts": {
-            "removed_fields": [
-                "exact_payload",
-                "content_digest/integrity",
-                "artifact_binding",
-                "exact_method_input",
-                "derived_file",
-            ],
-            "affected_item_kind_counts": {
-                kind: item_kind_counts.get(kind, 0)
-                for kind in (
-                    "structure",
-                    "scientific_artifact",
-                    "thermochemical_entry_set",
-                )
-            },
-        },
-    }
-    bundle_bytes = canonical_bytes(bundle)
-    projection_bytes = canonical_bytes(rows)
+
+def _method_trace(method: dict[str, Any]) -> dict[str, Any]:
+    name = method["method_name"]
+    result = method["result"]
+    summary: dict[str, Any]
+    if name == "match_structures":
+        summary = {
+            "matched": result["matched"],
+            "distance_status": result["distance_status"],
+            "parameters": result["parameters"],
+        }
+    elif name in {"render_band_structure", "render_density_of_states"}:
+        summary = {
+            "input": result["input"],
+            "plot_artifact": result["plot_artifact"],
+        }
+    elif name == "compute_phase_diagrams":
+        dataset = result["datasets"][0]
+        input_manifest = dataset["input_manifest"]
+        entry_set = input_manifest["entry_set"]
+        thermochemical_context = json.loads(entry_set["entry_set_json"])[
+            "thermochemical_context"
+        ]
+        summary = {
+            "entry_count": len(dataset["entries"]),
+            "input_manifest_id": input_manifest["manifest_id"],
+            "entry_set_item_id": entry_set["item_id"],
+            "dataset": thermochemical_context["dataset"],
+            "thermo_type": thermochemical_context["thermo_types"][0],
+            "energy_frame": thermochemical_context["energy_frame"],
+            "method_parameters": result["method_parameters"],
+            "plot_artifact": dataset["plot_artifact"],
+        }
+    else:
+        raise ValueError(f"unsupported explicit method in case trace: {name}")
     return {
-        "schema_version": "matrouter.paper-common-record-projection/2",
-        "description": "Deterministic descriptive information-loss counterfactual from normalized property_observations occurrences inside SourceRecordItem.record_json in the exact same primary aggregate Bundle; not a query, baseline system, OPTIMADE proxy, score, or scientific judgment.",
-        "source_bundle_id": bundle["bundle_id"],
-        "source_bundle_canonical_sha256": sha256_bytes(bundle_bytes),
-        "source_bundle_canonical_byte_count": len(bundle_bytes),
-        "projection_fields": [
-            "source",
-            "source_id",
-            "formula",
-            "property",
-            "value",
-            "unit",
-        ],
-        "row_order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
-        "occurrence_multiplicity_preserved": True,
-        "null_policy": "missing formula, value, or unit remains null",
-        "transformations": [],
-        "row_count": len(rows),
-        "rows_canonical_sha256": sha256_bytes(projection_bytes),
-        "rows": rows,
-        "full_bundle_item_kind_counts": dict(sorted(item_kind_counts.items())),
-        "dropped_non_source_record_item_kind_counts": dropped_item_kind_counts,
-        "information_loss_categories": loss_categories,
-        "scores": None,
+        "method_name": name,
+        "succeeded": _method_result_succeeded(method),
+        "input_bundle_ids": method.get("input_bundle_ids")
+        or [method["input_bundle_id"]],
+        "exact_input_item_ids": method["exact_input_item_ids"],
+        "result": summary,
+    }
+
+
+def _material_landscape_trace(
+    result: dict[str, Any], spec: dict[str, Any]
+) -> dict[str, Any]:
+    primary = _primary_aggregate_bundle(result)
+    contributions = _source_contribution_map(primary)
+    contributions_by_source = {row["source"]: row for row in contributions}
+    union_claims = []
+    for claim in spec["material_landscape"]["cross_source_union_adds"]:
+        for support in claim["supporting_contributions"]:
+            contribution = contributions_by_source.get(support["source"])
+            if contribution is None or not set(support["data_categories"]) <= set(
+                contribution["data_categories"]
+            ):
+                raise ValueError(
+                    f"{result['case_name']}: unsupported cross-source landscape claim"
+                )
+        union_claims.append(claim)
+    aggregate = result["aggregate"]
+    scientific_rows = _paper_scientific_rows(result)
+    return {
+        "case_name": result["case_name"],
+        "scientific_task": spec["scientific_question"],
+        "primary_aggregate_bundle_id": primary["bundle_id"],
+        "declared_source_scope": {
+            "catalog_and_configuration": "MatRouter v0.9.0 capability catalog under the captured runtime configuration",
+            **spec["stage_1"],
+            "scope_limit": "All capability-matched execution routes were attempted within the declared budgets; this is not every real-world database or every upstream record.",
+        },
+        "route_outcome_summary": {
+            "qualified": aggregate["qualified_route_count"],
+            "ready": aggregate["ready_route_count"],
+            "attempted": aggregate["attempted_route_count"],
+            "status_counts": aggregate["status_counts"],
+            "record_completeness_counts": aggregate["record_completeness_counts"],
+            "outcomes": [
+                {
+                    "source": outcome["source"],
+                    "status": outcome["status"],
+                    "record_count": outcome["record_count"],
+                    "reason_code": outcome["reason_code"],
+                    "completeness": (outcome.get("record_completeness") or {}).get(
+                        "state"
+                    ),
+                    "truncation_reason": (outcome.get("record_completeness") or {}).get(
+                        "truncation_reason"
+                    ),
+                }
+                for outcome in aggregate["source_outcomes"]
+            ],
+        },
+        "contributing_exact_sources": contributions,
+        "provider_groups": aggregate["source_record_providers"],
+        "data_categories_actually_present": sorted(
+            {
+                category
+                for contribution in contributions
+                for category in contribution["data_categories"]
+            }
+        ),
+        "what_cross_source_union_adds": union_claims,
+        "exact_followups": {
+            "target_audit": result["protocol_conformance"]["stage_2_target_audit"],
+            "artifacts": scientific_rows["artifacts"],
+            "thermochemical_entry_sets": [
+                {
+                    "item_id": item["item_id"],
+                    "source": item["identity"]["source"],
+                    "source_id": item["identity"]["source_id"],
+                    "entry_count": item["entry_count"],
+                }
+                for item in _case_items(result, "thermochemical_entry_set")
+            ],
+            "methods": [_method_trace(method) for method in result["explicit_methods"]],
+        },
+        "researcher_use": spec["material_landscape"]["researcher_use"],
+        "actionable_next_step": spec["next_action"],
+        "external_handoff": spec["material_landscape"]["external_handoff"],
+        "unresolved_gaps": spec["missing_evidence"],
+        "prohibited_claims": spec["prohibited_statement"],
     }
 
 
@@ -989,20 +1179,20 @@ def _paper_scientific_rows(
     observations: list[dict[str, Any]] = []
     structures: list[dict[str, Any]] = []
     artifacts: list[dict[str, Any]] = []
-    for occurrence in _normalized_property_occurrences(primary):
+    for occurrence in _property_occurrences(primary):
         item = occurrence["item"]
         observation = occurrence["observation"]
-        projection_row = occurrence["projection_row"]
+        observation_fields = occurrence["observation_fields"]
         observations.append(
             {
                 "case_name": case_name,
-                "source": projection_row["source"],
-                "source_id": projection_row["source_id"],
-                "formula": projection_row["formula"],
-                "property": projection_row["property"],
+                "source": observation_fields["source"],
+                "source_id": observation_fields["source_id"],
+                "formula": observation_fields["formula"],
+                "property": observation_fields["property"],
                 "semantic": observation.get("semantic"),
-                "value_json": canonical_json(projection_row["value"]),
-                "unit": projection_row["unit"],
+                "value_json": canonical_json(observation_fields["value"]),
+                "unit": observation_fields["unit"],
                 "context_json": canonical_json(observation.get("context") or {}),
                 "provenance_json": canonical_json(observation.get("provenance") or {}),
                 "limitations_json": canonical_json(
@@ -1356,7 +1546,6 @@ def _interpretation(
             "qualified_source_route_count_semantics": QUALIFIED_ROUTE_COUNT_SEMANTICS,
         },
         "stage_1_scope": STAGE_1_SCOPE,
-        "paper_results_eligibility_semantics": PAPER_ELIGIBILITY_SEMANTICS,
         "context_differences": spec["context_differences"],
         "allowed_statement": spec["allowed_statement"],
         "prohibited_statement": spec["prohibited_statement"],
@@ -1436,7 +1625,7 @@ def _topology_soc_comparison_rows(result: dict[str, Any]) -> list[dict[str, Any]
                 ),
                 "artifact_item_id": item["item_id"],
                 "payload_sha256": descriptor["payload_sha256"],
-                "evidence_semantics": "Deterministic descriptive projection of the same source-native Bundle artifact; not new evidence or independent topology validation.",
+                "evidence_semantics": "Deterministic descriptive view of the same source-native Bundle artifact; not new evidence or independent topology validation.",
                 "method_limitation": "MaterialsGalaxy reports this classification; MatRouter did not recompute topology invariants or surface states.",
                 "phase_equivalence_status": "Not assessed in the Bi2Se3 case; that case executed no explicit cross-source structure matching.",
             }
@@ -1454,7 +1643,7 @@ def _paper_highlights(result: dict[str, Any]) -> dict[str, Any]:
             and _method_result_succeeded(method)
         ]
         return {
-            "result_scope": "capacity_bounded_multi_source_evidence_catalog_not_phase_resolved_gap_answer",
+            "result_scope": "capacity_bounded_multi_source_structure_and_electronic_landscape_not_phase_resolved_gap_answer",
             "explicitly_identified_experimental_band_gap_observation_count": result[
                 "case_interpretation"
             ]["retrieved_facts"][
@@ -1465,8 +1654,10 @@ def _paper_highlights(result: dict[str, Any]) -> dict[str, Any]:
                 None
                 if len(match_methods) != 1
                 else {
-                    "exact_input_item_ids": match_methods[0]["exact_input_item_ids"],
-                    "input_bundle_ids": match_methods[0]["input_bundle_ids"],
+                    "first": result["task_spec"]["explicit_structure_method"]["first"],
+                    "second": result["task_spec"]["explicit_structure_method"][
+                        "second"
+                    ],
                     "matched": match_methods[0]["result"]["matched"],
                     "parameters": match_methods[0]["result"]["parameters"],
                     "distance_status": match_methods[0]["result"]["distance_status"],
@@ -1480,12 +1671,10 @@ def _paper_highlights(result: dict[str, Any]) -> dict[str, Any]:
         first = phase_rows[0] if phase_rows else None
         return {
             "phase_diagram_entry_count": len(phase_rows),
-            "dataset": None if first is None else first["dataset"],
             "materials_project_database_snapshot": None
             if first is None
             else first["materials_project_database_snapshot"],
             "thermo_type": None if first is None else first["thermo_type"],
-            "energy_frame_id": None if first is None else first["energy_frame_id"],
             "energy_frame_description": None
             if first is None
             else first["energy_frame_description"],
@@ -1501,7 +1690,20 @@ def _paper_highlights(result: dict[str, Any]) -> dict[str, Any]:
         return {
             "comparison_semantics": "MaterialsGalaxy-reported same-formula phase by SOC descriptive table; not new evidence.",
             "explicit_structure_matching_performed": False,
-            "rows": _topology_soc_comparison_rows(result),
+            "rows": [
+                {
+                    key: row[key]
+                    for key in (
+                        "source",
+                        "source_id",
+                        "source_native_space_group_symbol",
+                        "source_native_space_group_number",
+                        "soc",
+                        "materials_galaxy_reported_topology_class",
+                    )
+                }
+                for row in _topology_soc_comparison_rows(result)
+            ],
         }
     raise ValueError(f"unknown case: {case_name}")
 
@@ -1858,7 +2060,7 @@ def acquire_case(
     }
     _, protocol_conformance = _capture_protocol_status(raw_capture, spec)
     result = {
-        "schema_version": "matrouter.paper-case-result/8",
+        "schema_version": "matrouter.paper-case-result/11",
         "case_name": case_name,
         "protocol_version": PROTOCOL_VERSION,
         "research_questions": COMMON_RESEARCH_QUESTIONS,
@@ -1871,10 +2073,10 @@ def acquire_case(
         "evidence_bundles": bundle_capsules,
         "primary_result_bundle_id": aggregate_bundle["bundle_id"],
         "aggregate": _aggregate_summary(aggregate_bundle),
-        "common_record_projection": _common_record_projection(aggregate_bundle),
         "explicit_methods": methods,
         "case_elapsed_seconds": case_elapsed_seconds,
     }
+    result["material_landscape"] = _material_landscape_trace(result, spec)
     result["case_interpretation"] = _interpretation(result, spec, coverage, methods)
     result["unresolved_product_blockers"] = _diagnose_case_product_blockers(result)
     result["paper_results_eligible"] = _case_paper_eligible(result)
@@ -1909,15 +2111,13 @@ def export_results(
     phase_diagram_rows: list[dict[str, Any]] = []
     topology_comparison_rows: list[dict[str, Any]] = []
     for result in results:
-        coverage_rows = result["coverage_matrix"]
-        status_counts = Counter(row["status"] for row in coverage_rows)
         scientific_rows = _paper_scientific_rows(result)
         for kind, kind_rows in scientific_rows.items():
             scientific_exports[kind].extend(kind_rows)
         phase_diagram_rows.extend(_phase_diagram_export_rows(result))
         topology_comparison_rows.extend(_topology_soc_comparison_rows(result))
         aggregate = result["aggregate"]
-        projection = result["common_record_projection"]
+        landscape = result["material_landscape"]
         target_audit = result["protocol_conformance"]["stage_2_target_audit"]
         row = {
             "case_name": result["case_name"],
@@ -1942,8 +2142,15 @@ def export_results(
             "aggregate_capacity_limitation_count": len(
                 aggregate["capacity_limitations"]
             ),
-            "common_record_projection_row_count": projection["row_count"],
-            "common_record_projection_semantics": projection["description"],
+            "material_landscape_data_categories_json": canonical_json(
+                landscape["data_categories_actually_present"]
+            ),
+            "material_landscape_contributing_sources_json": canonical_json(
+                [row["source"] for row in landscape["contributing_exact_sources"]]
+            ),
+            "cross_source_union_adds_json": canonical_json(
+                landscape["what_cross_source_union_adds"]
+            ),
             "rq3_method_applicability": result["rq3_method_applicability"]["status"],
             "rq3_method_applicability_reason": result["rq3_method_applicability"][
                 "reason"
@@ -1973,41 +2180,79 @@ def export_results(
             "failed_or_unavailable_exact_enrichment_count": target_audit[
                 "failed_or_unavailable_enrichment_route_count"
             ],
-            "unresolved_product_blocker_count": len(
-                result["unresolved_product_blockers"]
-            ),
-            "frozen_protocol_conformant": result["protocol_conformance"][
-                "capture_eligible_under_frozen_protocol"
-            ],
-            "paper_results_eligible": result["paper_results_eligible"],
-            "paper_result_status": result["paper_result_status"],
-            "paper_results_eligibility_semantics": PAPER_ELIGIBILITY_SEMANTICS,
+            "researcher_use": landscape["researcher_use"],
+            "actionable_next_step": landscape["actionable_next_step"],
+            "external_handoff": landscape["external_handoff"],
+            "unresolved_gaps_json": canonical_json(landscape["unresolved_gaps"]),
+            "prohibited_claims": landscape["prohibited_claims"],
         }
         rows.append(row)
         figure_cases.append(
             {
-                **row,
-                "coverage_status_counts": dict(sorted(status_counts.items())),
-                "paper_highlights": _paper_highlights(result),
-                "observations": scientific_rows["observations"],
-                "structures": scientific_rows["structures"],
-                "artifacts": scientific_rows["artifacts"],
-                "common_record_information_loss": {
-                    "source_bundle_id": projection["source_bundle_id"],
-                    "source_bundle_canonical_sha256": projection[
-                        "source_bundle_canonical_sha256"
+                "case_name": result["case_name"],
+                "scientific_task": landscape["scientific_task"],
+                "aggregate": {
+                    "qualified_route_count": aggregate["qualified_route_count"],
+                    "ready_route_count": aggregate["ready_route_count"],
+                    "attempted_route_count": aggregate["attempted_route_count"],
+                    "status_counts": aggregate["status_counts"],
+                    "record_completeness_counts": aggregate[
+                        "record_completeness_counts"
                     ],
-                    "projection_row_count": projection["row_count"],
-                    "dropped_non_source_record_item_kind_counts": projection[
-                        "dropped_non_source_record_item_kind_counts"
+                    "capacity_limitation_count": len(aggregate["capacity_limitations"]),
+                    "source_record_count": aggregate["source_record_count"],
+                    "distinct_source_count": aggregate["source_record_source_count"],
+                    "distinct_provider_count": aggregate[
+                        "source_record_provider_count"
                     ],
-                    "categories": projection["information_loss_categories"],
                 },
+                "data_categories_actually_present": landscape[
+                    "data_categories_actually_present"
+                ],
+                "cross_source_union_insights": [
+                    {
+                        "statement": claim["statement"],
+                        "supporting_sources": [
+                            support["source"]
+                            for support in claim["supporting_contributions"]
+                        ],
+                    }
+                    for claim in landscape["what_cross_source_union_adds"]
+                ],
+                "exact_followup": {
+                    "preregistered_target_count": target_audit[
+                        "preregistered_target_count"
+                    ],
+                    "found_target_count": target_audit["found_target_count"],
+                    "missing_target_count": target_audit["missing_target_count"],
+                    "targets": [
+                        {
+                            "source": target["qualified_source_route"],
+                            "source_id": target["source_id"],
+                            "scientific_role": target["scientific_role"],
+                            "status": target["status"],
+                        }
+                        for target in target_audit["targets"]
+                    ],
+                    "methods": [
+                        {
+                            "method_name": method["method_name"],
+                            "succeeded": _method_result_succeeded(method),
+                        }
+                        for method in result["explicit_methods"]
+                    ],
+                    "case_result": _paper_highlights(result),
+                },
+                "researcher_use": landscape["researcher_use"],
+                "actionable_next_step": landscape["actionable_next_step"],
+                "external_handoff": landscape["external_handoff"],
+                "unresolved_gaps": landscape["unresolved_gaps"],
+                "prohibited_claim": landscape["prohibited_claims"],
             }
         )
         write_json(
-            RESULTS / "common-record-projections" / f"{result['case_name']}.json",
-            projection,
+            RESULTS / "case-traces" / f"{result['case_name']}.json",
+            landscape,
         )
     with (RESULTS / "cases.csv").open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
@@ -2032,18 +2277,16 @@ def export_results(
     write_json(
         RESULTS / "figure-ready.json",
         {
-            "schema_version": "matrouter.paper-figure-ready/7",
             "status": "release_bound_three_case_results",
             "stage_1_scope": STAGE_1_SCOPE,
             "qualified_source_route_count_semantics": QUALIFIED_ROUTE_COUNT_SEMANTICS,
-            "paper_results_eligibility_semantics": PAPER_ELIGIBILITY_SEMANTICS,
             "case_count": 3,
             "cases": figure_cases,
         },
     )
 
 
-def _paper_observation_six_fields(
+def _paper_observation_identity_fields(
     row: dict[str, Any], *, csv_encoded: bool
 ) -> dict[str, Any]:
     return {
@@ -2056,34 +2299,25 @@ def _paper_observation_six_fields(
     }
 
 
-def _validate_paper_observation_projection_consistency(
+def _validate_paper_observation_export_consistency(
     results_by_case: dict[str, dict[str, Any]],
 ) -> None:
     with (RESULTS / "observations.csv").open(newline="") as handle:
         csv_rows = list(csv.DictReader(handle))
-    figure_cases = {
-        row["case_name"]: row
-        for row in load_json(RESULTS / "figure-ready.json")["cases"]
-    }
     for case_name in CASES:
-        expected = results_by_case[case_name]["common_record_projection"]["rows"]
-        csv_projection = [
-            _paper_observation_six_fields(row, csv_encoded=True)
+        expected = [
+            _paper_observation_identity_fields(row, csv_encoded=False)
+            for row in _paper_scientific_rows(results_by_case[case_name])[
+                "observations"
+            ]
+        ]
+        csv_observations = [
+            _paper_observation_identity_fields(row, csv_encoded=True)
             for row in csv_rows
             if row["case_name"] == case_name
         ]
-        figure_projection = [
-            _paper_observation_six_fields(row, csv_encoded=False)
-            for row in figure_cases[case_name]["observations"]
-        ]
-        if csv_projection != expected:
-            raise ValueError(
-                f"{case_name}: observations.csv does not equal the common-record projection"
-            )
-        if figure_projection != expected:
-            raise ValueError(
-                f"{case_name}: figure-ready observations do not equal the common-record projection"
-            )
+        if csv_observations != expected:
+            raise ValueError(f"{case_name}: observations.csv export drift")
 
 
 def _diagnose_stage1_product_blockers(
@@ -2488,8 +2722,8 @@ def _case_paper_eligible(result: dict[str, Any]) -> bool:
         return False
     if not result.get("aggregate"):
         return False
-    if result.get("common_record_projection") != _common_record_projection(
-        _primary_aggregate_bundle(result)
+    if result.get("material_landscape") != _material_landscape_trace(
+        result, result["task_spec"]
     ):
         return False
     case_name = result["case_name"]
@@ -2600,7 +2834,7 @@ def write_internal_protocol_review(
                 }
             )
     review = {
-        "schema_version": "matrouter.paper-internal-protocol-review/2",
+        "schema_version": "matrouter.paper-internal-protocol-review/5",
         "review_name": "internal_protocol_review",
         "review_kind": "deterministic_internal_protocol_and_scientific_boundary_checklist",
         "independence_claim": False,
@@ -2645,10 +2879,10 @@ def write_internal_protocol_review(
                 )
                 for result in results
             ),
-            "rq2_projection_binds_exact_same_primary_bundle_bytes": all(
-                result.get("common_record_projection")
-                == _common_record_projection(_primary_aggregate_bundle(result))
-                and result["common_record_projection"]["source_bundle_id"]
+            "rq2_material_landscape_trace_is_source_supported": all(
+                result.get("material_landscape")
+                == _material_landscape_trace(result, result["task_spec"])
+                and result["material_landscape"]["primary_aggregate_bundle_id"]
                 == result["primary_result_bundle_id"]
                 for result in results
             ),
@@ -2806,8 +3040,7 @@ def write_internal_protocol_review(
                 )
             )
             and all(
-                (RESULTS / "common-record-projections" / f"{case}.json").is_file()
-                for case in CASES
+                (RESULTS / "case-traces" / f"{case}.json").is_file() for case in CASES
             ),
         },
         "open_p0_p1_protocol_findings": open_findings,
@@ -2835,7 +3068,7 @@ def _paper_export_paths() -> tuple[Path, ...]:
         RESULTS / "internal-protocol-review.json",
         *(
             path
-            for path in sorted((RESULTS / "common-record-projections").glob("*.json"))
+            for path in sorted((RESULTS / "case-traces").glob("*.json"))
             if path.is_file()
         ),
         *(path for path in sorted(ARTIFACTS.glob("*")) if path.is_file()),
@@ -3004,7 +3237,7 @@ def run_all() -> None:
         for result in results
     ) and all(result["paper_results_eligible"] for result in results)
     manifest = {
-        "schema_version": "matrouter.paper-manifest/10",
+        "schema_version": "matrouter.paper-manifest/13",
         "experiment_id": experiment_id(identity),
         "status": (
             "three_case_frozen_protocol_complete"
@@ -3029,7 +3262,7 @@ def run_all() -> None:
             result["case_name"]: result["rq3_method_applicability"]
             for result in results
         },
-        "core_boundary": "capability/route truth -> SourceOutcome -> canonical EvidenceBundle",
+        "core_boundary": "MatRouter routes source-qualified evidence and exact method inputs; the Agent builds the case-specific material landscape and scientific handoff.",
         "reference_assessments_enabled": False,
         "release_identity": identity,
         "capability_preflight": preflight_result["capability_audit"],
@@ -3127,7 +3360,7 @@ def refresh_derived_outputs() -> None:
             _portable_method_result(method) for method in result["explicit_methods"]
         ]
         actual_strategy, protocol_conformance = _capture_protocol_status(raw, spec)
-        result["schema_version"] = "matrouter.paper-case-result/8"
+        result["schema_version"] = "matrouter.paper-case-result/11"
         result["protocol_version"] = PROTOCOL_VERSION
         result["research_questions"] = COMMON_RESEARCH_QUESTIONS
         result["rq3_method_applicability"] = spec["rq3_method_applicability"]
@@ -3145,10 +3378,8 @@ def refresh_derived_outputs() -> None:
             raise ValueError(f"{case_name}: expected one primary aggregate Bundle")
         result["primary_result_bundle_id"] = aggregate_bundles[0]["bundle_id"]
         result["aggregate"] = _aggregate_summary(aggregate_bundles[0])
-        result["common_record_projection"] = _common_record_projection(
-            aggregate_bundles[0]
-        )
         result["explicit_methods"] = methods
+        result["material_landscape"] = _material_landscape_trace(result, spec)
         result["unresolved_product_blockers"] = _diagnose_case_product_blockers(result)
         result["paper_results_eligible"] = _case_paper_eligible(result)
         result["paper_results_eligibility_semantics"] = PAPER_ELIGIBILITY_SEMANTICS
@@ -3162,7 +3393,7 @@ def refresh_derived_outputs() -> None:
     export_results(results, coverage)
     write_product_blockers(results)
     write_internal_protocol_review(results)
-    manifest["schema_version"] = "matrouter.paper-manifest/10"
+    manifest["schema_version"] = "matrouter.paper-manifest/13"
     identity = load_json(IDENTITY_PATH)
     manifest["experiment_id"] = experiment_id(identity)
     paper_results_eligible = all(
@@ -3176,6 +3407,10 @@ def refresh_derived_outputs() -> None:
     )
     manifest["protocol_version"] = PROTOCOL_VERSION
     manifest["research_questions"] = COMMON_RESEARCH_QUESTIONS
+    manifest["core_boundary"] = (
+        "MatRouter routes source-qualified evidence and exact method inputs; the Agent "
+        "builds the case-specific material landscape and scientific handoff."
+    )
     manifest["rq3_method_applicability"] = {
         result["case_name"]: result["rq3_method_applicability"] for result in results
     }
@@ -3227,7 +3462,7 @@ def validate() -> None:
         )
     if manifest.get("case_count") != 3:
         raise ValueError("manifest must declare exactly three cases")
-    if manifest.get("schema_version") != "matrouter.paper-manifest/10":
+    if manifest.get("schema_version") != "matrouter.paper-manifest/13":
         raise ValueError("manifest schema mismatch")
     if manifest.get("protocol_version") != PROTOCOL_VERSION:
         raise ValueError("manifest protocol identity mismatch")
@@ -3260,7 +3495,7 @@ def validate() -> None:
         result = load_json(ROOT / entry["result_path"])
         results_by_case[entry["case_name"]] = result
         raw = load_json(ROOT / entry["raw_path"])
-        if result.get("schema_version") != "matrouter.paper-case-result/8":
+        if result.get("schema_version") != "matrouter.paper-case-result/11":
             raise ValueError(f"{entry['case_name']}: result schema mismatch")
         if result.get("protocol_version") != PROTOCOL_VERSION:
             raise ValueError(f"{entry['case_name']}: result protocol mismatch")
@@ -3291,7 +3526,7 @@ def validate() -> None:
         required_result_fields = {
             "aggregate",
             "primary_result_bundle_id",
-            "common_record_projection",
+            "material_landscape",
             "unresolved_product_blockers",
             "paper_results_eligible",
         }
@@ -3335,12 +3570,11 @@ def validate() -> None:
             raise ValueError(f"{entry['case_name']}: primary result identity drift")
         if result["aggregate"] != _aggregate_summary(aggregate_bundle):
             raise ValueError(f"{entry['case_name']}: aggregate summary drift")
-        if result["common_record_projection"] != _common_record_projection(
-            aggregate_bundle
-        ):
-            raise ValueError(
-                f"{entry['case_name']}: common-record projection binding drift"
-            )
+        if result["material_landscape"] != _material_landscape_trace(result, spec):
+            raise ValueError(f"{entry['case_name']}: material-landscape trace drift")
+        trace_path = RESULTS / "case-traces" / f"{entry['case_name']}.json"
+        if load_json(trace_path) != result["material_landscape"]:
+            raise ValueError(f"{entry['case_name']}: case-trace export drift")
         if result["unresolved_product_blockers"] != _diagnose_case_product_blockers(
             result
         ):
@@ -3372,7 +3606,7 @@ def validate() -> None:
             raise ValueError(
                 f"{entry['case_name']}: explicit method crosses exact Bundle authority"
             )
-    _validate_paper_observation_projection_consistency(results_by_case)
+    _validate_paper_observation_export_consistency(results_by_case)
     for export in manifest["exports"]:
         if file_sha256(ROOT / export["path"]) != export["sha256"]:
             raise ValueError(f"export digest drift: {export['path']}")

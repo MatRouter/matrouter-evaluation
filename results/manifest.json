@@ -1,5 +1,5 @@
 {
-  "schema_version": "matrouter.paper-manifest/10",
+  "schema_version": "matrouter.paper-manifest/13",
   "experiment_id": "matrouter-v0.9.0-three-scientific-cases",
   "status": "three_case_frozen_protocol_complete",
   "case_count": 3,
@@ -8,9 +8,9 @@
   "ineligibility_reasons": [],
   "protocol_version": "matrouter.paper-three-case-protocol",
   "research_questions": {
-    "RQ1": "Does one all-qualified aggregate Bundle contain records from multiple heterogeneous sources and providers while preserving a typed SourceOutcome for every qualified route?",
-    "RQ2": "Compared with a deterministic six-field common-record projection from the exact same primary aggregate Bundle bytes, what execution, completeness, context, provenance, and artifact information does the full Bundle preserve?",
-    "RQ3": "Can preregistered exact-target follow-up artifacts enter explicit methods directly without hidden requery inside those methods?"
+    "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
+    "RQ2": "What material-data landscape does the cross-source aggregate provide for the case—sources, data categories, scientific contexts, specialist data, and explicit gaps—and how does that landscape guide the next research step?",
+    "RQ3": "Can an Agent use the aggregate to locate preregistered exact source-bound records and artifacts for explicit lightweight methods, while making unsupported heavy calculations an explicit external handoff rather than a proxy result?"
   },
   "rq3_method_applicability": {
     "mos2-band-gap": {
@@ -38,7 +38,7 @@
       "reason": "MatRouter exposes no general explicit topology-validation method; this case evaluates exact source-native SOC-conditioned topology acquisition only."
     }
   },
-  "core_boundary": "capability/route truth -> SourceOutcome -> canonical EvidenceBundle",
+  "core_boundary": "MatRouter routes source-qualified evidence and exact method inputs; the Agent builds the case-specific material landscape and scientific handoff.",
   "reference_assessments_enabled": false,
   "release_identity": {
     "schema_version": "matrouter.paper-product-identity/6",
@@ -885,20 +885,20 @@
     "qualified_aggregate_execution_route_count": 32
   },
   "live_run_duration_seconds": 239.798,
-  "runner_sha256": "425176c6d0e39dfdf411ead25aff6722af5325679c238f69b282564236a72204",
+  "runner_sha256": "d2d5cb58fef9c1783c20517ea644647bf727a6805737c72ffeae3501346b84c7",
   "case_results": [
     {
       "case_name": "mos2-band-gap",
       "raw_path": "raw/0.9.0/mos2-band-gap.json",
       "raw_sha256": "fd72e779d5b92349f739d29c2acbc44802ce78546da9e8fb9c5a9f0e9afb7c4a",
       "result_path": "results/cases/mos2-band-gap.json",
-      "result_sha256": "ab980ba437dd3415dec338088c5bc98cbf74f135d46491374419168e6696ab70",
+      "result_sha256": "1441564e8bf66057ea5be57ed516f94dca72ddc93cc7baba80855e4a5b4e2153",
       "bundle_ids": [
         "sha256:2495229d02d7de3c7779d1f58fe83cf92e66b221beef2bda3ca533190b7481fb",
         "sha256:05e0f45fbc231b77c42985529075ec78bb252dda0397e5ebe477bd2dee7e6c4b",
         "sha256:56e611084771c9769ea0d6cafe3342676357720a705fcbee6f0259d7000ca04d"
       ],
-      "case_spec_sha256": "d9c934f0cec8c606c950366679923534d6e4dbecc00fdd166238e778b9096962",
+      "case_spec_sha256": "13423a98cb03ea837aac787116511ce0f6e4b379ff0f9d55db47d294dbaf77e6",
       "paper_result_status": "protocol_eligible"
     },
     {
@@ -906,12 +906,12 @@
       "raw_path": "raw/0.9.0/lifepo4-stability.json",
       "raw_sha256": "55c85640e5dffa507e47825528587e6719c55559383e9fd981ffc7846b98d58f",
       "result_path": "results/cases/lifepo4-stability.json",
-      "result_sha256": "e6cd0b9069a20c6b1c0e4b98ba38c5ac3d09612292d4888d4f13a3943b3248a6",
+      "result_sha256": "7e946a682c623990f58743cabfc6b420553f9c94203afa9e70eb57855b0ffbd4",
       "bundle_ids": [
         "sha256:682695615f9203821c6c8ca9eddf8307c8666bb23f6334630b2789b969f84201",
         "sha256:d9287e8a8789aea5bb85a84879a8d4e77ec072e42e5b992b347f49d800197bc2"
       ],
-      "case_spec_sha256": "e0026a0f6e9d3ad08108da90155f54b6754f02dbc83c29602970d7497491c13c",
+      "case_spec_sha256": "72e85fc089fc086d361067c4caa3c783f2bbdb0b1626888b57ee61ca9b602ff3",
       "paper_result_status": "protocol_eligible"
     },
     {
@@ -919,19 +919,19 @@
       "raw_path": "raw/0.9.0/bi2se3-topology.json",
       "raw_sha256": "233403457150485a7b899f05d6a74fcda32d8cec332b6bb6eb62f57c3a8cc1b7",
       "result_path": "results/cases/bi2se3-topology.json",
-      "result_sha256": "2f7e12eb42c2eb5537d0e6f1e43882dab1ab05584ea94542dbadbeff657f87cf",
+      "result_sha256": "f4c908f009e47b782664c279922e4f4db2e6a74954c2141a52ad5b3aed027abd",
       "bundle_ids": [
         "sha256:209645db1caba8c30eb8b0758059f35a536dd98cdb3f7f22a768d4f65650750e",
         "sha256:ed2c77e29b82cf4205ab998e8c19d4d79dbc8e5aa87aa6eeee23d45271ab907c"
       ],
-      "case_spec_sha256": "974584e843d3bbba7b4a12d7db23f67912ffbb14e8bf8be2d5ca7cecc13ab7fa",
+      "case_spec_sha256": "0ff845fb334169ec91e7027c1232df02a51fa29c60039d748ec5b08f6240d19b",
       "paper_result_status": "protocol_eligible"
     }
   ],
   "exports": [
     {
       "path": "results/cases.csv",
-      "sha256": "c04b35607d21a1e098e5573bda430a8ea4653e468eae56255a7dd17bf1039a30"
+      "sha256": "6ea2bcb558d0e9b0087203b10a0f02fe4c74c8783698d80e41680c5ae52480a9"
     },
     {
       "path": "results/coverage.csv",
@@ -955,11 +955,11 @@
     },
     {
       "path": "results/topology-soc-comparison.csv",
-      "sha256": "35f49ab565cbb22692d852ba39c5a2a4bc2f4b46b489a85aa213236d414c3f73"
+      "sha256": "cf8c14505454805afa290d7c5cbca496f9e02126d5702884c5674049d24aad3c"
     },
     {
       "path": "results/figure-ready.json",
-      "sha256": "1edd06f689af4dd0528ef341f6534df87739aef2264a91bde8888c74658059fb"
+      "sha256": "18649eafa4448dfdb5bf800d9724870df8027200cd27ad0404bc719b65670fa0"
     },
     {
       "path": "results/product-blockers.json",
@@ -967,19 +967,19 @@
     },
     {
       "path": "results/internal-protocol-review.json",
-      "sha256": "858adade42f209ba8a702d88cf78453ab3876a89cdf50d22e4745c1c19cc6ce5"
+      "sha256": "6cc64be7c17f9f7b6e3cac8de3b0144db9a79bfa664c7916672fb239c28ad57f"
     },
     {
-      "path": "results/common-record-projections/bi2se3-topology.json",
-      "sha256": "df28ff67c6ff2ab2317b74afc7206767aee3a995e29f6fb6b37f5589afc6ca64"
+      "path": "results/case-traces/bi2se3-topology.json",
+      "sha256": "202195ed14101be1eaca484ca5fc2fd760bb2c3d4c9221b55cc55789a2d24742"
     },
     {
-      "path": "results/common-record-projections/lifepo4-stability.json",
-      "sha256": "df40367b4c94587053f8a5739d344edd68a23fc7b0c4905bee78bf3c0d5ced5f"
+      "path": "results/case-traces/lifepo4-stability.json",
+      "sha256": "dcbeae8a1527dee19fb3c68b9a5a518d6ab319ae9cbb81c6ae4c36f828e803bb"
     },
     {
-      "path": "results/common-record-projections/mos2-band-gap.json",
-      "sha256": "d70b4fcdbb15a594f7bd819dad8b94ddb86b2b064c74cc0246db7bfc0db66f2d"
+      "path": "results/case-traces/mos2-band-gap.json",
+      "sha256": "168a9f9c62990cc8a63da0622a09e54146f8d49ed0ce189dc5f3172fa9115937"
     },
     {
       "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-ae3a2102683a.svg",

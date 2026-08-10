@@ -1,15 +1,28 @@
 {
-  "schema_version": "matrouter.paper-case-spec/7",
+  "schema_version": "matrouter.paper-case-spec/10",
   "case_name": "lifepo4-stability",
   "formula": "LiFePO4",
   "research_question_ids": ["RQ1", "RQ2", "RQ3"],
-  "rq2_common_record_projection": {
-    "input": "normalized property_observations occurrences inside SourceRecordItem.record_json from the exact same primary aggregate EvidenceBundle bytes",
-    "fields": ["source", "source_id", "formula", "property", "value", "unit"],
-    "order": "primary Bundle item order, canonical record_json property key order, then original observations-list order",
-    "identity_rule": "use observation provenance evidence_source/evidence_source_id when declared; otherwise use the containing SourceRecordItem identity",
-    "null_rule": "missing formula, value, or unit remains null",
-    "forbidden_transformations": ["requery", "selection", "ranking", "deduplication", "aggregation", "unit_conversion", "property_remapping", "type_inference", "scientific_judgment"]
+  "material_landscape": {
+    "cross_source_union_adds": [
+      {
+        "statement": "The aggregate places COD and MaterialsGalaxy structure records beside computed structures from Materials Project, making structural candidates visible before any thermodynamic conclusion is attempted.",
+        "supporting_contributions": [
+          {"source": "cod", "data_categories": ["structure_or_phase"]},
+          {"source": "materialsgalaxy:generated_structures", "data_categories": ["structure_or_phase"]},
+          {"source": "materials_project", "data_categories": ["structure_or_phase"]}
+        ]
+      },
+      {
+        "statement": "Materials Project and OPTIMADE ODBX records contribute source-qualified formation-energy or hull-related quantities with their own semantics, allowing the researcher to distinguish catalog evidence from the later exact compatible-entry hull calculation.",
+        "supporting_contributions": [
+          {"source": "materials_project", "data_categories": ["thermodynamic_property"]},
+          {"source": "optimade:optimade-misc.odbx.science", "data_categories": ["thermodynamic_property"]}
+        ]
+      }
+    ],
+    "researcher_use": "Use the aggregate to inventory source-native structures and energetic statements, then rely on the separately acquired complete Materials Project compatibility-mixed entry set for the one frame-bound convex-hull calculation.",
+    "external_handoff": "Finite-temperature free energies, kinetic accessibility, reaction pathways, and synthesizability require external phonon, thermodynamic, kinetic, or experimental workflows; the zero-temperature hull is not a proxy for them."
   },
   "rq3_method_applicability": {
     "status": "applicable",
