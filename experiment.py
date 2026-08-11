@@ -26,9 +26,9 @@ IDENTITY_PATH = ROOT / "product-identity.release.json"
 CASES = ("mos2-band-gap", "lifepo4-stability", "bi2se3-topology")
 PROTOCOL_VERSION = "matrouter.paper-three-case-protocol"
 FINAL_RELEASE_BINDING = {
-    "package_version": "0.9.0",
-    "public_VERSION": "0.9.0",
-    "release_tag": "v0.9.0",
+    "package_version": "0.9.1",
+    "public_VERSION": "0.9.1",
+    "release_tag": "v0.9.1",
 }
 COMMON_RESEARCH_QUESTIONS = {
     "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
@@ -1095,17 +1095,45 @@ def _material_landscape_trace(
     primary = _primary_aggregate_bundle(result)
     contributions = _source_contribution_map(primary)
     contributions_by_source = {row["source"]: row for row in contributions}
-    union_claims = []
+    union_claims: list[dict[str, Any]] = []
+    unsupported_claim_gaps: list[dict[str, Any]] = []
     for claim in spec["material_landscape"]["cross_source_union_adds"]:
+        missing_support: list[dict[str, Any]] = []
         for support in claim["supporting_contributions"]:
             contribution = contributions_by_source.get(support["source"])
-            if contribution is None or not set(support["data_categories"]) <= set(
-                contribution["data_categories"]
-            ):
-                raise ValueError(
-                    f"{result['case_name']}: unsupported cross-source landscape claim"
+            required_categories = set(support["data_categories"])
+            actual_categories = set(
+                contribution["data_categories"] if contribution is not None else []
+            )
+            if contribution is None or not required_categories <= actual_categories:
+                missing_support.append(
+                    {
+                        "source": support["source"],
+                        "required_data_categories": sorted(required_categories),
+                        "actual_data_categories": sorted(actual_categories),
+                        "reason": (
+                            "source_not_returned"
+                            if contribution is None
+                            else "required_data_categories_not_returned"
+                        ),
+                    }
                 )
-        union_claims.append(claim)
+        support_status = "supported" if not missing_support else "unsupported"
+        union_claims.append(
+            {
+                **claim,
+                "support_status": support_status,
+                "missing_supporting_contributions": missing_support,
+            }
+        )
+        if missing_support:
+            unsupported_claim_gaps.append(
+                {
+                    "statement": claim["statement"],
+                    "sources": [row["source"] for row in missing_support],
+                    "missing_supporting_contributions": missing_support,
+                }
+            )
     aggregate = result["aggregate"]
     scientific_rows = _paper_scientific_rows(result)
     return {
@@ -1113,7 +1141,7 @@ def _material_landscape_trace(
         "scientific_task": spec["scientific_question"],
         "primary_aggregate_bundle_id": primary["bundle_id"],
         "declared_source_scope": {
-            "catalog_and_configuration": "MatRouter v0.9.0 capability catalog under the captured runtime configuration",
+            "catalog_and_configuration": "MatRouter v0.9.1 capability catalog under the captured runtime configuration",
             **spec["stage_1"],
             "scope_limit": "All capability-matched execution routes were attempted within the declared budgets; this is not every real-world database or every upstream record.",
         },
@@ -1149,6 +1177,8 @@ def _material_landscape_trace(
             }
         ),
         "what_cross_source_union_adds": union_claims,
+        "all_declared_claims_supported": not unsupported_claim_gaps,
+        "unsupported_declared_claim_gaps": unsupported_claim_gaps,
         "exact_followups": {
             "target_audit": result["protocol_conformance"]["stage_2_target_audit"],
             "artifacts": scientific_rows["artifacts"],
@@ -1288,6 +1318,66 @@ def _aggregate_coverage_rows(
                 "reason_code": outcome["reason_code"]
                 if outcome is not None
                 else "route_not_ready",
+            }
+        )
+    return rows
+
+
+def _source_outcome_audit_rows(result: dict[str, Any]) -> list[dict[str, Any]]:
+    bundle = _primary_aggregate_bundle(result)
+    outcomes = {
+        item["outcome"]["source"]: item["outcome"]
+        for item in _bundle_items(bundle, "source_outcome")
+        if item["outcome"]["operation"] == "search_materials"
+    }
+    record_sources = [
+        json.loads(item["record_json"])["source"]
+        for item in _bundle_items(bundle, "source_record")
+    ]
+
+    def optional_value(value: object) -> object:
+        if isinstance(value, dict) and "present" in value:
+            return value.get("value") if value["present"] else None
+        return value
+
+    rows: list[dict[str, Any]] = []
+    for route in sorted(bundle["routes"], key=lambda row: row["qualified_source"]):
+        qualified_source = route["qualified_source"]
+        outcome = outcomes[qualified_source]
+        output_sources = set(route.get("output_sources", []))
+        actual_sources = [
+            source
+            for source in record_sources
+            if source == qualified_source or source in output_sources
+        ]
+        actual_count = len(actual_sources)
+        completeness = outcome["record_completeness"]
+        returned_count = completeness["returned_count"]
+        rows.append(
+            {
+                "case_name": result["case_name"],
+                "qualified_source_route": qualified_source,
+                "output_sources_json": canonical_json(route.get("output_sources", [])),
+                "route_state": route["state"],
+                "status": outcome["status"],
+                "reason_code": outcome["reason_code"],
+                "record_count": outcome["record_count"],
+                "returned_count": returned_count,
+                "actual_bundle_record_count": actual_count,
+                "actual_bundle_record_sources_json": canonical_json(
+                    sorted(Counter(actual_sources).items())
+                ),
+                "record_count_matches_actual": outcome["record_count"] == actual_count,
+                "returned_count_matches_actual": returned_count == actual_count,
+                "record_completeness_state": completeness["state"],
+                "upstream_total": completeness.get("upstream_total"),
+                "pages_fetched": completeness["pages_fetched"],
+                "last_cursor": completeness.get("last_cursor"),
+                "exhaustion_evidence": completeness.get("exhaustion_evidence"),
+                "truncation_reason": completeness.get("truncation_reason"),
+                "failure_type": optional_value(outcome.get("failure_type")),
+                "message": optional_value(outcome.get("message")),
+                "extensions_json": canonical_json(outcome.get("extensions", [])),
             }
         )
     return rows
@@ -1795,6 +1885,8 @@ def _assemble_run(
 
 def acquire_case(
     case_name: str,
+    *,
+    raw_output_path: Path | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]]]:
     from matrouter import create_router
     from matrouter.evidence_contracts import SourceFilter
@@ -2058,6 +2150,8 @@ def acquire_case(
         "runs": raw_runs,
         "case_elapsed_seconds": case_elapsed_seconds,
     }
+    if raw_output_path is not None:
+        write_json(raw_output_path, raw_capture)
     _, protocol_conformance = _capture_protocol_status(raw_capture, spec)
     result = {
         "schema_version": "matrouter.paper-case-result/11",
@@ -2101,6 +2195,13 @@ def export_results(
         writer = csv.DictWriter(handle, fieldnames=list(coverage_export[0]))
         writer.writeheader()
         writer.writerows(coverage_export)
+    source_outcome_audit = [
+        row for result in results for row in _source_outcome_audit_rows(result)
+    ]
+    with (RESULTS / "source-outcome-audit.csv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(source_outcome_audit[0]))
+        writer.writeheader()
+        writer.writerows(source_outcome_audit)
     rows: list[dict[str, Any]] = []
     figure_cases: list[dict[str, Any]] = []
     scientific_exports: dict[str, list[dict[str, Any]]] = {
@@ -2212,9 +2313,19 @@ def export_results(
                 "cross_source_union_insights": [
                     {
                         "statement": claim["statement"],
+                        "support_status": claim["support_status"],
                         "supporting_sources": [
                             support["source"]
                             for support in claim["supporting_contributions"]
+                            if support["source"]
+                            not in {
+                                missing["source"]
+                                for missing in claim["missing_supporting_contributions"]
+                            }
+                        ],
+                        "missing_supporting_sources": [
+                            missing["source"]
+                            for missing in claim["missing_supporting_contributions"]
                         ],
                     }
                     for claim in landscape["what_cross_source_union_adds"]
@@ -2722,6 +2833,10 @@ def _case_paper_eligible(result: dict[str, Any]) -> bool:
         return False
     if not result.get("aggregate"):
         return False
+    if not result.get("material_landscape", {}).get(
+        "all_declared_claims_supported", False
+    ):
+        return False
     if result.get("material_landscape") != _material_landscape_trace(
         result, result["task_spec"]
     ):
@@ -2814,6 +2929,19 @@ def write_internal_protocol_review(
         )
     )
     open_findings: list[dict[str, Any]] = []
+    for result in results:
+        landscape = result["material_landscape"]
+        if not landscape["all_declared_claims_supported"]:
+            open_findings.append(
+                {
+                    "severity": "P1",
+                    "case_name": result["case_name"],
+                    "finding": "One or more preregistered cross-source landscape claims were not supported by records returned in this frozen run.",
+                    "current_status": "protocol_ineligible",
+                    "evidence": f"results/case-traces/{result['case_name']}.json",
+                    "required_resolution": "Preserve the missing source/category contributions as explicit gaps; do not fabricate, substitute, or selectively rerun them.",
+                }
+            )
     for applicable in applicable_results:
         expected_names = set(
             applicable["rq3_method_applicability"]["expected_method_names"]
@@ -2884,6 +3012,7 @@ def write_internal_protocol_review(
                 == _material_landscape_trace(result, result["task_spec"])
                 and result["material_landscape"]["primary_aggregate_bundle_id"]
                 == result["primary_result_bundle_id"]
+                and result["material_landscape"]["all_declared_claims_supported"]
                 for result in results
             ),
             "no_independent_per_route_source_record_runs": all(
@@ -3058,6 +3187,7 @@ def _paper_export_paths() -> tuple[Path, ...]:
     return (
         RESULTS / "cases.csv",
         RESULTS / "coverage.csv",
+        RESULTS / "source-outcome-audit.csv",
         RESULTS / "observations.csv",
         RESULTS / "structures.csv",
         RESULTS / "artifacts.csv",
@@ -3173,7 +3303,7 @@ def _assert_final_release_binding(identity: dict[str, Any]) -> None:
             f"{field}={value}" for field, value in FINAL_RELEASE_BINDING.items()
         )
         raise RuntimeError(
-            f"final v0.9.0 release-bound run is pending; expected {expected}"
+            f"final v0.9.1 release-bound run is pending; expected {expected}"
         )
 
 
@@ -3205,10 +3335,9 @@ def run_all() -> None:
     raw_paths: dict[str, Path] = {}
     for case_name in CASES:
         print(f"[{case_name}] starting", flush=True)
-        raw, result, case_coverage = acquire_case(case_name)
         raw_path = planned_raw_paths[case_name]
+        _raw, result, case_coverage = acquire_case(case_name, raw_output_path=raw_path)
         result_path = CASE_RESULTS / f"{case_name}.json"
-        write_json(raw_path, raw)
         raw_paths[case_name] = raw_path
         write_json(result_path, result)
         results.append(result)

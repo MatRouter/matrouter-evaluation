@@ -2,7 +2,7 @@
 name = "matrouter-evaluation"
 version = "0.0.0"
 requires-python = ">=3.12,<3.13"
-dependencies = ["matrouter==0.9.0"]
+dependencies = ["matrouter==0.9.1"]
 
 [dependency-groups]
 dev = ["ruff"]

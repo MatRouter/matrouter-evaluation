@@ -12,22 +12,21 @@
         "ready_route_count": 32,
         "attempted_route_count": 32,
         "status_counts": {
-          "empty": 12,
-          "failed": 2,
-          "partial": 5,
-          "succeeded": 13
+          "empty": 11,
+          "failed": 7,
+          "partial": 2,
+          "succeeded": 12
         },
         "record_completeness_counts": {
-          "complete": 10,
+          "complete": 12,
           "empty": 11,
-          "failed": 2,
-          "truncated": 6,
-          "upstream_total_unknown": 3
+          "failed": 7,
+          "truncated": 2
         },
-        "capacity_limitation_count": 6,
-        "source_record_count": 143,
-        "distinct_source_count": 20,
-        "distinct_provider_count": 14
+        "capacity_limitation_count": 2,
+        "source_record_count": 104,
+        "distinct_source_count": 16,
+        "distinct_provider_count": 10
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -39,17 +38,22 @@
       "cross_source_union_insights": [
         {
           "statement": "The aggregate places COD crystal records beside AFLOW and Materials Project computed structure records, exposing multiple source-qualified structural and phase candidates without treating formula identity as phase identity.",
+          "support_status": "supported",
           "supporting_sources": [
             "cod",
             "aflow",
             "materials_project"
-          ]
+          ],
+          "missing_supporting_sources": []
         },
         {
           "statement": "The same landscape includes 2D C2DB electronic context and bulk or three-dimensional electronic records from Materials Project and NOMAD, so the dimensionality, method, functional, and SOC context actually returned by those sources can be inspected before selecting exact follow-ups; direct, indirect, or optical gap modality remains a gap when the source does not declare it.",
+          "support_status": "unsupported",
           "supporting_sources": [
             "c2db",
-            "materials_project",
+            "materials_project"
+          ],
+          "missing_supporting_sources": [
             "nomad"
           ]
         }
@@ -80,11 +84,11 @@
         ],
         "methods": [
           {
-            "method_name": "render_band_structure",
+            "method_name": "render_density_of_states",
             "succeeded": true
           },
           {
-            "method_name": "render_density_of_states",
+            "method_name": "render_band_structure",
             "succeeded": true
           },
           {
@@ -148,22 +152,21 @@
         "ready_route_count": 32,
         "attempted_route_count": 32,
         "status_counts": {
-          "empty": 13,
-          "failed": 3,
+          "empty": 12,
+          "failed": 6,
           "partial": 6,
-          "succeeded": 10
+          "succeeded": 8
         },
         "record_completeness_counts": {
-          "complete": 9,
-          "empty": 10,
-          "failed": 3,
-          "truncated": 7,
-          "upstream_total_unknown": 3
+          "complete": 8,
+          "empty": 12,
+          "failed": 6,
+          "truncated": 6
         },
-        "capacity_limitation_count": 7,
-        "source_record_count": 127,
-        "distinct_source_count": 17,
-        "distinct_provider_count": 12
+        "capacity_limitation_count": 6,
+        "source_record_count": 123,
+        "distinct_source_count": 15,
+        "distinct_provider_count": 10
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -174,16 +177,21 @@
       "cross_source_union_insights": [
         {
           "statement": "The aggregate places COD and MaterialsGalaxy structure records beside computed structures from Materials Project, making structural candidates visible before any thermodynamic conclusion is attempted.",
+          "support_status": "supported",
           "supporting_sources": [
             "cod",
             "materialsgalaxy:generated_structures",
             "materials_project"
-          ]
+          ],
+          "missing_supporting_sources": []
         },
         {
           "statement": "Materials Project and OPTIMADE ODBX records contribute source-qualified formation-energy or hull-related quantities with their own semantics, allowing the researcher to distinguish catalog evidence from the later exact compatible-entry hull calculation.",
+          "support_status": "unsupported",
           "supporting_sources": [
-            "materials_project",
+            "materials_project"
+          ],
+          "missing_supporting_sources": [
             "optimade:optimade-misc.odbx.science"
           ]
         }
@@ -228,22 +236,21 @@
         "ready_route_count": 32,
         "attempted_route_count": 32,
         "status_counts": {
-          "empty": 14,
-          "failed": 2,
-          "partial": 4,
-          "succeeded": 12
+          "empty": 12,
+          "failed": 6,
+          "partial": 3,
+          "succeeded": 11
         },
         "record_completeness_counts": {
-          "complete": 10,
+          "complete": 11,
           "empty": 12,
-          "failed": 2,
-          "truncated": 5,
-          "upstream_total_unknown": 3
+          "failed": 6,
+          "truncated": 3
         },
-        "capacity_limitation_count": 5,
-        "source_record_count": 114,
-        "distinct_source_count": 18,
-        "distinct_provider_count": 12
+        "capacity_limitation_count": 3,
+        "source_record_count": 91,
+        "distinct_source_count": 16,
+        "distinct_provider_count": 10
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -255,20 +262,24 @@
       "cross_source_union_insights": [
         {
           "statement": "The aggregate combines general crystal and electronic records from COD, Materials Project, NOMAD, AFLOW, and other qualified sources with MaterialsGalaxy/Materiae source-native topology records for the same formula.",
+          "support_status": "supported",
           "supporting_sources": [
             "cod",
             "materials_project",
             "nomad",
             "aflow",
             "materialsgalaxy:topo_crystals"
-          ]
+          ],
+          "missing_supporting_sources": []
         },
         {
           "statement": "MaterialsGalaxy contributes exact R-3m and Pnma topology labels under no-SOC and SOC request contexts, while the broader aggregate supplies separately attributed structural and scalar electronic context rather than an independent topology verdict.",
+          "support_status": "supported",
           "supporting_sources": [
             "materialsgalaxy:topo_crystals",
             "materials_project"
-          ]
+          ],
+          "missing_supporting_sources": []
         }
       ],
       "exact_followup": {

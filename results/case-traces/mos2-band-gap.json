@@ -1,9 +1,9 @@
 {
   "case_name": "mos2-band-gap",
   "scientific_task": "What multi-source structural and electronic evidence is available for MoS2, with bulk/monolayer, phase, functional, SOC, directness, and calculation/experiment context kept distinct?",
-  "primary_aggregate_bundle_id": "sha256:2495229d02d7de3c7779d1f58fe83cf92e66b221beef2bda3ca533190b7481fb",
+  "primary_aggregate_bundle_id": "sha256:0fd62c3b064b3fb1b08052af346c54c44cf5ffd8540c0a00eea61abf68ead070",
   "declared_source_scope": {
-    "catalog_and_configuration": "MatRouter v0.9.0 capability catalog under the captured runtime configuration",
+    "catalog_and_configuration": "MatRouter v0.9.1 capability catalog under the captured runtime configuration",
     "evidence_kind": "source_record",
     "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
@@ -20,17 +20,16 @@
     "ready": 32,
     "attempted": 32,
     "status_counts": {
-      "empty": 12,
-      "failed": 2,
-      "partial": 5,
-      "succeeded": 13
+      "empty": 11,
+      "failed": 7,
+      "partial": 2,
+      "succeeded": 12
     },
     "record_completeness_counts": {
-      "complete": 10,
+      "complete": 12,
       "empty": 11,
-      "failed": 2,
-      "truncated": 6,
-      "upstream_total_unknown": 3
+      "failed": 7,
+      "truncated": 2
     },
     "outcomes": [
       {
@@ -54,7 +53,7 @@
         "status": "succeeded",
         "record_count": 3,
         "reason_code": "records_returned",
-        "completeness": "upstream_total_unknown",
+        "completeness": "complete",
         "truncation_reason": null
       },
       {
@@ -62,16 +61,16 @@
         "status": "succeeded",
         "record_count": 9,
         "reason_code": "records_returned",
-        "completeness": "upstream_total_unknown",
+        "completeness": "complete",
         "truncation_reason": null
       },
       {
         "source": "jarvis_dft",
         "status": "succeeded",
-        "record_count": 1,
+        "record_count": 10,
         "reason_code": "records_returned",
-        "completeness": "truncated",
-        "truncation_reason": "max_pages_reached"
+        "completeness": "complete",
+        "truncation_reason": null
       },
       {
         "source": "materials_project",
@@ -93,40 +92,40 @@
         "source": "mpds",
         "status": "failed",
         "record_count": 0,
-        "reason_code": "upstream_http_error",
+        "reason_code": "upstream_access_denied",
         "completeness": "failed",
         "truncation_reason": null
       },
       {
         "source": "nomad",
-        "status": "partial",
-        "record_count": 15,
-        "reason_code": "evidence_bundle_item_capacity_reached",
-        "completeness": "truncated",
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "upstream_timeout",
+        "completeness": "failed",
+        "truncation_reason": null
       },
       {
         "source": "optimade:mpddoptimade.phaseslab.org",
-        "status": "partial",
-        "record_count": 15,
-        "reason_code": "evidence_bundle_item_capacity_reached",
-        "completeness": "truncated",
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "upstream_timeout",
+        "completeness": "failed",
+        "truncation_reason": null
       },
       {
         "source": "optimade:optimade-gnome.odbx.science",
-        "status": "empty",
+        "status": "failed",
         "record_count": 0,
-        "reason_code": "verified_empty_result",
-        "completeness": "empty",
+        "reason_code": "upstream_timeout",
+        "completeness": "failed",
         "truncation_reason": null
       },
       {
         "source": "optimade:optimade-misc.odbx.science",
-        "status": "succeeded",
-        "record_count": 3,
-        "reason_code": "records_returned",
-        "completeness": "complete",
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "upstream_timeout",
+        "completeness": "failed",
         "truncation_reason": null
       },
       {
@@ -155,10 +154,10 @@
       },
       {
         "source": "optimade:optimade.materialscloud.org/archive/jk-9v",
-        "status": "failed",
+        "status": "empty",
         "record_count": 0,
-        "reason_code": "adapter_warning",
-        "completeness": "failed",
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
         "truncation_reason": null
       },
       {
@@ -259,10 +258,10 @@
       },
       {
         "source": "optimade:optimade.odbx.science",
-        "status": "empty",
+        "status": "failed",
         "record_count": 0,
-        "reason_code": "verified_empty_result",
-        "completeness": "empty",
+        "reason_code": "upstream_timeout",
+        "completeness": "failed",
         "truncation_reason": null
       },
       {
@@ -275,23 +274,122 @@
       },
       {
         "source": "oqmd",
-        "status": "partial",
-        "record_count": 15,
-        "reason_code": "evidence_bundle_item_capacity_reached",
-        "completeness": "truncated",
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
+        "status": "failed",
+        "record_count": 0,
+        "reason_code": "upstream_http_unavailable",
+        "completeness": "failed",
+        "truncation_reason": null
       },
       {
         "source": "tcod",
         "status": "empty",
         "record_count": 0,
-        "reason_code": "empty_result_observed",
-        "completeness": "upstream_total_unknown",
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
         "truncation_reason": null
       }
     ]
   },
   "contributing_exact_sources": [
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "provider": "MaterialsGalaxy",
+      "execution_route": "materialsgalaxy",
+      "route_status": "partial",
+      "record_completeness": {
+        "state": "truncated",
+        "returned_count": 15,
+        "upstream_total": 87,
+        "pages_fetched": 1,
+        "last_cursor": "1",
+        "exhaustion_evidence": null,
+        "truncation_reason": "evidence_bundle_item_capacity_reached"
+      },
+      "record_count_in_primary_bundle": 4,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "source_native_topology",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "topology_class_no_soc",
+        "topology_class_soc"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:00b8bdb6029466a1233e1bee1d9acccc2b5e3a6ca1adc060e76f1587cb064561",
+        "source_id": "mg-5937",
+        "formula": "MoS2",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "R-3m",
+            "space_group_number": 166,
+            "dimensionality": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "dimensionality": 2
+              }
+            },
+            {
+              "property": "topology_class_no_soc",
+              "context": {
+                "soc": false
+              }
+            },
+            {
+              "property": "topology_class_soc",
+              "context": {
+                "soc": true
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-5937",
+            "formula": "MoS2",
+            "property": "band_gap_eV",
+            "value": 0.0,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "dimensionality": 2
+            }
+          },
+          {
+            "source": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-5937",
+            "formula": "MoS2",
+            "property": "topology_class_no_soc",
+            "value": "HSP_SM",
+            "unit": null,
+            "semantic": "source_native_topology_classification",
+            "context": {
+              "soc": false
+            }
+          },
+          {
+            "source": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-5937",
+            "formula": "MoS2",
+            "property": "topology_class_soc",
+            "value": "TI",
+            "unit": null,
+            "semantic": "source_native_topology_classification",
+            "context": {
+              "soc": true
+            }
+          }
+        ]
+      }
+    },
     {
       "source": "aflow",
       "provider": "AFLOW",
@@ -317,13 +415,13 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0095886775844406b5f041ab1caef2896ffcbcdc83b320d43272a19b33767bd3",
-        "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_49801",
-        "formula": "Mo2S4",
+        "source_record_item_id": "sha256:024c7c4a9169fbfce763abb35115254e2b58cd07f80350800f2bd6d3dba31bc6",
+        "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_43560",
+        "formula": "Mo1S2",
         "context": {
           "structure_or_phase": {
-            "space_group_number": 194,
-            "prototype": "Mo1S2_ICSD_49801"
+            "space_group_number": 160,
+            "prototype": "Mo1S2_ICSD_43560"
           },
           "method_or_observable": {
             "dft_type": [
@@ -343,10 +441,10 @@
         "observations": [
           {
             "source": "aflow",
-            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_49801",
-            "formula": "Mo2S4",
+            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Mo1S2_ICSD_43560",
+            "formula": "Mo1S2",
             "property": "band_gap_eV",
-            "value": 1.2384,
+            "value": 1.2771,
             "unit": "eV",
             "semantic": "electronic_band_gap",
             "context": {
@@ -363,12 +461,12 @@
       "execution_route": "cod",
       "route_status": "succeeded",
       "record_completeness": {
-        "state": "upstream_total_unknown",
+        "state": "complete",
         "returned_count": 9,
-        "upstream_total": null,
+        "upstream_total": 9,
         "pages_fetched": 1,
         "last_cursor": null,
-        "exhaustion_evidence": null,
+        "exhaustion_evidence": "rest_count_matches_json_rows",
         "truncation_reason": null
       },
       "record_count_in_primary_bundle": 9,
@@ -379,13 +477,159 @@
       "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:01004d04ab5d02355ebae4cae8a1a526ed1ae56b5e954cb0f027b8432d008560",
-        "source_id": "9009148",
+        "source_record_item_id": "sha256:050481a8853b0c02c5ffb9f45434ef4a0d5fe5ea9f3a10cb40ad5fdb07516631",
+        "source_id": "4124624",
         "formula": "Mo S2",
         "context": {
           "structure_or_phase": {
             "space_group_symbol": "R 3 m :H",
             "space_group_number": 160
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "jarvis_dft",
+      "provider": "JARVIS-DFT",
+      "execution_route": "jarvis_dft",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 10,
+        "upstream_total": 10,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": "fixed_snapshot_scanned_to_end",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 10,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:07001360df15391973c50a3a25fff1bbfe7b97e0a60baaed98b2cd1a41d3113a",
+        "source_id": "JVASP-8398",
+        "formula": "MoS2",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "I-42d",
+            "space_group_number": 122,
+            "dimensionality": "3D-bulk"
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "dimensionality": "3D-bulk",
+                "functional": "OptB88vdW",
+                "method_family": "DFT"
+              }
+            },
+            {
+              "property": "energy_above_hull_eV",
+              "context": {
+                "dimensionality": "3D-bulk",
+                "functional": "OptB88vdW",
+                "method_family": "DFT"
+              }
+            },
+            {
+              "property": "formation_energy_per_atom_eV",
+              "context": {
+                "dimensionality": "3D-bulk",
+                "functional": "OptB88vdW",
+                "method_family": "DFT"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-8398#field=optb88vdw_bandgap",
+            "formula": "MoS2",
+            "property": "band_gap_eV",
+            "value": 0.0,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "dimensionality": "3D-bulk",
+              "functional": "OptB88vdW",
+              "method_family": "DFT"
+            }
+          },
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-8398",
+            "formula": "MoS2",
+            "property": "energy_above_hull_eV",
+            "value": 0.6408,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {
+              "dimensionality": "3D-bulk",
+              "functional": "OptB88vdW",
+              "method_family": "DFT"
+            }
+          },
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-8398",
+            "formula": "MoS2",
+            "property": "formation_energy_per_atom_eV",
+            "value": -0.32077,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {
+              "dimensionality": "3D-bulk",
+              "functional": "OptB88vdW",
+              "method_family": "DFT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.openmaterialsdb.se",
+      "provider": "optimade.openmaterialsdb.se",
+      "execution_route": "optimade:optimade.openmaterialsdb.se",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 2,
+        "upstream_total": 2,
+        "pages_fetched": 1,
+        "last_cursor": "http://optimade.openmaterialsdb.se/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 2,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:0a2b94971b2e2219bde9c3fb046fcade59c22bdf9688fceb821bacecbdd6f40f",
+        "source_id": "3573",
+        "formula": "MoS2",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
           },
           "method_or_observable": {},
           "property_contexts": []
@@ -420,7 +664,7 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:02fc1d652f07c7dc2aa97bd954d1ac4af0e372d6404c398fcc784300bce3dfac",
+        "source_record_item_id": "sha256:0e4c1d07c39a2809c4f50a7c78785a698c75d64000c8e9eede670389165c7055",
         "source_id": "agm005276747",
         "formula": "MoS2",
         "context": {
@@ -457,335 +701,20 @@
       }
     },
     {
-      "source": "optimade:optimade.2dmatpedia.org",
-      "provider": "optimade.2dmatpedia.org",
-      "execution_route": "optimade:optimade.2dmatpedia.org",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 2,
-        "upstream_total": 2,
-        "pages_fetched": 1,
-        "last_cursor": "http://optimade.2dmatpedia.org/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 2,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:091a7f95b4fc6819e569d30c34ad0151540c8aef5a179b687215d9d579e95891",
-        "source_id": "2dm-829",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 2
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "optimade:mpddoptimade.phaseslab.org",
-      "provider": "mpddoptimade.phaseslab.org",
-      "execution_route": "optimade:mpddoptimade.phaseslab.org",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": null,
-        "pages_fetched": 1,
-        "last_cursor": "http://mpddoptimade.phaseslab.org/v1/structures",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 15,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0cb48e359937e1ec9701f5b741e103a26001859f9394f2f9dc85ea5d0228ee19",
-        "source_id": "mpdd-6075333bb003796270eafad8",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "nomad",
-      "provider": "NOMAD",
-      "execution_route": "nomad",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 376,
-        "pages_fetched": 1,
-        "last_cursor": "26SSP2MAf8UnXScgP_dWF9CUrr_l",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 15,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [
-        "band_gap_eV"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0efaab4f0d01a6eee744f2a8ea4e707bd7c81d009e3012840b75faa1913785cf",
-        "source_id": "0yW8QKc6vc1pO6NOIxk1HQaNLfFn",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "dimensionality": "2D"
-          },
-          "method_or_observable": {
-            "method_name": "DFT"
-          },
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "oqmd",
-      "provider": "OQMD",
-      "execution_route": "oqmd",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 29,
-        "pages_fetched": 1,
-        "last_cursor": "0",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 15,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase",
-        "thermodynamic_property"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "energy_above_hull_eV",
-        "formation_energy_per_atom_eV"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:12bb2fd82abdf3a7dfc83d50add5371922317f9671ff2ea700e8eb90ce816d16",
-        "source_id": "1440942",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "Pbca"
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": [
-          {
-            "source": "oqmd",
-            "source_id": "1440942",
-            "formula": "MoS2",
-            "property": "band_gap_eV",
-            "value": 5.306,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {}
-          },
-          {
-            "source": "oqmd",
-            "source_id": "1440942",
-            "formula": "MoS2",
-            "property": "energy_above_hull_eV",
-            "value": 0.5885321016666663,
-            "unit": "eV/atom",
-            "semantic": "energy_above_convex_hull_per_atom",
-            "context": {}
-          },
-          {
-            "source": "oqmd",
-            "source_id": "1440942",
-            "formula": "MoS2",
-            "property": "formation_energy_per_atom_eV",
-            "value": -0.4726478193422376,
-            "unit": "eV/atom",
-            "semantic": "formation_energy_per_atom",
-            "context": {}
-          }
-        ]
-      }
-    },
-    {
-      "source": "jarvis_dft",
-      "provider": "JARVIS-DFT",
-      "execution_route": "jarvis_dft",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 1,
-        "upstream_total": null,
-        "pages_fetched": 100,
-        "last_cursor": "9900",
-        "exhaustion_evidence": null,
-        "truncation_reason": "max_pages_reached"
-      },
-      "record_count_in_primary_bundle": 1,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase",
-        "thermodynamic_property"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "energy_above_hull_eV",
-        "formation_energy_per_atom_eV"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:18220e22aea0e06655a650253c87eee14260b38d899e7b0e34f2f700af784c2b",
-        "source_id": "JVASP-228",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "R-3m",
-            "space_group_number": 166,
-            "dimensionality": "2D-bulk"
-          },
-          "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "band_gap_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "MBJ",
-                "method_family": "DFT"
-              }
-            },
-            {
-              "property": "band_gap_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "OptB88vdW",
-                "method_family": "DFT"
-              }
-            },
-            {
-              "property": "energy_above_hull_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "OptB88vdW",
-                "method_family": "DFT"
-              }
-            },
-            {
-              "property": "formation_energy_per_atom_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "OptB88vdW",
-                "method_family": "DFT"
-              }
-            }
-          ]
-        },
-        "observations": [
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-228#field=mbj_bandgap",
-            "formula": "MoS2",
-            "property": "band_gap_eV",
-            "value": 0.0,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "MBJ",
-              "method_family": "DFT"
-            }
-          },
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-228#field=optb88vdw_bandgap",
-            "formula": "MoS2",
-            "property": "band_gap_eV",
-            "value": 0.0,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "OptB88vdW",
-              "method_family": "DFT"
-            }
-          },
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-228",
-            "formula": "MoS2",
-            "property": "energy_above_hull_eV",
-            "value": 0.2625,
-            "unit": "eV/atom",
-            "semantic": "energy_above_convex_hull_per_atom",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "OptB88vdW",
-              "method_family": "DFT"
-            }
-          },
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-228",
-            "formula": "MoS2",
-            "property": "formation_energy_per_atom_eV",
-            "value": -0.69909,
-            "unit": "eV/atom",
-            "semantic": "formation_energy_per_atom",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "OptB88vdW",
-              "method_family": "DFT"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
       "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
       "route_status": "succeeded",
       "record_completeness": {
         "state": "complete",
-        "returned_count": 4,
-        "upstream_total": 4,
+        "returned_count": 5,
+        "upstream_total": 5,
         "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/archive/m0-zg/v1/structures",
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v1/v1/structures",
         "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
         "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 4,
+      "record_count_in_primary_bundle": 5,
       "data_categories": [
         "material_identity",
         "structure_or_phase"
@@ -793,8 +722,8 @@
       "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:1d0111ff2f0ea01d5d5d935f67ecb8331c411b364e57775f7543599051df17f4",
-        "source_id": "MAT00023576",
+        "source_record_item_id": "sha256:0fb1cb5dbf1009d4532bed26bea6443c309dabf8059ec8a498058a64e16ed9e1",
+        "source_id": "d8509e24-ff69-4f3e-a084-40ceb94e046a",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
@@ -828,13 +757,13 @@
       "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:24f323164bed10e381fe441cd16e0ea236f273362c6ee7e2ae4bafc9bb961520",
-        "source_id": "mg-284315",
+        "source_record_item_id": "sha256:1a8bbeeac68a6a5c5084fde261057677bac03856fb5c05d0bf9a23d4b6fe7268",
+        "source_id": "mg-59930",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
-            "space_group_symbol": "R3m",
-            "space_group_number": 160,
+            "space_group_symbol": "P6_3/mmc",
+            "space_group_number": 194,
             "dimensionality": 2
           },
           "method_or_observable": {},
@@ -844,20 +773,113 @@
       }
     },
     {
-      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "source": "materials_project",
+      "provider": "Materials Project",
+      "execution_route": "materials_project",
       "route_status": "succeeded",
       "record_completeness": {
         "state": "complete",
-        "returned_count": 5,
-        "upstream_total": 5,
+        "returned_count": 12,
+        "upstream_total": null,
         "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v2/v1/structures",
+        "last_cursor": null,
+        "exhaustion_evidence": "mp_api_chunk_sequence_exhausted",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 12,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV",
+        "is_stable"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:1cc1981e8224d4414ff54db70ffd58c8d209f3edae9cd7a141db7bfb59c02c5e",
+        "source_id": "mp-1023939",
+        "formula": "MoS2",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "P-3m1",
+            "space_group_number": 164
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "is_stable",
+              "context": {
+                "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "materials_project",
+            "source_id": "aaaficae",
+            "formula": "MoS2",
+            "property": "band_gap_eV",
+            "value": 1.5539,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-1023939",
+            "formula": "MoS2",
+            "property": "energy_above_hull_eV",
+            "value": 0.007235794999999712,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-1023939",
+            "formula": "MoS2",
+            "property": "formation_energy_per_atom_eV",
+            "value": -0.9589067502083329,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-1023939",
+            "formula": "MoS2",
+            "property": "is_stable",
+            "value": false,
+            "unit": null,
+            "semantic": "thermodynamic_stability_label",
+            "context": {
+              "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 4,
+        "upstream_total": 4,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/archive/m0-zg/v1/structures",
         "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
         "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 5,
+      "record_count_in_primary_bundle": 4,
       "data_categories": [
         "material_identity",
         "structure_or_phase"
@@ -865,8 +887,8 @@
       "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:2dc624c0c1eafa8df3c896ebea3023966b81e518d279754e49de403c54efc2f8",
-        "source_id": "00b0914e-c5b3-4107-b531-8964b4094d20",
+        "source_record_item_id": "sha256:2c347a24050b9d8a502c5571fcba2aa5702e256ff5251b9e574730c800058635",
+        "source_id": "MAT00023576",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
@@ -903,7 +925,7 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:33da77d7ac49328e9fca3c5cdaf712f3c854dc2b3e0e501b474d01e94635e1ea",
+        "source_record_item_id": "sha256:2d4ca92cc0a1a0874cc28e4f368ba526aa83731d0d1882fcd959db4995babb22",
         "source_id": "ec7170ae-72c2-490a-871a-d7d46ce20c0f",
         "formula": "MoS2",
         "context": {
@@ -928,113 +950,20 @@
       }
     },
     {
-      "source": "materials_project",
-      "provider": "Materials Project",
-      "execution_route": "materials_project",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 12,
-        "upstream_total": null,
-        "pages_fetched": 1,
-        "last_cursor": null,
-        "exhaustion_evidence": "mp_api_chunk_sequence_exhausted",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 12,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase",
-        "thermodynamic_property"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "energy_above_hull_eV",
-        "formation_energy_per_atom_eV",
-        "is_stable"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:3791d96742fd5aaadde85824a6eb50f0be52015647c8c1a1d8d091e0b23c2de5",
-        "source_id": "mp-1027525",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "P-3m1",
-            "space_group_number": 164
-          },
-          "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "is_stable",
-              "context": {
-                "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
-              }
-            }
-          ]
-        },
-        "observations": [
-          {
-            "source": "materials_project",
-            "source_id": "aaacgmbn",
-            "formula": "MoS2",
-            "property": "band_gap_eV",
-            "value": 1.4639999999999997,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {}
-          },
-          {
-            "source": "materials_project",
-            "source_id": "mp-1027525",
-            "formula": "MoS2",
-            "property": "energy_above_hull_eV",
-            "value": 0.003681534999998348,
-            "unit": "eV/atom",
-            "semantic": "energy_above_convex_hull_per_atom",
-            "context": {}
-          },
-          {
-            "source": "materials_project",
-            "source_id": "mp-1027525",
-            "formula": "MoS2",
-            "property": "formation_energy_per_atom_eV",
-            "value": -0.9624610102083343,
-            "unit": "eV/atom",
-            "semantic": "formation_energy_per_atom",
-            "context": {}
-          },
-          {
-            "source": "materials_project",
-            "source_id": "mp-1027525",
-            "formula": "MoS2",
-            "property": "is_stable",
-            "value": false,
-            "unit": null,
-            "semantic": "thermodynamic_stability_label",
-            "context": {
-              "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
       "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
       "route_status": "succeeded",
       "record_completeness": {
         "state": "complete",
-        "returned_count": 5,
-        "upstream_total": 5,
+        "returned_count": 4,
+        "upstream_total": 4,
         "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v1/v1/structures",
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbe-v1/v1/structures",
         "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
         "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 5,
+      "record_count_in_primary_bundle": 4,
       "data_categories": [
         "material_identity",
         "structure_or_phase"
@@ -1042,8 +971,8 @@
       "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:493a62d4847e669f6a924544b12bdc29d60d68dc53bae652f0973912c6438a06",
-        "source_id": "d8509e24-ff69-4f3e-a084-40ceb94e046a",
+        "source_record_item_id": "sha256:300a0e366ea3e61536588ed2fdddfba792c6da7c828637b61d35cde8c367dbde",
+        "source_id": "9e140b99-5d79-4a5f-9c2e-9ac25c4a6072",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
@@ -1056,72 +985,38 @@
       }
     },
     {
-      "source": "optimade:optimade-misc.odbx.science",
-      "provider": "optimade-misc.odbx.science",
-      "execution_route": "optimade:optimade-misc.odbx.science",
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
       "route_status": "succeeded",
       "record_completeness": {
         "state": "complete",
-        "returned_count": 3,
-        "upstream_total": 3,
+        "returned_count": 5,
+        "upstream_total": 5,
         "pages_fetched": 1,
-        "last_cursor": "https://optimade-misc.odbx.science/v1/structures",
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v2/v1/structures",
         "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
         "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 3,
+      "record_count_in_primary_bundle": 5,
       "data_categories": [
         "material_identity",
-        "structure_or_phase",
-        "thermodynamic_property"
+        "structure_or_phase"
       ],
-      "property_names": [
-        "energy_above_hull_eV",
-        "formation_energy_per_atom_eV"
-      ],
+      "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:4d2433c13e289bb992f26382407fb53d89346f8012f5e16168052a96f01e6901",
-        "source_id": "camd-oqmd_5068",
+        "source_record_item_id": "sha256:3b5ddae098713c21a732cce1d765f42e793bdfea84a5f340b19d77993cb88498",
+        "source_id": "284819f8-7279-44a4-b71d-d43d24797543",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
             "nperiodic_dimensions": 3
           },
           "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "energy_above_hull_eV",
-              "context": {
-                "hull_construction": "global convex hull spanned by all other structures in the database"
-              }
-            }
-          ]
+          "property_contexts": []
         },
-        "observations": [
-          {
-            "source": "optimade:optimade-misc.odbx.science",
-            "source_id": "camd-oqmd_5068",
-            "formula": "MoS2",
-            "property": "energy_above_hull_eV",
-            "value": 0.274796651666669,
-            "unit": "eV/atom",
-            "semantic": "energy_above_convex_hull_per_atom",
-            "context": {
-              "hull_construction": "global convex hull spanned by all other structures in the database"
-            }
-          },
-          {
-            "source": "optimade:optimade-misc.odbx.science",
-            "source_id": "camd-oqmd_5068",
-            "formula": "MoS2",
-            "property": "formation_energy_per_atom_eV",
-            "value": -0.780354832675571,
-            "unit": "eV/atom",
-            "semantic": "formation_energy_per_atom",
-            "context": {}
-          }
-        ]
+        "observations": []
       }
     },
     {
@@ -1130,12 +1025,12 @@
       "execution_route": "c2db",
       "route_status": "succeeded",
       "record_completeness": {
-        "state": "upstream_total_unknown",
+        "state": "complete",
         "returned_count": 3,
-        "upstream_total": null,
+        "upstream_total": 3,
         "pages_fetched": 1,
-        "last_cursor": null,
-        "exhaustion_evidence": null,
+        "last_cursor": "https://c2db.fysik.dtu.dk",
+        "exhaustion_evidence": "c2db_candidate_rows_exhausted",
         "truncation_reason": null
       },
       "record_count_in_primary_bundle": 3,
@@ -1152,12 +1047,12 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:52ef908af5c1b3e1aad9b80aa576077b20f15385e5182c9754a9bd9cdbf4b1d2",
-        "source_id": "1MoS2-1",
+        "source_record_item_id": "sha256:56ec13696bf3dcf60ec36bd3d53dfb5d524e91ece1cb71f56c994a401d4770fa",
+        "source_id": "1MoS2-3",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
-            "layer_group_symbol": "p-6m2"
+            "layer_group_symbol": "p-4m2"
           },
           "method_or_observable": {
             "magnetic": false
@@ -1191,10 +1086,10 @@
         "observations": [
           {
             "source": "c2db",
-            "source_id": "1MoS2-1",
+            "source_id": "1MoS2-3",
             "formula": "MoS2",
             "property": "band_gap_eV",
-            "value": 1.58,
+            "value": 0.0,
             "unit": "eV",
             "semantic": "electronic_band_gap",
             "context": {
@@ -1206,10 +1101,10 @@
           },
           {
             "source": "c2db",
-            "source_id": "1MoS2-1",
+            "source_id": "1MoS2-3",
             "formula": "MoS2",
             "property": "energy_above_hull_eV",
-            "value": 0.0,
+            "value": 0.615,
             "unit": "eV/atom",
             "semantic": "energy_above_convex_hull_per_atom",
             "context": {
@@ -1219,10 +1114,10 @@
           },
           {
             "source": "c2db",
-            "source_id": "1MoS2-1",
+            "source_id": "1MoS2-3",
             "formula": "MoS2",
             "property": "heat_of_formation_per_atom_eV",
-            "value": -0.921,
+            "value": -0.306,
             "unit": "eV/atom",
             "semantic": "heat_of_formation_per_atom",
             "context": {
@@ -1231,175 +1126,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 4,
-        "upstream_total": 4,
-        "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbe-v1/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:5c51495d6d7f4f93dc8b987374f5c9ea65d782421040b08f57ba9f829ac3c868",
-        "source_id": "eaeee8f3-ddba-4dab-859c-a99f8ee92117",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "materialsgalaxy:topo_crystals",
-      "provider": "MaterialsGalaxy",
-      "execution_route": "materialsgalaxy",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 87,
-        "pages_fetched": 1,
-        "last_cursor": "1",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "source_native_topology",
-        "structure_or_phase"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "topology_class_no_soc",
-        "topology_class_soc"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:66e975b07368fc6ca327188ad3d67522406a9db4267b36e3af690b99dddb598f",
-        "source_id": "mg-58889",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "P6_3/mmc",
-            "space_group_number": 194,
-            "dimensionality": 2
-          },
-          "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "band_gap_eV",
-              "context": {
-                "dimensionality": 2
-              }
-            },
-            {
-              "property": "topology_class_no_soc",
-              "context": {
-                "soc": false
-              }
-            },
-            {
-              "property": "topology_class_soc",
-              "context": {
-                "soc": true
-              }
-            }
-          ]
-        },
-        "observations": [
-          {
-            "source": "materialsgalaxy:topo_crystals",
-            "source_id": "mg-58889",
-            "formula": "MoS2",
-            "property": "band_gap_eV",
-            "value": 0.9106788177339915,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {
-              "dimensionality": 2
-            }
-          },
-          {
-            "source": "materialsgalaxy:topo_crystals",
-            "source_id": "mg-58889",
-            "formula": "MoS2",
-            "property": "topology_class_no_soc",
-            "value": "Triv_Ins",
-            "unit": null,
-            "semantic": "source_native_topology_classification",
-            "context": {
-              "soc": false
-            }
-          },
-          {
-            "source": "materialsgalaxy:topo_crystals",
-            "source_id": "mg-58889",
-            "formula": "MoS2",
-            "property": "topology_class_soc",
-            "value": "Triv_Ins",
-            "unit": null,
-            "semantic": "source_native_topology_classification",
-            "context": {
-              "soc": true
-            }
-          }
-        ]
-      }
-    },
-    {
-      "source": "optimade:optimade.openmaterialsdb.se",
-      "provider": "optimade.openmaterialsdb.se",
-      "execution_route": "optimade:optimade.openmaterialsdb.se",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 2,
-        "upstream_total": 2,
-        "pages_fetched": 1,
-        "last_cursor": "http://optimade.openmaterialsdb.se/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 2,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:8381b47c5ded4e5250d06c403d4593b95bb825d9f3bf7048fe3454c1ffc9296e",
-        "source_id": "3310",
-        "formula": "MoS2",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
       }
     },
     {
@@ -1424,14 +1150,49 @@
       "property_names": [],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:9a4686dd448cb131e893a92bcc268bdd099277ee8292e7cc7caa94f86aaf147b",
-        "source_id": "mg-284650",
+        "source_record_item_id": "sha256:730407a0b5c81434499b6568fa60ce6dd4c1123aaabaf2b3af0b12a6478fdd8d",
+        "source_id": "mg-60839",
         "formula": "MoS2",
         "context": {
           "structure_or_phase": {
-            "space_group_symbol": "R3m",
-            "space_group_number": 160,
+            "space_group_symbol": "P6_3/mmc",
+            "space_group_number": 194,
             "dimensionality": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.2dmatpedia.org",
+      "provider": "optimade.2dmatpedia.org",
+      "execution_route": "optimade:optimade.2dmatpedia.org",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 2,
+        "upstream_total": 2,
+        "pages_fetched": 1,
+        "last_cursor": "http://optimade.2dmatpedia.org/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_primary_bundle": 2,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:96a34f90bc4c230f825efcb912ed3031fc9ab838691e70c165b9b82ee20c8540",
+        "source_id": "2dm-3150",
+        "formula": "MoS2",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 2
           },
           "method_or_observable": {},
           "property_contexts": []
@@ -1448,10 +1209,6 @@
     "JARVIS-DFT",
     "Materials Project",
     "MaterialsGalaxy",
-    "NOMAD",
-    "OQMD",
-    "mpddoptimade.phaseslab.org",
-    "optimade-misc.odbx.science",
     "optimade.2dmatpedia.org",
     "optimade.materialscloud.org",
     "optimade.openmaterialsdb.se"
@@ -1485,7 +1242,9 @@
             "structure_or_phase"
           ]
         }
-      ]
+      ],
+      "support_status": "supported",
+      "missing_supporting_contributions": []
     },
     {
       "statement": "The same landscape includes 2D C2DB electronic context and bulk or three-dimensional electronic records from Materials Project and NOMAD, so the dimensionality, method, functional, and SOC context actually returned by those sources can be inspected before selecting exact follow-ups; direct, indirect, or optical gap modality remains a gap when the source does not declare it.",
@@ -1510,6 +1269,38 @@
             "structure_or_phase",
             "electronic_property"
           ]
+        }
+      ],
+      "support_status": "unsupported",
+      "missing_supporting_contributions": [
+        {
+          "source": "nomad",
+          "required_data_categories": [
+            "electronic_property",
+            "structure_or_phase"
+          ],
+          "actual_data_categories": [],
+          "reason": "source_not_returned"
+        }
+      ]
+    }
+  ],
+  "all_declared_claims_supported": false,
+  "unsupported_declared_claim_gaps": [
+    {
+      "statement": "The same landscape includes 2D C2DB electronic context and bulk or three-dimensional electronic records from Materials Project and NOMAD, so the dimensionality, method, functional, and SOC context actually returned by those sources can be inspected before selecting exact follow-ups; direct, indirect, or optical gap modality remains a gap when the source does not declare it.",
+      "sources": [
+        "nomad"
+      ],
+      "missing_supporting_contributions": [
+        {
+          "source": "nomad",
+          "required_data_categories": [
+            "electronic_property",
+            "structure_or_phase"
+          ],
+          "actual_data_categories": [],
+          "reason": "source_not_returned"
         }
       ]
     }
@@ -1599,69 +1390,35 @@
         "case_name": "mos2-band-gap",
         "source": "materials_project",
         "source_id": "mp-2815",
-        "artifact_item_id": "sha256:8c8ddab661491fbfcddf3a9e750c5a91fa99b636c5ad64a22f17286834a8f68e",
-        "artifact_type": "band_structure",
-        "payload_type": "matrouter.band-structure-artifact",
-        "payload_sha256": "8219ee1b8698c1faf00f02d7cacc86da58a5036984408445c2c9b1f48b4ace18",
-        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"band_structure\",\"container_payload_type\":\"matrouter.band-structure-artifact\",\"payload_sha256\":\"8219ee1b8698c1faf00f02d7cacc86da58a5036984408445c2c9b1f48b4ace18\",\"source\":\"materials_project\",\"source_id\":\"mp-2815\"}",
+        "artifact_item_id": "sha256:034a196404d9dbf0e98002e9b01d5faeba01b4d297c394c2ac84551035684a2a",
+        "artifact_type": "density_of_states",
+        "payload_type": "matrouter.density-of-states-artifact",
+        "payload_sha256": "26ff8cf596f248051dd08a5ca5985240984bf4d62bc6217af1ae5985c4685857",
+        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"density_of_states\",\"container_payload_type\":\"matrouter.density-of-states-artifact\",\"payload_sha256\":\"26ff8cf596f248051dd08a5ca5985240984bf4d62bc6217af1ae5985c4685857\",\"source\":\"materials_project\",\"source_id\":\"mp-2815\"}",
         "limitations_json": "[]"
       },
       {
         "case_name": "mos2-band-gap",
         "source": "materials_project",
         "source_id": "mp-2815",
-        "artifact_item_id": "sha256:ba786b336ad04f559701a7f05c9ebc2b4300a741f41ca746c350feb9a61d078e",
-        "artifact_type": "density_of_states",
-        "payload_type": "matrouter.density-of-states-artifact",
-        "payload_sha256": "26ff8cf596f248051dd08a5ca5985240984bf4d62bc6217af1ae5985c4685857",
-        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"density_of_states\",\"container_payload_type\":\"matrouter.density-of-states-artifact\",\"payload_sha256\":\"26ff8cf596f248051dd08a5ca5985240984bf4d62bc6217af1ae5985c4685857\",\"source\":\"materials_project\",\"source_id\":\"mp-2815\"}",
+        "artifact_item_id": "sha256:089050c454137e36939a73dff2be99d5edbf986d73087146cbf92f047047d1c6",
+        "artifact_type": "band_structure",
+        "payload_type": "matrouter.band-structure-artifact",
+        "payload_sha256": "8219ee1b8698c1faf00f02d7cacc86da58a5036984408445c2c9b1f48b4ace18",
+        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"band_structure\",\"container_payload_type\":\"matrouter.band-structure-artifact\",\"payload_sha256\":\"8219ee1b8698c1faf00f02d7cacc86da58a5036984408445c2c9b1f48b4ace18\",\"source\":\"materials_project\",\"source_id\":\"mp-2815\"}",
         "limitations_json": "[]"
       }
     ],
     "thermochemical_entry_sets": [],
     "methods": [
       {
-        "method_name": "render_band_structure",
-        "succeeded": true,
-        "input_bundle_ids": [
-          "sha256:56e611084771c9769ea0d6cafe3342676357720a705fcbee6f0259d7000ca04d"
-        ],
-        "exact_input_item_ids": [
-          "sha256:8c8ddab661491fbfcddf3a9e750c5a91fa99b636c5ad64a22f17286834a8f68e"
-        ],
-        "result": {
-          "input": {
-            "identity": {
-              "source": "materials_project",
-              "source_id": "mp-2815",
-              "adapter": "materials_project",
-              "provider": "Materials Project",
-              "dataset": null
-            },
-            "artifact_item_id": "sha256:8c8ddab661491fbfcddf3a9e750c5a91fa99b636c5ad64a22f17286834a8f68e",
-            "artifact_type": "band_structure",
-            "payload_sha256": "8219ee1b8698c1faf00f02d7cacc86da58a5036984408445c2c9b1f48b4ace18",
-            "payload_type": "matrouter.band-structure-artifact"
-          },
-          "plot_artifact": {
-            "artifact_id": "sha256:b32939c4f8d2ecc36adbb32b7592e4b3fd3666f98c3aaf170df750f60a2fb39b",
-            "render_request_id": "sha256:7e46bbfca8f64885a7d5d895b99585f67f150de42d574912db8ebdb62dc2dad0",
-            "input_artifact_item_id": "sha256:8c8ddab661491fbfcddf3a9e750c5a91fa99b636c5ad64a22f17286834a8f68e",
-            "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-band.svg",
-            "image_format": "svg",
-            "content_sha256": "d02e1da06ed933c17bc5267e8504f9d8164b8b6552cf49ce3057c910afef8b02",
-            "byte_size": 130812
-          }
-        }
-      },
-      {
         "method_name": "render_density_of_states",
         "succeeded": true,
         "input_bundle_ids": [
-          "sha256:56e611084771c9769ea0d6cafe3342676357720a705fcbee6f0259d7000ca04d"
+          "sha256:fd6ab0347f40a5b44d016c49ca0e7711b120b002b3de570f6eae4fe5f3b148bf"
         ],
         "exact_input_item_ids": [
-          "sha256:ba786b336ad04f559701a7f05c9ebc2b4300a741f41ca746c350feb9a61d078e"
+          "sha256:034a196404d9dbf0e98002e9b01d5faeba01b4d297c394c2ac84551035684a2a"
         ],
         "result": {
           "input": {
@@ -1672,19 +1429,53 @@
               "provider": "Materials Project",
               "dataset": null
             },
-            "artifact_item_id": "sha256:ba786b336ad04f559701a7f05c9ebc2b4300a741f41ca746c350feb9a61d078e",
+            "artifact_item_id": "sha256:034a196404d9dbf0e98002e9b01d5faeba01b4d297c394c2ac84551035684a2a",
             "artifact_type": "density_of_states",
             "payload_sha256": "26ff8cf596f248051dd08a5ca5985240984bf4d62bc6217af1ae5985c4685857",
             "payload_type": "matrouter.density-of-states-artifact"
           },
           "plot_artifact": {
-            "artifact_id": "sha256:dc6225d5cb56af6ebde2bc293f75f58bcad22108020207b86ea78ec38f2016bb",
-            "render_request_id": "sha256:95adf45b6a291b24a6c7335923623a4d8401c7f702150f90baee1a316d62f50e",
-            "input_artifact_item_id": "sha256:ba786b336ad04f559701a7f05c9ebc2b4300a741f41ca746c350feb9a61d078e",
+            "artifact_id": "sha256:2337cbe7c347fab1c8a9953a26db0db2d6b27a5d159c8d8868f22c6279d8b5c0",
+            "render_request_id": "sha256:92bf23ab6fb6c7ebf9a5e4a8b1799f82d999d218e0c3a22c370ae8db2cab0fe1",
+            "input_artifact_item_id": "sha256:034a196404d9dbf0e98002e9b01d5faeba01b4d297c394c2ac84551035684a2a",
             "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-dos.svg",
             "image_format": "svg",
-            "content_sha256": "1ca3aafbcd962165129e2b213321f44c3606558c6f0730f7418a73803885a239",
+            "content_sha256": "52f65518bdee6508317530311e0935ac031c02da7eefe9562d5adbf975fd8a42",
             "byte_size": 42907
+          }
+        }
+      },
+      {
+        "method_name": "render_band_structure",
+        "succeeded": true,
+        "input_bundle_ids": [
+          "sha256:fd6ab0347f40a5b44d016c49ca0e7711b120b002b3de570f6eae4fe5f3b148bf"
+        ],
+        "exact_input_item_ids": [
+          "sha256:089050c454137e36939a73dff2be99d5edbf986d73087146cbf92f047047d1c6"
+        ],
+        "result": {
+          "input": {
+            "identity": {
+              "source": "materials_project",
+              "source_id": "mp-2815",
+              "adapter": "materials_project",
+              "provider": "Materials Project",
+              "dataset": null
+            },
+            "artifact_item_id": "sha256:089050c454137e36939a73dff2be99d5edbf986d73087146cbf92f047047d1c6",
+            "artifact_type": "band_structure",
+            "payload_sha256": "8219ee1b8698c1faf00f02d7cacc86da58a5036984408445c2c9b1f48b4ace18",
+            "payload_type": "matrouter.band-structure-artifact"
+          },
+          "plot_artifact": {
+            "artifact_id": "sha256:7a8049bd0648035ec19752d0c60af38919560fea2c2f1ca8f942563a004efbda",
+            "render_request_id": "sha256:c8b7fc13748f56c8694d7282a8681d332a539c6a8f56c36a3827bc73c0108dea",
+            "input_artifact_item_id": "sha256:089050c454137e36939a73dff2be99d5edbf986d73087146cbf92f047047d1c6",
+            "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-band.svg",
+            "image_format": "svg",
+            "content_sha256": "ce277536eccd7ecc27ee0026730387d6f9386ff8ad556bcbf6d4b48f90dac458",
+            "byte_size": 130812
           }
         }
       },
@@ -1692,12 +1483,12 @@
         "method_name": "match_structures",
         "succeeded": true,
         "input_bundle_ids": [
-          "sha256:05e0f45fbc231b77c42985529075ec78bb252dda0397e5ebe477bd2dee7e6c4b",
-          "sha256:56e611084771c9769ea0d6cafe3342676357720a705fcbee6f0259d7000ca04d"
+          "sha256:cb1f09829b7b2e09e0a581377df9f48ff2570affe668944519e40eec219cef36",
+          "sha256:fd6ab0347f40a5b44d016c49ca0e7711b120b002b3de570f6eae4fe5f3b148bf"
         ],
         "exact_input_item_ids": [
-          "sha256:d8d195c984b2ca5af37b5c150d5074c74c3ed3ad44ffb4850abe87e12dfca66b",
-          "sha256:32503b82a7ab72cb153d5974c83cdf0acc11ab4b890a601df7608ecfa21957b0"
+          "sha256:68396cadd063679e0e2c4453cb1be7db47375ca65875cb1749aac4d5b78d578f",
+          "sha256:e5c526a0ce23fdc0004977ba6927c2d3d257d775a8bcce9b1207b5d839a57a1b"
         ],
         "result": {
           "matched": true,

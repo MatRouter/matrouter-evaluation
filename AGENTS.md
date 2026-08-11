@@ -12,7 +12,7 @@ from an evaluation task.
 The repository root contains exactly three cases: MoS2 electronic evidence,
 LiFePO4 thermodynamic evidence, and Bi2Se3 source-native topology evidence. The
 single active protocol identity is `matrouter.paper-three-case-protocol` and is
-release-bound to the formally published MatRouter v0.9.0 identity. Canonical
+release-bound to the formally published MatRouter v0.9.1 identity. Canonical
 `EvidenceBundle` objects provide stored evidence and exact method inputs; the
 scientific result is each case's source-supported material landscape and trace.
 
@@ -27,7 +27,7 @@ scientific result is each case's source-supported material landscape and trace.
   remain explicit external handoffs. Bi2Se3 has no MatRouter topology validator.
 
 Each case calls `aggregate_source_records` once with `all_qualified +
-exhaust_upstream`. MatRouter v0.9.0 performs bounded parallel cross-source
+exhaust_upstream`. MatRouter v0.9.1 performs bounded parallel cross-source
 execution with at most eight workers and stable-order aggregation; per-source
 pagination remains sequential, and routes fairly share the public
 512-item/16-MB Bundle capacity.

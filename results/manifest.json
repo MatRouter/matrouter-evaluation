@@ -1,11 +1,14 @@
 {
   "schema_version": "matrouter.paper-manifest/13",
-  "experiment_id": "matrouter-v0.9.0-three-scientific-cases",
-  "status": "three_case_frozen_protocol_complete",
+  "experiment_id": "matrouter-v0.9.1-three-scientific-cases",
+  "status": "three_case_frozen_protocol_run_ineligible",
   "case_count": 3,
-  "paper_results_eligible": true,
+  "paper_results_eligible": false,
   "paper_results_eligibility_semantics": "Protocol eligibility under the frozen case gates; not validation of scientific truth, accuracy, significance, or external reproducibility.",
-  "ineligibility_reasons": [],
+  "ineligibility_reasons": [
+    "mos2-band-gap did not meet its preregistered case-level eligibility condition or has an unresolved product blocker.",
+    "lifepo4-stability did not meet its preregistered case-level eligibility condition or has an unresolved product blocker."
+  ],
   "protocol_version": "matrouter.paper-three-case-protocol",
   "research_questions": {
     "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
@@ -44,31 +47,31 @@
     "schema_version": "matrouter.paper-product-identity/6",
     "status": "verified_pypi_release",
     "package_name": "matrouter",
-    "package_version": "0.9.0",
-    "public_VERSION": "0.9.0",
-    "product_commit": "f81296c730769f3a49ca23be0137935f81eef11c",
-    "release_tag": "v0.9.0",
-    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.9.0",
-    "release_published_at": "2026-08-09T19:48:06Z",
-    "pypi_url": "https://pypi.org/project/matrouter/0.9.0/",
-    "wheel_filename": "matrouter-0.9.0-py3-none-any.whl",
-    "wheel_size_bytes": 289089,
-    "wheel_sha256": "cf8b60a8a0d80872ddeedc65d09331a7b9aaafb0ab704bce14e41c13019b9ab1",
-    "sdist_filename": "matrouter-0.9.0.tar.gz",
-    "sdist_size_bytes": 682560,
-    "sdist_sha256": "81e4418f35bf18fe5047ea21df8efa35eb96f525b1f857de0e23a33f5ea6513b",
+    "package_version": "0.9.1",
+    "public_VERSION": "0.9.1",
+    "product_commit": "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
+    "release_tag": "v0.9.1",
+    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.9.1",
+    "release_published_at": "2026-08-11T15:18:28Z",
+    "pypi_url": "https://pypi.org/project/matrouter/0.9.1/",
+    "wheel_filename": "matrouter-0.9.1-py3-none-any.whl",
+    "wheel_size_bytes": 293025,
+    "wheel_sha256": "6de8a7be9da7d4dfa60570a537dcd8576431bee0bec657028b211c7874f37707",
+    "sdist_filename": "matrouter-0.9.1.tar.gz",
+    "sdist_size_bytes": 691087,
+    "sdist_sha256": "23a09f5da1693bc5665014c2264b3423d82628bafa2c78f3c63b94531df50a73",
     "pypi_provenance": {
       "publisher": "publish.yml on MatRouter/matrouter",
-      "source_repository_commit": "f81296c730769f3a49ca23be0137935f81eef11c",
-      "source_repository_ref": "refs/tags/v0.9.0",
-      "publication_workflow": "publish.yml@f81296c730769f3a49ca23be0137935f81eef11c",
+      "source_repository_commit": "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
+      "source_repository_ref": "refs/tags/v0.9.1",
+      "publication_workflow": "publish.yml@a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
       "trigger_event": "release",
       "trusted_publishing": true
     },
     "distribution_metadata": {
       "metadata_version": "2.4",
       "name": "matrouter",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "requires_python": ">=3.11",
       "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
       "repository": "https://github.com/MatRouter/matrouter"
@@ -884,45 +887,45 @@
     },
     "qualified_aggregate_execution_route_count": 32
   },
-  "live_run_duration_seconds": 239.798,
-  "runner_sha256": "d2d5cb58fef9c1783c20517ea644647bf727a6805737c72ffeae3501346b84c7",
+  "live_run_duration_seconds": 295.31,
+  "runner_sha256": "a542e73d5a69be94604ef8417e0a18674013e6ab1d74a80cc85c6f4e8a2679de",
   "case_results": [
     {
       "case_name": "mos2-band-gap",
-      "raw_path": "raw/0.9.0/mos2-band-gap.json",
-      "raw_sha256": "fd72e779d5b92349f739d29c2acbc44802ce78546da9e8fb9c5a9f0e9afb7c4a",
+      "raw_path": "raw/0.9.1/mos2-band-gap.json",
+      "raw_sha256": "4fd2cdf7213f1352909bb32f27a75c2dd3e4890530c7af97430c58601f1a3304",
       "result_path": "results/cases/mos2-band-gap.json",
-      "result_sha256": "1441564e8bf66057ea5be57ed516f94dca72ddc93cc7baba80855e4a5b4e2153",
+      "result_sha256": "117d8674600eb8c5c4b3e2411ad70c82a63201bd55f7d9d6cce1baff3da83088",
       "bundle_ids": [
-        "sha256:2495229d02d7de3c7779d1f58fe83cf92e66b221beef2bda3ca533190b7481fb",
-        "sha256:05e0f45fbc231b77c42985529075ec78bb252dda0397e5ebe477bd2dee7e6c4b",
-        "sha256:56e611084771c9769ea0d6cafe3342676357720a705fcbee6f0259d7000ca04d"
+        "sha256:0fd62c3b064b3fb1b08052af346c54c44cf5ffd8540c0a00eea61abf68ead070",
+        "sha256:cb1f09829b7b2e09e0a581377df9f48ff2570affe668944519e40eec219cef36",
+        "sha256:fd6ab0347f40a5b44d016c49ca0e7711b120b002b3de570f6eae4fe5f3b148bf"
       ],
       "case_spec_sha256": "13423a98cb03ea837aac787116511ce0f6e4b379ff0f9d55db47d294dbaf77e6",
-      "paper_result_status": "protocol_eligible"
+      "paper_result_status": "protocol_ineligible"
     },
     {
       "case_name": "lifepo4-stability",
-      "raw_path": "raw/0.9.0/lifepo4-stability.json",
-      "raw_sha256": "55c85640e5dffa507e47825528587e6719c55559383e9fd981ffc7846b98d58f",
+      "raw_path": "raw/0.9.1/lifepo4-stability.json",
+      "raw_sha256": "63b86b5aced513e940b7d3ed07baa82f973bf996f70acaf4659f9aef65182381",
       "result_path": "results/cases/lifepo4-stability.json",
-      "result_sha256": "7e946a682c623990f58743cabfc6b420553f9c94203afa9e70eb57855b0ffbd4",
+      "result_sha256": "2312c143bb76efff94e14d724582521a9604581be2d7b20f8d19a4738dcfd625",
       "bundle_ids": [
-        "sha256:682695615f9203821c6c8ca9eddf8307c8666bb23f6334630b2789b969f84201",
-        "sha256:d9287e8a8789aea5bb85a84879a8d4e77ec072e42e5b992b347f49d800197bc2"
+        "sha256:eafda5a30d1ca65085248b628c74160cacc79467e9065fca746e5e6d8cacb7d4",
+        "sha256:c8f620d9cab3ec7fa141a7b792687dd1fa1953c02d3b38bc054b06d3d7cd77d7"
       ],
       "case_spec_sha256": "72e85fc089fc086d361067c4caa3c783f2bbdb0b1626888b57ee61ca9b602ff3",
-      "paper_result_status": "protocol_eligible"
+      "paper_result_status": "protocol_ineligible"
     },
     {
       "case_name": "bi2se3-topology",
-      "raw_path": "raw/0.9.0/bi2se3-topology.json",
-      "raw_sha256": "233403457150485a7b899f05d6a74fcda32d8cec332b6bb6eb62f57c3a8cc1b7",
+      "raw_path": "raw/0.9.1/bi2se3-topology.json",
+      "raw_sha256": "e8e6978a8c7a9224f5c9b9a433f0abd7ba1e00fe7c0bc573b7326692b4e194ac",
       "result_path": "results/cases/bi2se3-topology.json",
-      "result_sha256": "f4c908f009e47b782664c279922e4f4db2e6a74954c2141a52ad5b3aed027abd",
+      "result_sha256": "fa39d9f56afd081a23464160ef1d7feb9a6422b72b258c0356330ff9d0d41862",
       "bundle_ids": [
-        "sha256:209645db1caba8c30eb8b0758059f35a536dd98cdb3f7f22a768d4f65650750e",
-        "sha256:ed2c77e29b82cf4205ab998e8c19d4d79dbc8e5aa87aa6eeee23d45271ab907c"
+        "sha256:c38ae04c6fd576fedb88619dd8cf9342b58075c16f3723483dd01028fcbed469",
+        "sha256:aebb458b6db82f8c0c5637f14a034f66a1308b48f7be021d07cc93bb07e827e7"
       ],
       "case_spec_sha256": "0ff845fb334169ec91e7027c1232df02a51fa29c60039d748ec5b08f6240d19b",
       "paper_result_status": "protocol_eligible"
@@ -931,35 +934,39 @@
   "exports": [
     {
       "path": "results/cases.csv",
-      "sha256": "6ea2bcb558d0e9b0087203b10a0f02fe4c74c8783698d80e41680c5ae52480a9"
+      "sha256": "1ce30465e34a230e8bf89083705e409c85360a7913d9d53736002e8a08b13142"
     },
     {
       "path": "results/coverage.csv",
-      "sha256": "597b0ba0d2c4d852a7c576399c061d04d856c55ce101fc31a203a9c5778fbcd5"
+      "sha256": "99d2c2c8e1728ff6737d1adc3e0afd4ab047918e9b110d76264d5506ee3a19da"
+    },
+    {
+      "path": "results/source-outcome-audit.csv",
+      "sha256": "106d4037d68ba8c49d163637b4e007782fb4ceec1dd8914f3d4cfcabde8475a1"
     },
     {
       "path": "results/observations.csv",
-      "sha256": "9155bd98960991612bcc01130bd3c266f0a230dc867d25c757c8424c554c903d"
+      "sha256": "ec018fa7094c2665eeb1b6574980027947df4a71617f1ef2b412d064ea10ef3f"
     },
     {
       "path": "results/structures.csv",
-      "sha256": "59ea88ba79eff4e02c2295ec93456fe21375b0e6596a2413a1b5e57875505905"
+      "sha256": "bfc94b0347a123cb286ce0393e65efcd7c3c2339ae7e3d3f68afd2906a9c67ab"
     },
     {
       "path": "results/artifacts.csv",
-      "sha256": "fa86ea34ac2877b3661816c7c3d66311608f90e1a84600887670737123c1860e"
+      "sha256": "8cb6feb1cbdd4c84e250396d6973e3a2302ab1038fa98b9a7d3dba1eec07fe42"
     },
     {
       "path": "results/phase-diagram-entries.csv",
-      "sha256": "5ccc9dbeb1142ad7910038395cc57b8b6319a58e4b3bf2707fc633f3b6ee3ad5"
+      "sha256": "85db5d1ed0aa144a17b3aff4fd16bbec787b56812cef9431f3dcdc38d49c9ea1"
     },
     {
       "path": "results/topology-soc-comparison.csv",
-      "sha256": "cf8c14505454805afa290d7c5cbca496f9e02126d5702884c5674049d24aad3c"
+      "sha256": "d3d134f718e93943d4dca95a0460d06eb2984fed930222d7c5b5476646650bed"
     },
     {
       "path": "results/figure-ready.json",
-      "sha256": "18649eafa4448dfdb5bf800d9724870df8027200cd27ad0404bc719b65670fa0"
+      "sha256": "a026fda42d441ebc8db0dd3aea585d17b11a14c761dd0330d7a948d39a32db7a"
     },
     {
       "path": "results/product-blockers.json",
@@ -967,31 +974,31 @@
     },
     {
       "path": "results/internal-protocol-review.json",
-      "sha256": "6cc64be7c17f9f7b6e3cac8de3b0144db9a79bfa664c7916672fb239c28ad57f"
+      "sha256": "cdadd5fa34760a27f52dbbb900f5957c95a6a7521dcb45dcaffdf2c4c0d2b708"
     },
     {
       "path": "results/case-traces/bi2se3-topology.json",
-      "sha256": "202195ed14101be1eaca484ca5fc2fd760bb2c3d4c9221b55cc55789a2d24742"
+      "sha256": "e360ee005ae83bfd5ffcf2210d136012599926e9a27c3e7c27b18908f7bd5d64"
     },
     {
       "path": "results/case-traces/lifepo4-stability.json",
-      "sha256": "dcbeae8a1527dee19fb3c68b9a5a518d6ab319ae9cbb81c6ae4c36f828e803bb"
+      "sha256": "eaaec6c42cd4b1c6171c1cd6993a27307164ac9fc3fdf24294164f5f36da156e"
     },
     {
       "path": "results/case-traces/mos2-band-gap.json",
-      "sha256": "168a9f9c62990cc8a63da0622a09e54146f8d49ed0ce189dc5f3172fa9115937"
+      "sha256": "bbf7c239cef2e5c60d4818cf8c3521af8b80413ef8a7945dff64b718f6a84d4e"
     },
     {
-      "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-ae3a2102683a.svg",
-      "sha256": "1527492348bff6995204526ed95f15e9bc2e1109d1c7b9e70b15d5b6374b58a3"
+      "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-f14cc6108e89.svg",
+      "sha256": "abbabc3ce2956d39789458c35e6a8a23fb1e2e1038564629c18bef42eb99ea27"
     },
     {
       "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-band.svg",
-      "sha256": "d02e1da06ed933c17bc5267e8504f9d8164b8b6552cf49ce3057c910afef8b02"
+      "sha256": "ce277536eccd7ecc27ee0026730387d6f9386ff8ad556bcbf6d4b48f90dac458"
     },
     {
       "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-dos.svg",
-      "sha256": "1ca3aafbcd962165129e2b213321f44c3606558c6f0730f7418a73803885a239"
+      "sha256": "52f65518bdee6508317530311e0935ac031c02da7eefe9562d5adbf975fd8a42"
     }
   ]
 }

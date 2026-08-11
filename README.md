@@ -3,7 +3,7 @@
 This repository contains MatRouter's scientific evaluation. Product code and
 tests live in `matrouter`; manuscript text and references live in
 `matrouter-paper`. The single active evaluation is bound to the formally
-published MatRouter v0.9.0 package and contains exactly three cases: MoS2
+published MatRouter v0.9.1 package and contains exactly three cases: MoS2
 electronic evidence, LiFePO4 thermodynamic evidence, and Bi2Se3 source-native
 topology evidence. It has no LLM benchmark, expert gold, policy verdict,
 weighted score, or additional material case.
@@ -36,7 +36,7 @@ RQ3 applicability is recorded in every case spec and result:
 ## Frozen acquisition
 
 Each case calls `aggregate_source_records` exactly once with one
-`source_record + all_qualified + exhaust_upstream` requirement. MatRouter v0.9.0
+`source_record + all_qualified + exhaust_upstream` requirement. MatRouter v0.9.1
 executes qualified routes with at most eight workers, aggregates in stable
 order, and assembles one primary cross-source Bundle; pagination within one
 source is sequential. The public 512-item/16-MB Bundle limit is fairly shared
@@ -93,7 +93,7 @@ expert, external, or peer review.
 - `experiment.py`: the only run, validate, smoke, replay, refresh, and verify
   interface.
 - `cases/`: three case specs and scientific boundaries.
-- `raw/0.9.0/`: immutable release-bound captures.
+- `raw/0.9.1/`: immutable release-bound captures.
 - `results/`: derived case capsules, material-landscape case traces, direct
   analysis CSV/JSON/SVG files, product blockers, and the internal protocol
   review.

@@ -1,0 +1,83 @@
+{
+  "schema_version": "matrouter.evaluation-failed-attempt-summary/1",
+  "status": "not_a_complete_release_bound_run",
+  "release_binding": {
+    "package_version": "0.9.1",
+    "public_VERSION": "0.9.1",
+    "product_commit": "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
+    "release_tag": "v0.9.1"
+  },
+  "invocation": "uv run python experiment.py run",
+  "failure": {
+    "case_name": "lifepo4-stability",
+    "stage": "derived material-landscape projection after acquisition, before raw/result persistence",
+    "exception_type": "ValueError",
+    "message": "lifepo4-stability: unsupported cross-source landscape claim",
+    "complete_manifest_written": false,
+    "selective_retry_performed": false
+  },
+  "preserved_mos2_capture": {
+    "case_elapsed_seconds": 80.772,
+    "qualified_route_count": 32,
+    "attempted_route_count": 32,
+    "source_record_count": 132,
+    "status_counts": {
+      "empty": 12,
+      "failed": 5,
+      "partial": 4,
+      "succeeded": 11
+    },
+    "record_completeness_counts": {
+      "complete": 11,
+      "empty": 12,
+      "failed": 5,
+      "truncated": 4
+    },
+    "bundle_ids": [
+      "sha256:33c60747530ff40b858334c204da4572d2ce44a1863e3ebdc42bdfcfd5a669a7",
+      "sha256:45e63e1a9016cbe733d8985cdfeece78e5ed8a7fc8fa01abbd24e0d3dbb13c7f",
+      "sha256:76c34b7a0fd46a46bc6e686a2d825ee1f504d77905717ed4f94d9fb28cfa3e8a"
+    ],
+    "canonical_replay_matched": true,
+    "route_record_counts_matched_bundle_items": true
+  },
+  "discarded_partial_file_checksums": [
+    {
+      "original_path": "raw/0.9.1/mos2-band-gap.json",
+      "sha256": "d28acf839797a2514b99d1d9272ec4128cce2b5a1a8510912c85fa05a90e0887"
+    },
+    {
+      "original_path": "results/cases/mos2-band-gap.json",
+      "sha256": "38fb351f83861615f1e7af1fbad7027afa8f47c1ec615deb62c3037ed292c5f1"
+    },
+    {
+      "original_path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-band.svg",
+      "sha256": "e9b28b52d09fe079a02713c92a3e79b5b4e570ad0c50abbd1f7854f309a89db6"
+    },
+    {
+      "original_path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-dos.svg",
+      "sha256": "302dd36d80c05d71630e662a3719912a4ab33baf0fc796a52eb5c497c3f9d5be"
+    },
+    {
+      "original_path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-ef6b6171993f.svg",
+      "sha256": "f7755b9a1deb8e4eddbbc7919966ef55c316204a3109a15eee42413321a62ffe",
+      "binding_status": "unbound_partial-attempt_artifact"
+    }
+  ],
+  "gate_snapshot": {
+    "uv_sync_frozen": "passed",
+    "release_identity": "passed",
+    "preflight": "passed",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "validate": "not_run_complete_missing_manifest",
+    "verify": "not_run_complete_missing_manifest",
+    "unittest": "35_passed_1_missing-result_error"
+  },
+  "limitations": [
+    "This archive is diagnostic evidence from an aborted full-run attempt and must not be presented as the MatRouter 0.9.1 three-case release-bound result.",
+    "The LiFePO4 acquisition objects were not persisted before the derived-claim exception, so this archive cannot identify which declared contribution was absent without a new complete run.",
+    "Partial-attempt raw, result, and plot files were removed before commit; only this summary and their checksums are retained.",
+    "No source, case, or unfavorable row was selectively retried in this attempt."
+  ]
+}

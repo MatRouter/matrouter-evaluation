@@ -39,22 +39,22 @@ class CapsuleTests(unittest.TestCase):
             cls.manifest = None
             cls.results = {}
 
-    def test_release_identity_is_v090_without_product_epochs(self) -> None:
+    def test_release_identity_is_v091_without_product_epochs(self) -> None:
         identity = experiment.load_json(ROOT / "product-identity.release.json")
-        self.assertEqual(identity["package_version"], "0.9.0")
-        self.assertEqual(identity["public_VERSION"], "0.9.0")
+        self.assertEqual(identity["package_version"], "0.9.1")
+        self.assertEqual(identity["public_VERSION"], "0.9.1")
         self.assertEqual(
             identity["product_commit"],
-            "f81296c730769f3a49ca23be0137935f81eef11c",
+            "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
         )
-        self.assertEqual(identity["release_tag"], "v0.9.0")
+        self.assertEqual(identity["release_tag"], "v0.9.1")
         self.assertEqual(
             identity["wheel_sha256"],
-            "cf8b60a8a0d80872ddeedc65d09331a7b9aaafb0ab704bce14e41c13019b9ab1",
+            "6de8a7be9da7d4dfa60570a537dcd8576431bee0bec657028b211c7874f37707",
         )
         self.assertEqual(
             identity["sdist_sha256"],
-            "81e4418f35bf18fe5047ea21df8efa35eb96f525b1f857de0e23a33f5ea6513b",
+            "23a09f5da1693bc5665014c2264b3423d82628bafa2c78f3c63b94531df50a73",
         )
         self.assertEqual(identity["core_profile"]["tool_count"], 13)
         self.assertTrue(identity["route_contract"]["route_candidate_output_sources"])
@@ -116,7 +116,7 @@ class CapsuleTests(unittest.TestCase):
                 patch.object(experiment, "preflight") as preflight_mock,
                 patch.object(experiment, "_clear_retired_active_outputs") as clear_mock,
                 self.assertRaisesRegex(
-                    RuntimeError, "v0.9.0 release-bound run is pending"
+                    RuntimeError, "v0.9.1 release-bound run is pending"
                 ),
             ):
                 experiment.run_all()
@@ -129,9 +129,9 @@ class CapsuleTests(unittest.TestCase):
 
     def test_run_rejects_existing_final_raw_before_destructive_cleanup(self) -> None:
         identity = {
-            "package_version": "0.9.0",
-            "public_VERSION": "0.9.0",
-            "release_tag": "v0.9.0",
+            "package_version": "0.9.1",
+            "public_VERSION": "0.9.1",
+            "release_tag": "v0.9.1",
         }
         with tempfile.TemporaryDirectory() as directory:
             temporary_root = Path(directory)
@@ -139,7 +139,7 @@ class CapsuleTests(unittest.TestCase):
             temporary_results = temporary_root / "results"
             old_raw = temporary_raw / "0.8.0" / "preserved.json"
             old_result = temporary_results / "preserved.json"
-            planned = temporary_raw / "0.9.0" / f"{experiment.CASES[0]}.json"
+            planned = temporary_raw / "0.9.1" / f"{experiment.CASES[0]}.json"
             experiment.write_json(old_raw, {"sentinel": "old-raw"})
             experiment.write_json(old_result, {"sentinel": "old-result"})
             experiment.write_json(planned, {"sentinel": "existing-target"})
@@ -246,7 +246,7 @@ class CapsuleTests(unittest.TestCase):
         self.assertIn('"canonical_bundle": aggregate_bundle', source)
         self.assertNotIn("for source_index, catalog_route", source)
 
-    def test_v090_route_candidate_and_materialsgalaxy_parent_route_semantics(
+    def test_v091_route_candidate_and_materialsgalaxy_parent_route_semantics(
         self,
     ) -> None:
         from matrouter.evidence_contracts import RouteCandidate
@@ -631,7 +631,7 @@ class CapsuleTests(unittest.TestCase):
             self.assertIn('"exact_input_item_ids": [entry_set.item_id]', source)
             return
         result = self.results["lifepo4-stability"]
-        if result["paper_results_eligible"]:
+        if experiment._phase_diagram_method_is_safe(result):
             self.assertTrue(experiment._phase_diagram_method_is_safe(result))
             entry_set = experiment._complete_thermochemical_entry_sets(result)[0]
             self.assertGreater(entry_set["entry_count"], 0)
@@ -736,7 +736,47 @@ class CapsuleTests(unittest.TestCase):
             ):
                 experiment.validate()
 
-    def test_rq2_material_landscape_is_source_supported_and_non_scoring(self) -> None:
+    def test_material_landscape_records_unsupported_claim_as_gap(self) -> None:
+        result = experiment.load_json(ROOT / "results" / "cases" / "mos2-band-gap.json")
+        spec = copy.deepcopy(experiment.case_spec("mos2-band-gap"))
+        spec["material_landscape"]["cross_source_union_adds"][0][
+            "supporting_contributions"
+        ].append({"source": "missing-source", "data_categories": ["material_identity"]})
+
+        trace = experiment._material_landscape_trace(result, spec)
+
+        claim = trace["what_cross_source_union_adds"][0]
+        self.assertEqual(claim["support_status"], "unsupported")
+        self.assertEqual(
+            claim["missing_supporting_contributions"],
+            [
+                {
+                    "source": "missing-source",
+                    "required_data_categories": ["material_identity"],
+                    "actual_data_categories": [],
+                    "reason": "source_not_returned",
+                }
+            ],
+        )
+        self.assertEqual(
+            trace["unsupported_declared_claim_gaps"][0]["sources"],
+            ["missing-source"],
+        )
+
+    def test_unsupported_material_landscape_claim_makes_case_ineligible(self) -> None:
+        result = experiment.load_json(ROOT / "results" / "cases" / "mos2-band-gap.json")
+        spec = copy.deepcopy(experiment.case_spec("mos2-band-gap"))
+        spec["material_landscape"]["cross_source_union_adds"][0][
+            "supporting_contributions"
+        ].append({"source": "missing-source", "data_categories": ["material_identity"]})
+        result["task_spec"] = spec
+        result["material_landscape"] = experiment._material_landscape_trace(
+            result, spec
+        )
+
+        self.assertFalse(experiment._case_paper_eligible(result))
+
+    def test_rq2_material_landscape_is_honest_and_non_scoring(self) -> None:
         source = (ROOT / "experiment.py").read_text()
         for forbidden in (
             "exact_evidence_bundle_count",
@@ -771,11 +811,20 @@ class CapsuleTests(unittest.TestCase):
                     row["representative_record"]["selection_rule"],
                 )
             for claim in trace["what_cross_source_union_adds"]:
+                missing_sources = {
+                    row["source"] for row in claim["missing_supporting_contributions"]
+                }
                 for support in claim["supporting_contributions"]:
+                    if support["source"] in missing_sources:
+                        continue
                     self.assertLessEqual(
                         set(support["data_categories"]),
                         set(contributions[support["source"]]["data_categories"]),
                     )
+                self.assertEqual(
+                    claim["support_status"],
+                    "supported" if not missing_sources else "unsupported",
+                )
             self.assertNotIn("score", json.dumps(trace).lower())
             self.assertNotIn("baseline", json.dumps(trace).lower())
 
@@ -783,8 +832,24 @@ class CapsuleTests(unittest.TestCase):
         unsupported["material_landscape"]["cross_source_union_adds"][0][
             "supporting_contributions"
         ].append({"source": "missing-source", "data_categories": ["material_identity"]})
-        with self.assertRaisesRegex(ValueError, "unsupported cross-source"):
-            experiment._material_landscape_trace(result, unsupported)
+        unsupported_trace = experiment._material_landscape_trace(result, unsupported)
+        unsupported_claim = unsupported_trace["what_cross_source_union_adds"][0]
+        self.assertEqual(unsupported_claim["support_status"], "unsupported")
+        self.assertEqual(
+            unsupported_claim["missing_supporting_contributions"],
+            [
+                {
+                    "source": "missing-source",
+                    "required_data_categories": ["material_identity"],
+                    "actual_data_categories": [],
+                    "reason": "source_not_returned",
+                }
+            ],
+        )
+        self.assertIn(
+            "missing-source",
+            unsupported_trace["unsupported_declared_claim_gaps"][0]["sources"],
+        )
 
         mos2_statement = experiment.case_spec("mos2-band-gap")["material_landscape"][
             "cross_source_union_adds"
@@ -1109,6 +1174,28 @@ class CapsuleTests(unittest.TestCase):
         self.assertFalse((ROOT / "results" / "provider-database-scopes.csv").is_file())
         self.assertNotIn("paper_results_eligibility_semantics", figure)
         self.assertTrue(all("paper_results_eligible" not in row for row in rows))
+
+    def test_source_outcome_audit_matches_actual_bundle_records(self) -> None:
+        with (ROOT / "results" / "source-outcome-audit.csv").open(newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertEqual(len(rows), 3 * 32)
+        self.assertTrue(
+            all(
+                row["record_count_matches_actual"] == "True"
+                and row["returned_count_matches_actual"] == "True"
+                for row in rows
+            )
+        )
+        by_case_source = {
+            (row["case_name"], row["qualified_source_route"]): row for row in rows
+        }
+        for case_name in experiment.CASES:
+            for source in ("jarvis_dft", "c2db", "cod", "tcod"):
+                self.assertIn((case_name, source), by_case_source)
+        self.assertIn(
+            ("mos2-band-gap", "optimade:optimade.materialscloud.org/archive/jk-9v"),
+            by_case_source,
+        )
 
     def test_active_protocol_code_has_no_retired_version_compatibility_branch(
         self,

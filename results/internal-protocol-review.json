@@ -14,7 +14,7 @@
     "stage_2_uses_only_preregistered_exact_targets": true,
     "preregistered_exact_target_followups_succeed": true,
     "primary_aggregate_has_real_cross_source_records_each_case": true,
-    "rq2_material_landscape_trace_is_source_supported": true,
+    "rq2_material_landscape_trace_is_source_supported": false,
     "no_independent_per_route_source_record_runs": true,
     "all_qualified_source_routes_executed_each_case": true,
     "failed_never_verified_empty": true,
@@ -37,7 +37,24 @@
     "nonconformant_case_results_are_not_paper_eligible": true,
     "paper_scientific_exports_present": true
   },
-  "open_p0_p1_protocol_findings": [],
+  "open_p0_p1_protocol_findings": [
+    {
+      "severity": "P1",
+      "case_name": "mos2-band-gap",
+      "finding": "One or more preregistered cross-source landscape claims were not supported by records returned in this frozen run.",
+      "current_status": "protocol_ineligible",
+      "evidence": "results/case-traces/mos2-band-gap.json",
+      "required_resolution": "Preserve the missing source/category contributions as explicit gaps; do not fabricate, substitute, or selectively rerun them."
+    },
+    {
+      "severity": "P1",
+      "case_name": "lifepo4-stability",
+      "finding": "One or more preregistered cross-source landscape claims were not supported by records returned in this frozen run.",
+      "current_status": "protocol_ineligible",
+      "evidence": "results/case-traces/lifepo4-stability.json",
+      "required_resolution": "Preserve the missing source/category contributions as explicit gaps; do not fabricate, substitute, or selectively rerun them."
+    }
+  ],
   "external_execution_blockers": [],
-  "conclusion": "All three cases satisfy the frozen protocol-eligibility gates, including declared exact-Bundle method-input binding where applicable. This internal checklist does not validate scientific truth and is not external peer review."
+  "conclusion": "One or more preregistered eligibility gates remain unsatisfied; the stored typed outcomes and exact input bindings determine the limitation without a workaround."
 }
