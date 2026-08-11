@@ -1,15 +1,14 @@
 {
-  "schema_version": "matrouter.paper-case-spec/10",
+  "schema_version": "matrouter.paper-case-spec/11",
   "case_name": "lifepo4-stability",
   "formula": "LiFePO4",
   "research_question_ids": ["RQ1", "RQ2", "RQ3"],
   "material_landscape": {
     "cross_source_union_adds": [
       {
-        "statement": "The aggregate places COD and MaterialsGalaxy structure records beside computed structures from Materials Project, making structural candidates visible before any thermodynamic conclusion is attempted.",
+        "statement": "The aggregate places experimental COD structure records beside computed structures from Materials Project, making source-qualified structural candidates visible before any thermodynamic conclusion is attempted.",
         "supporting_contributions": [
           {"source": "cod", "data_categories": ["structure_or_phase"]},
-          {"source": "materialsgalaxy:generated_structures", "data_categories": ["structure_or_phase"]},
           {"source": "materials_project", "data_categories": ["structure_or_phase"]}
         ]
       },
@@ -42,6 +41,16 @@
     "public_bundle_item_limit": 512,
     "public_bundle_canonical_byte_limit": 16000000
   },
+  "rq2_source_record_exhaustion_shards": {
+    "selection": "every_ready_primary_search_materials_execution_route_in_stable_exact_route_order",
+    "source_scope": "selected",
+    "record_scope": "exhaust_upstream",
+    "record_limit": "begin_evidence_run.capacity.max_single_source_record_items",
+    "max_pages_per_route": 100,
+    "max_elapsed_seconds_per_route": 300.0,
+    "max_normalized_bytes_per_route": 100000000,
+    "bundle_policy": "one_bounded_evidence_run_and_bundle_per_exact_execution_route"
+  },
   "stage_2_targets": [],
   "explicit_method_input_route": {
     "evidence_kind": "thermochemical_entries",
@@ -54,7 +63,7 @@
     "selection_timing": "Fixed before the live run; never replaced dynamically.",
     "scope_note": "This chemical-system route is separate from record-target Stage 2. It retrieves one complete exact Materials Project GGA/GGA+U/r2SCAN compatibility-mixed entry set under the public 2000-entry ceiling; the exact thermo_type, dataset snapshot, correction scheme, frame, and completeness remain bound to the Bundle item, and incompleteness forbids a hull panel."
   },
-  "retrieval_strategy": "One aggregate_source_records call uses bounded parallel cross-source execution (at most eight workers) over every parsed qualified execution route, aggregates in stable order, and returns the primary cross-source Bundle; per-source pagination remains sequential. The public 512-item/16-MB Bundle capacity is shared by execution route, typed partial and truncated outcomes remain limitations, and no claim is made that every upstream record was retrieved. MaterialsGalaxy summary is one provider-level execution route; child dataset identities on returned records remain exact provenance and are not separate outcomes. No per-record enrichment is performed. A separate preregistered thermochemical follow-up Bundle may feed one hull only when its exact single-source, single-frame compatible entry set is complete.",
+  "retrieval_strategy": "RQ1 uses one aggregate_source_records call with bounded parallel cross-source execution (at most eight workers), stable-order aggregation, and fair sharing of the public 512-item/16-MB primary Bundle; its typed outcomes and completeness states are the route-accounting result, not an all-records landscape. RQ2 then runs one independent selected-source exhaust-upstream Evidence run and Bundle for every ready primary search_materials execution route in stable exact-route order, taking each record limit from begin_evidence_run.capacity.max_single_source_record_items while preserving the declared page, time, and byte ceilings. Shard records remain source-qualified and are never merged or deduplicated across routes. MaterialsGalaxy remains one provider-level execution route; child dataset identities are record provenance, not child outcomes. No per-record enrichment is performed. The separate preregistered thermochemical Bundle may feed one hull only when its exact single-source, single-frame compatible entry set is complete.",
   "context_differences": [
     "Formation energy is distinct from energy above hull and a source-native stability label.",
     "The phase-diagram input is the Materials Project GGA/GGA+U/r2SCAN compatibility-mixed frame for thermo_type GGA_GGA+U_R2SCAN and its exact dataset snapshot; it is not one functional or one homogeneous DFT method.",

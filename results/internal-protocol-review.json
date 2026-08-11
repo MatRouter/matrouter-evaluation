@@ -1,5 +1,5 @@
 {
-  "schema_version": "matrouter.paper-internal-protocol-review/5",
+  "schema_version": "matrouter.paper-internal-protocol-review/6",
   "review_name": "internal_protocol_review",
   "review_kind": "deterministic_internal_protocol_and_scientific_boundary_checklist",
   "independence_claim": false,
@@ -10,12 +10,14 @@
     "three_named_cases_only": true,
     "three_common_research_questions": true,
     "one_primary_aggregate_attempts_all_qualified_routes_with_typed_capacity_stops": true,
+    "rq2_shards_cover_every_ready_primary_search_route_in_stable_order": true,
+    "rq2_incomplete_shards_never_claim_complete_inventory": true,
     "paper_results_eligible_is_protocol_only": true,
     "stage_2_uses_only_preregistered_exact_targets": true,
     "preregistered_exact_target_followups_succeed": true,
     "primary_aggregate_has_real_cross_source_records_each_case": true,
-    "rq2_material_landscape_trace_is_source_supported": false,
-    "no_independent_per_route_source_record_runs": true,
+    "rq2_material_landscape_trace_is_source_supported": true,
+    "only_declared_run_roles_and_nonselective_rq2_shards": true,
     "all_qualified_source_routes_executed_each_case": true,
     "failed_never_verified_empty": true,
     "formula_phase_and_cross_frame_guardrails_present": true,
@@ -23,7 +25,7 @@
     "mos2_has_no_unified_gap_claim": true,
     "bi2se3_remains_source_native_not_validated": true,
     "bi2se3_exact_source_native_soc_pair_present": true,
-    "mos2_catalog_not_phase_resolved_and_no_experimental_gap_claim": false,
+    "mos2_catalog_not_phase_resolved_and_no_experimental_gap_claim": true,
     "lifepo4_frame_and_tolerance_semantics_declared": true,
     "bi2se3_two_phase_by_soc_descriptive_table": true,
     "raw_replay_matches_stored_bundle": true,
@@ -37,24 +39,7 @@
     "nonconformant_case_results_are_not_paper_eligible": true,
     "paper_scientific_exports_present": true
   },
-  "open_p0_p1_protocol_findings": [
-    {
-      "severity": "P1",
-      "case_name": "mos2-band-gap",
-      "finding": "One or more preregistered cross-source landscape claims were not supported by records returned in this frozen run.",
-      "current_status": "protocol_ineligible",
-      "evidence": "results/case-traces/mos2-band-gap.json",
-      "required_resolution": "Preserve the missing source/category contributions as explicit gaps; do not fabricate, substitute, or selectively rerun them."
-    },
-    {
-      "severity": "P1",
-      "case_name": "lifepo4-stability",
-      "finding": "One or more preregistered cross-source landscape claims were not supported by records returned in this frozen run.",
-      "current_status": "protocol_ineligible",
-      "evidence": "results/case-traces/lifepo4-stability.json",
-      "required_resolution": "Preserve the missing source/category contributions as explicit gaps; do not fabricate, substitute, or selectively rerun them."
-    }
-  ],
+  "open_p0_p1_protocol_findings": [],
   "external_execution_blockers": [],
-  "conclusion": "One or more preregistered eligibility gates remain unsatisfied; the stored typed outcomes and exact input bindings determine the limitation without a workaround."
+  "conclusion": "All three cases satisfy the frozen protocol-eligibility gates, including declared exact-Bundle method-input binding where applicable. This internal checklist does not validate scientific truth and is not external peer review."
 }

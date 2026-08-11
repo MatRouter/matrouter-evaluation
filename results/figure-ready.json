@@ -1,6 +1,6 @@
 {
   "status": "release_bound_three_case_results",
-  "stage_1_scope": "One aggregate_source_records call performs bounded parallel cross-source execution over all parsed qualified routes (at most eight workers), preserves stable-order aggregation, and returns one primary EvidenceBundle. Per-source pagination remains sequential. The public 512-item/16-MB capacity is shared by execution route; capacity and safety stops remain typed partial or truncated. All qualified routes are attempted, but not every upstream record is claimed retrieved.",
+  "stage_1_scope": "RQ1 uses one aggregate_source_records call for bounded parallel cross-source execution over all parsed qualified routes (at most eight workers), preserves stable-order aggregation, and returns one primary EvidenceBundle. Per-source pagination remains sequential. The public 512-item/16-MB capacity is shared by execution route; capacity and safety stops remain typed partial or truncated. All qualified routes are attempted, but not every upstream record is claimed retrieved.",
   "qualified_source_route_count_semantics": "Counts refer to qualified execution routes, not statistically independent evidence units. MaterialsGalaxy summary is one provider-level execution route; child dataset names on returned records are exact provenance, not additional execution outcomes.",
   "case_count": 3,
   "cases": [
@@ -12,21 +12,97 @@
         "ready_route_count": 32,
         "attempted_route_count": 32,
         "status_counts": {
-          "empty": 11,
-          "failed": 7,
+          "empty": 13,
+          "failed": 3,
           "partial": 2,
-          "succeeded": 12
+          "succeeded": 14
         },
         "record_completeness_counts": {
-          "complete": 12,
-          "empty": 11,
-          "failed": 7,
+          "complete": 14,
+          "empty": 13,
+          "failed": 3,
           "truncated": 2
         },
         "capacity_limitation_count": 2,
-        "source_record_count": 104,
-        "distinct_source_count": 16,
-        "distinct_provider_count": 10
+        "source_record_count": 116,
+        "distinct_source_count": 18,
+        "distinct_provider_count": 12
+      },
+      "rq2_source_record_exhaustion": {
+        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "ready_route_count": 32,
+        "shard_count": 32,
+        "all_ready_routes_sharded": true,
+        "source_record_count": 510,
+        "source_record_item_count": 510,
+        "source_record_sources": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy:nonlinear_optical",
+          "materialsgalaxy:topo_crystals",
+          "materialsgalaxy:topo_phonons",
+          "nomad",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd"
+        ],
+        "source_record_providers": [
+          "AFLOW",
+          "Alexandria",
+          "C2DB",
+          "COD",
+          "JARVIS-DFT",
+          "Materials Project",
+          "MaterialsGalaxy",
+          "NOMAD",
+          "OQMD",
+          "optimade-misc.odbx.science",
+          "optimade.2dmatpedia.org",
+          "optimade.materialscloud.org",
+          "optimade.openmaterialsdb.se"
+        ],
+        "status_counts": {
+          "empty": 13,
+          "failed": 2,
+          "succeeded": 17
+        },
+        "record_completeness_counts": {
+          "complete": 17,
+          "empty": 13,
+          "failed": 2
+        },
+        "complete_inventory_eligible": false,
+        "gap_count": 2,
+        "gaps": [
+          {
+            "source": "mpds",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null
+          },
+          {
+            "source": "optimade:mpddoptimade.phaseslab.org",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          }
+        ]
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -39,6 +115,7 @@
         {
           "statement": "The aggregate places COD crystal records beside AFLOW and Materials Project computed structure records, exposing multiple source-qualified structural and phase candidates without treating formula identity as phase identity.",
           "support_status": "supported",
+          "complete_inventory_support_status": "eligible",
           "supporting_sources": [
             "cod",
             "aflow",
@@ -48,14 +125,14 @@
         },
         {
           "statement": "The same landscape includes 2D C2DB electronic context and bulk or three-dimensional electronic records from Materials Project and NOMAD, so the dimensionality, method, functional, and SOC context actually returned by those sources can be inspected before selecting exact follow-ups; direct, indirect, or optical gap modality remains a gap when the source does not declare it.",
-          "support_status": "unsupported",
+          "support_status": "supported",
+          "complete_inventory_support_status": "eligible",
           "supporting_sources": [
             "c2db",
-            "materials_project"
-          ],
-          "missing_supporting_sources": [
+            "materials_project",
             "nomad"
-          ]
+          ],
+          "missing_supporting_sources": []
         }
       ],
       "exact_followup": {
@@ -134,7 +211,7 @@
       "actionable_next_step": "Any phase-resolved comparison beyond the one preregistered AFLOW-to-Materials-Project exact-structure match requires separately declared exact inputs; obtain separately identified experimental band-gap observations for an experiment-computation comparison and do not collapse this evidence to one MoS2 gap.",
       "external_handoff": "A phase-resolved experiment-computation comparison or new many-body/DFT calculation requires separately identified experimental gap data and external electronic-structure workflows over phase-matched inputs.",
       "unresolved_gaps": [
-        "This run retrieved no band-gap observation explicitly identified as experimental; COD and CODX experimental structures do not supply an experimental band gap.",
+        "This run retrieved no band-gap observation explicitly identified as experimental; COD experimental structures do not supply an experimental band gap.",
         "The returned band-gap observations do not declare direct, indirect, or optical modality; that context remains unresolved rather than inferred.",
         "Only the preregistered AFLOW and Materials Project exact bulk structures enter one fixed-parameter match; phase equivalence remains unresolved for every other cross-source record, the 2D C2DB target, and different polytypes.",
         "The result is a capacity-bounded multi-source material landscape, not a phase-resolved MoS2 gap answer.",
@@ -142,7 +219,7 @@
         "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
         "A missing parsed band/DOS artifact is not evidence that the source has no spectrum."
       ],
-      "prohibited_claim": "Do not report a universal MoS2 band gap or a phase-resolved MoS2 gap answer, merge records by formula, infer a shared 2H bulk, 1H monolayer, or other phase without explicit structure matching, count COD/CODX experimental structures as experimental band-gap observations, or treat retrieval/rendering as independent experimental validation."
+      "prohibited_claim": "Do not report a universal MoS2 band gap or a phase-resolved MoS2 gap answer, merge records by formula, infer a shared 2H bulk, 1H monolayer, or other phase without explicit structure matching, count COD experimental structures as experimental band-gap observations, or treat retrieval/rendering as independent experimental validation."
     },
     {
       "case_name": "lifepo4-stability",
@@ -152,48 +229,123 @@
         "ready_route_count": 32,
         "attempted_route_count": 32,
         "status_counts": {
-          "empty": 12,
-          "failed": 6,
-          "partial": 6,
-          "succeeded": 8
+          "empty": 13,
+          "failed": 3,
+          "partial": 5,
+          "succeeded": 11
         },
         "record_completeness_counts": {
-          "complete": 8,
-          "empty": 12,
-          "failed": 6,
-          "truncated": 6
+          "complete": 11,
+          "empty": 13,
+          "failed": 3,
+          "truncated": 5
         },
-        "capacity_limitation_count": 6,
-        "source_record_count": 123,
-        "distinct_source_count": 15,
-        "distinct_provider_count": 10
+        "capacity_limitation_count": 5,
+        "source_record_count": 115,
+        "distinct_source_count": 16,
+        "distinct_provider_count": 12
+      },
+      "rq2_source_record_exhaustion": {
+        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "ready_route_count": 32,
+        "shard_count": 32,
+        "all_ready_routes_sharded": true,
+        "source_record_count": 469,
+        "source_record_item_count": 469,
+        "source_record_sources": [
+          "aflow",
+          "alexandria",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy:topo_crystals",
+          "nomad",
+          "optimade:optimade-gnome.odbx.science",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd"
+        ],
+        "source_record_providers": [
+          "AFLOW",
+          "Alexandria",
+          "COD",
+          "JARVIS-DFT",
+          "Materials Project",
+          "MaterialsGalaxy",
+          "NOMAD",
+          "OQMD",
+          "optimade-gnome.odbx.science",
+          "optimade-misc.odbx.science",
+          "optimade.2dmatpedia.org",
+          "optimade.materialscloud.org",
+          "optimade.openmaterialsdb.se"
+        ],
+        "status_counts": {
+          "empty": 13,
+          "failed": 2,
+          "succeeded": 17
+        },
+        "record_completeness_counts": {
+          "complete": 17,
+          "empty": 13,
+          "failed": 2
+        },
+        "complete_inventory_eligible": false,
+        "gap_count": 2,
+        "gaps": [
+          {
+            "source": "mpds",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null
+          },
+          {
+            "source": "optimade:mpddoptimade.phaseslab.org",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          }
+        ]
       },
       "data_categories_actually_present": [
         "electronic_property",
         "material_identity",
+        "source_native_topology",
         "structure_or_phase",
         "thermodynamic_property"
       ],
       "cross_source_union_insights": [
         {
-          "statement": "The aggregate places COD and MaterialsGalaxy structure records beside computed structures from Materials Project, making structural candidates visible before any thermodynamic conclusion is attempted.",
+          "statement": "The aggregate places experimental COD structure records beside computed structures from Materials Project, making source-qualified structural candidates visible before any thermodynamic conclusion is attempted.",
           "support_status": "supported",
+          "complete_inventory_support_status": "eligible",
           "supporting_sources": [
             "cod",
-            "materialsgalaxy:generated_structures",
             "materials_project"
           ],
           "missing_supporting_sources": []
         },
         {
           "statement": "Materials Project and OPTIMADE ODBX records contribute source-qualified formation-energy or hull-related quantities with their own semantics, allowing the researcher to distinguish catalog evidence from the later exact compatible-entry hull calculation.",
-          "support_status": "unsupported",
+          "support_status": "supported",
+          "complete_inventory_support_status": "eligible",
           "supporting_sources": [
-            "materials_project"
-          ],
-          "missing_supporting_sources": [
+            "materials_project",
             "optimade:optimade-misc.odbx.science"
-          ]
+          ],
+          "missing_supporting_sources": []
         }
       ],
       "exact_followup": {
@@ -236,21 +388,100 @@
         "ready_route_count": 32,
         "attempted_route_count": 32,
         "status_counts": {
-          "empty": 12,
-          "failed": 6,
-          "partial": 3,
-          "succeeded": 11
+          "empty": 14,
+          "failed": 2,
+          "partial": 2,
+          "succeeded": 14
         },
         "record_completeness_counts": {
-          "complete": 11,
-          "empty": 12,
-          "failed": 6,
-          "truncated": 3
+          "complete": 14,
+          "empty": 14,
+          "failed": 2,
+          "truncated": 2
         },
-        "capacity_limitation_count": 3,
-        "source_record_count": 91,
+        "capacity_limitation_count": 2,
+        "source_record_count": 88,
         "distinct_source_count": 16,
-        "distinct_provider_count": 10
+        "distinct_provider_count": 12
+      },
+      "rq2_source_record_exhaustion": {
+        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "ready_route_count": 32,
+        "shard_count": 32,
+        "all_ready_routes_sharded": true,
+        "source_record_count": 152,
+        "source_record_item_count": 152,
+        "source_record_sources": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy:topo_crystals",
+          "nomad",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2"
+        ],
+        "source_record_providers": [
+          "AFLOW",
+          "Alexandria",
+          "C2DB",
+          "COD",
+          "JARVIS-DFT",
+          "Materials Project",
+          "MaterialsGalaxy",
+          "NOMAD",
+          "optimade-misc.odbx.science",
+          "optimade.2dmatpedia.org",
+          "optimade.materialscloud.org"
+        ],
+        "status_counts": {
+          "empty": 14,
+          "failed": 3,
+          "succeeded": 15
+        },
+        "record_completeness_counts": {
+          "complete": 15,
+          "empty": 14,
+          "failed": 3
+        },
+        "complete_inventory_eligible": false,
+        "gap_count": 3,
+        "gaps": [
+          {
+            "source": "mpds",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null
+          },
+          {
+            "source": "optimade:mpddoptimade.phaseslab.org",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          },
+          {
+            "source": "oqmd",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          }
+        ]
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -263,6 +494,7 @@
         {
           "statement": "The aggregate combines general crystal and electronic records from COD, Materials Project, NOMAD, AFLOW, and other qualified sources with MaterialsGalaxy/Materiae source-native topology records for the same formula.",
           "support_status": "supported",
+          "complete_inventory_support_status": "eligible",
           "supporting_sources": [
             "cod",
             "materials_project",
@@ -275,6 +507,7 @@
         {
           "statement": "MaterialsGalaxy contributes exact R-3m and Pnma topology labels under no-SOC and SOC request contexts, while the broader aggregate supplies separately attributed structural and scalar electronic context rather than an independent topology verdict.",
           "support_status": "supported",
+          "complete_inventory_support_status": "eligible",
           "supporting_sources": [
             "materialsgalaxy:topo_crystals",
             "materials_project"

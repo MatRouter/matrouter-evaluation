@@ -1,9 +1,43 @@
 {
   "case_name": "bi2se3-topology",
   "scientific_task": "What source-native SOC-conditioned topology data does MaterialsGalaxy report for Bi2Se3, and how do other qualified structural and electronic records broaden the physical context without becoming a universal topology verdict?",
-  "primary_aggregate_bundle_id": "sha256:c38ae04c6fd576fedb88619dd8cf9342b58075c16f3723483dd01028fcbed469",
+  "primary_aggregate_bundle_id": "sha256:44d5c9b516d1d0f033d245ef9201dfde69a9faad99b5d51305775928fea28e6c",
+  "rq2_source_record_exhaustion_shard_bundle_ids": [
+    "sha256:e51b0108362902c14099fe9a0949f4db0c0f98f60825e5fccacbbdc949fa7c67",
+    "sha256:e5571d97dced60a049f4c81f1e96e5a5577810e828cdb2182667631105d16072",
+    "sha256:33f744cd24c85d08fda6105be2fae2a024ebbff8283849ceae14f11f36ac363a",
+    "sha256:4eb0a20ebf0df863af385516624e9f7890b0e755d4750642a44e0999a8759a8c",
+    "sha256:908440727963919e2f1ec3bbfab83731bdaed3ac1500b85217fce1790b1a163f",
+    "sha256:415d067ebc50b6cb34adb7bf2d38a3f6a456dcb2202eec2fc45bd2a13e6b2543",
+    "sha256:7d3f855400111e50096013f4e577378cc2688b34d0e00af15637caed22533b99",
+    "sha256:e48c4ec362d3577bd196e26793733bcec94221fa25fb14a72347b274dc6e247d",
+    "sha256:44ad3ca4328d7b8b9201aa1ea0209712a209c7b56332dca156db5f2e525ab1c0",
+    "sha256:4628194c4a7efc28a9fb61133254b55971e33dc348ec2c82059b5ef6609e1a18",
+    "sha256:5a3699590d18a833a8fe85d7f162a975cf61aeb0511a9141699897ac5dceebb6",
+    "sha256:137ba31c90cd72bb20ab22221138791ad2d56163ad8c3f3ca2a77617c388a559",
+    "sha256:5a81a224baa33cacad900025e6784b37346a3352a23c5f31a88e9828a60af750",
+    "sha256:6ddf3b9f6ccc363157e090a5d7a00624e0fa7ca0dd488b531327447a8155261f",
+    "sha256:5aea5c80fa4f74d87df174e99cca1228c827a6df2dc0a737f6e3437afe5c723c",
+    "sha256:e4573c34d6b6c133e19aa9274bfa86acedcbe512d15527c455ece8b193365772",
+    "sha256:11a4dcc72a483d357f3b38ef620cb99a360529a8231126c87012f395829302f9",
+    "sha256:1aab6a5847d4a66539ba9375240ca5584cfb5e62a0cb528776294a83c27d0c87",
+    "sha256:a3a1bb55e1ad7582f53856e46348a1a2b70b740a503a5caae20bf9223ce8b18d",
+    "sha256:562be27e95bfdcbd767e3204f9fc3094d8ec97590461ea8378d7508a19dcd6e1",
+    "sha256:1675ad8b1e4d5c0a47d7e7f99744860ec75cd4ac28c39931a55c1ce8a2357663",
+    "sha256:5d0fc2238a0cf62f231e7563f61b978b3b15778a8509a2b9f62b83c328c212ac",
+    "sha256:32c0c7878389fcd637cce363fa6727817fc7c4148e569347ed9d75d84ef14042",
+    "sha256:1e32714a046224212a69468063d77954f6c9af57763509c12ff2830f54d7e9b3",
+    "sha256:77b1cff5fdad46ece144bc9f1bc071c21019424b870bb32b0e243a47c78ed02e",
+    "sha256:aa82f3f937c963d109838ec32c880214dad89277535311f90bd3d4b62af56031",
+    "sha256:2f78bfb1dced11a925d1d4e1a75c0cfefe35c551c3e987116e1bd47bbbfa1cb2",
+    "sha256:074b11c2ee13852e87aa56cc6580304fc5111927df7acccde0eec5219db48814",
+    "sha256:1b7ed810723d308f6fcddfc742ca4b757bb3d77e4b8022fbce85f0c90f313953",
+    "sha256:ddc8ba9893a4a2f24ff9eebd7838411a3dfd1deefccaaafce5724c70e04dcf37",
+    "sha256:b4dce5d2b4f99fa25d9c18f8092f97f1d28947e7eabb560e26fa3910d4b6d985",
+    "sha256:3a8a6e5ef25bc57d8347b103338d03e533bd40e4e9c4a7a63cc054d3bda611e3"
+  ],
   "declared_source_scope": {
-    "catalog_and_configuration": "MatRouter v0.9.1 capability catalog under the captured runtime configuration",
+    "catalog_and_configuration": "MatRouter v0.9.2 capability catalog under the captured runtime configuration",
     "evidence_kind": "source_record",
     "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
@@ -20,16 +54,16 @@
     "ready": 32,
     "attempted": 32,
     "status_counts": {
-      "empty": 12,
-      "failed": 6,
-      "partial": 3,
-      "succeeded": 11
+      "empty": 14,
+      "failed": 2,
+      "partial": 2,
+      "succeeded": 14
     },
     "record_completeness_counts": {
-      "complete": 11,
-      "empty": 12,
-      "failed": 6,
-      "truncated": 3
+      "complete": 14,
+      "empty": 14,
+      "failed": 2,
+      "truncated": 2
     },
     "outcomes": [
       {
@@ -82,11 +116,11 @@
       },
       {
         "source": "materialsgalaxy",
-        "status": "partial",
-        "record_count": 15,
-        "reason_code": "evidence_bundle_item_capacity_reached",
-        "completeness": "truncated",
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
+        "status": "succeeded",
+        "record_count": 2,
+        "reason_code": "records_returned",
+        "completeness": "complete",
+        "truncation_reason": null
       },
       {
         "source": "mpds",
@@ -114,18 +148,18 @@
       },
       {
         "source": "optimade:optimade-gnome.odbx.science",
-        "status": "failed",
+        "status": "empty",
         "record_count": 0,
-        "reason_code": "upstream_timeout",
-        "completeness": "failed",
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
         "truncation_reason": null
       },
       {
         "source": "optimade:optimade-misc.odbx.science",
-        "status": "failed",
-        "record_count": 0,
-        "reason_code": "upstream_timeout",
-        "completeness": "failed",
+        "status": "succeeded",
+        "record_count": 3,
+        "reason_code": "records_returned",
+        "completeness": "complete",
         "truncation_reason": null
       },
       {
@@ -258,10 +292,10 @@
       },
       {
         "source": "optimade:optimade.odbx.science",
-        "status": "failed",
+        "status": "empty",
         "record_count": 0,
-        "reason_code": "upstream_timeout",
-        "completeness": "failed",
+        "reason_code": "verified_empty_result",
+        "completeness": "empty",
         "truncation_reason": null
       },
       {
@@ -274,10 +308,10 @@
       },
       {
         "source": "oqmd",
-        "status": "failed",
-        "record_count": 0,
-        "reason_code": "upstream_http_unavailable",
-        "completeness": "failed",
+        "status": "succeeded",
+        "record_count": 7,
+        "reason_code": "records_returned",
+        "completeness": "complete",
         "truncation_reason": null
       },
       {
@@ -290,83 +324,159 @@
       }
     ]
   },
+  "rq2_source_record_exhaustion": {
+    "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+    "ready_route_count": 32,
+    "shard_count": 32,
+    "shard_routes": [
+      "aflow",
+      "alexandria",
+      "c2db",
+      "cod",
+      "jarvis_dft",
+      "materials_project",
+      "materialsgalaxy",
+      "mpds",
+      "nomad",
+      "optimade:mpddoptimade.phaseslab.org",
+      "optimade:optimade-gnome.odbx.science",
+      "optimade:optimade-misc.odbx.science",
+      "optimade:optimade.2dmatpedia.org",
+      "optimade:optimade.materialscloud.org/archive/1z-pd",
+      "optimade:optimade.materialscloud.org/archive/ed-g2",
+      "optimade:optimade.materialscloud.org/archive/jk-9v",
+      "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "optimade:optimade.materialscloud.org/archive/zt-z4",
+      "optimade:optimade.materialscloud.org/main/2dtopo",
+      "optimade:optimade.materialscloud.org/main/autowannier",
+      "optimade:optimade.materialscloud.org/main/curated-cofs",
+      "optimade:optimade.materialscloud.org/main/mc2d",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+      "optimade:optimade.materialscloud.org/main/stoceriaitf",
+      "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+      "optimade:optimade.odbx.science",
+      "optimade:optimade.openmaterialsdb.se",
+      "oqmd",
+      "tcod"
+    ],
+    "shard_bundle_ids": [
+      "sha256:e51b0108362902c14099fe9a0949f4db0c0f98f60825e5fccacbbdc949fa7c67",
+      "sha256:e5571d97dced60a049f4c81f1e96e5a5577810e828cdb2182667631105d16072",
+      "sha256:33f744cd24c85d08fda6105be2fae2a024ebbff8283849ceae14f11f36ac363a",
+      "sha256:4eb0a20ebf0df863af385516624e9f7890b0e755d4750642a44e0999a8759a8c",
+      "sha256:908440727963919e2f1ec3bbfab83731bdaed3ac1500b85217fce1790b1a163f",
+      "sha256:415d067ebc50b6cb34adb7bf2d38a3f6a456dcb2202eec2fc45bd2a13e6b2543",
+      "sha256:7d3f855400111e50096013f4e577378cc2688b34d0e00af15637caed22533b99",
+      "sha256:e48c4ec362d3577bd196e26793733bcec94221fa25fb14a72347b274dc6e247d",
+      "sha256:44ad3ca4328d7b8b9201aa1ea0209712a209c7b56332dca156db5f2e525ab1c0",
+      "sha256:4628194c4a7efc28a9fb61133254b55971e33dc348ec2c82059b5ef6609e1a18",
+      "sha256:5a3699590d18a833a8fe85d7f162a975cf61aeb0511a9141699897ac5dceebb6",
+      "sha256:137ba31c90cd72bb20ab22221138791ad2d56163ad8c3f3ca2a77617c388a559",
+      "sha256:5a81a224baa33cacad900025e6784b37346a3352a23c5f31a88e9828a60af750",
+      "sha256:6ddf3b9f6ccc363157e090a5d7a00624e0fa7ca0dd488b531327447a8155261f",
+      "sha256:5aea5c80fa4f74d87df174e99cca1228c827a6df2dc0a737f6e3437afe5c723c",
+      "sha256:e4573c34d6b6c133e19aa9274bfa86acedcbe512d15527c455ece8b193365772",
+      "sha256:11a4dcc72a483d357f3b38ef620cb99a360529a8231126c87012f395829302f9",
+      "sha256:1aab6a5847d4a66539ba9375240ca5584cfb5e62a0cb528776294a83c27d0c87",
+      "sha256:a3a1bb55e1ad7582f53856e46348a1a2b70b740a503a5caae20bf9223ce8b18d",
+      "sha256:562be27e95bfdcbd767e3204f9fc3094d8ec97590461ea8378d7508a19dcd6e1",
+      "sha256:1675ad8b1e4d5c0a47d7e7f99744860ec75cd4ac28c39931a55c1ce8a2357663",
+      "sha256:5d0fc2238a0cf62f231e7563f61b978b3b15778a8509a2b9f62b83c328c212ac",
+      "sha256:32c0c7878389fcd637cce363fa6727817fc7c4148e569347ed9d75d84ef14042",
+      "sha256:1e32714a046224212a69468063d77954f6c9af57763509c12ff2830f54d7e9b3",
+      "sha256:77b1cff5fdad46ece144bc9f1bc071c21019424b870bb32b0e243a47c78ed02e",
+      "sha256:aa82f3f937c963d109838ec32c880214dad89277535311f90bd3d4b62af56031",
+      "sha256:2f78bfb1dced11a925d1d4e1a75c0cfefe35c551c3e987116e1bd47bbbfa1cb2",
+      "sha256:074b11c2ee13852e87aa56cc6580304fc5111927df7acccde0eec5219db48814",
+      "sha256:1b7ed810723d308f6fcddfc742ca4b757bb3d77e4b8022fbce85f0c90f313953",
+      "sha256:ddc8ba9893a4a2f24ff9eebd7838411a3dfd1deefccaaafce5724c70e04dcf37",
+      "sha256:b4dce5d2b4f99fa25d9c18f8092f97f1d28947e7eabb560e26fa3910d4b6d985",
+      "sha256:3a8a6e5ef25bc57d8347b103338d03e533bd40e4e9c4a7a63cc054d3bda611e3"
+    ],
+    "all_ready_routes_sharded": true,
+    "source_record_count": 152,
+    "source_record_item_count": 152,
+    "source_record_sources": [
+      "aflow",
+      "alexandria",
+      "c2db",
+      "cod",
+      "jarvis_dft",
+      "materials_project",
+      "materialsgalaxy:topo_crystals",
+      "nomad",
+      "optimade:optimade-misc.odbx.science",
+      "optimade:optimade.2dmatpedia.org",
+      "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "optimade:optimade.materialscloud.org/main/mc2d",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2"
+    ],
+    "source_record_providers": [
+      "AFLOW",
+      "Alexandria",
+      "C2DB",
+      "COD",
+      "JARVIS-DFT",
+      "Materials Project",
+      "MaterialsGalaxy",
+      "NOMAD",
+      "optimade-misc.odbx.science",
+      "optimade.2dmatpedia.org",
+      "optimade.materialscloud.org"
+    ],
+    "status_counts": {
+      "empty": 14,
+      "failed": 3,
+      "succeeded": 15
+    },
+    "record_completeness_counts": {
+      "complete": 15,
+      "empty": 14,
+      "failed": 3
+    },
+    "complete_inventory_eligible": false,
+    "gap_count": 3,
+    "gaps": [
+      {
+        "source": "mpds",
+        "status": "failed",
+        "record_completeness": "failed",
+        "record_count": 0,
+        "upstream_total": null,
+        "reason_code": "upstream_access_denied",
+        "truncation_reason": null
+      },
+      {
+        "source": "optimade:mpddoptimade.phaseslab.org",
+        "status": "failed",
+        "record_completeness": "failed",
+        "record_count": 0,
+        "upstream_total": null,
+        "reason_code": "upstream_timeout",
+        "truncation_reason": null
+      },
+      {
+        "source": "oqmd",
+        "status": "failed",
+        "record_completeness": "failed",
+        "record_count": 0,
+        "upstream_total": null,
+        "reason_code": "upstream_timeout",
+        "truncation_reason": null
+      }
+    ]
+  },
+  "rq2_interpretation_boundary": {
+    "observed_landscape_supported": true,
+    "complete_inventory_eligible": false,
+    "semantics": "Shard records may support an observed source-qualified landscape even when a shard is failed, unknown, partial, or truncated. Complete-inventory wording is allowed only when every ready route is sharded and every shard is complete or verified empty."
+  },
   "contributing_exact_sources": [
-    {
-      "source": "nomad",
-      "provider": "NOMAD",
-      "execution_route": "nomad",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 79,
-        "pages_fetched": 1,
-        "last_cursor": "6kNpGpJ4tzRJqmAPIn-4IsgL_bIm",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 15,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [
-        "band_gap_eV"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0289d10f6caddcc1e9a3b3139cc016f3fac06b073611cf4b5514ef1206371236",
-        "source_id": "6K6PB1tf_WWxmIUcYakEetv3qBNy",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "Pnma",
-            "space_group_number": 62,
-            "dimensionality": "3D"
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "materialsgalaxy:generated_structures",
-      "provider": "MaterialsGalaxy",
-      "execution_route": "materialsgalaxy",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 70,
-        "pages_fetched": 1,
-        "last_cursor": "1",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 9,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:09b41d4953e1f21cc447ffb269fb9d7ab3061738100d52d888a57b10d635e825",
-        "source_id": "mg-1415611",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "R-3m",
-            "space_group_number": 166
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
     {
       "source": "aflow",
       "provider": "AFLOW",
@@ -381,7 +491,7 @@
         "exhaustion_evidence": "aflow_short_page",
         "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 12,
+      "record_count_in_rq2_shard": 12,
       "data_categories": [
         "electronic_property",
         "material_identity",
@@ -394,13 +504,13 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:09dd145387c5bc3cbdcc217edfec10b983be28382f9ad0d0d5d7d4545f487463",
-        "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Bi2Se3_ICSD_617101",
+        "source_record_item_id": "sha256:2c3d0a39a15e173f375a77027e0b9cba5dd6ab3a5027d5bd5d6686f9c53ad07d",
+        "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Bi2Se3_ICSD_617072",
         "formula": "Bi2Se3",
         "context": {
           "structure_or_phase": {
             "space_group_number": 166,
-            "prototype": "Bi2Se3_ICSD_617101"
+            "prototype": "Bi2Se3_ICSD_617072"
           },
           "method_or_observable": {
             "dft_type": [
@@ -427,10 +537,10 @@
         "observations": [
           {
             "source": "aflow",
-            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Bi2Se3_ICSD_617101",
+            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Bi2Se3_ICSD_617072",
             "formula": "Bi2Se3",
             "property": "band_gap_eV",
-            "value": 0.3901,
+            "value": 0.3929,
             "unit": "eV",
             "semantic": "electronic_band_gap",
             "context": {
@@ -440,10 +550,10 @@
           },
           {
             "source": "aflow",
-            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Bi2Se3_ICSD_617101",
+            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/RHL/Bi2Se3_ICSD_617072",
             "formula": "Bi2Se3",
             "property": "formation_enthalpy_per_atom_eV",
-            "value": -0.392747,
+            "value": -0.392193,
             "unit": "eV/atom",
             "semantic": "formation_enthalpy_per_atom",
             "context": {
@@ -455,55 +565,20 @@
       }
     },
     {
-      "source": "optimade:optimade.2dmatpedia.org",
-      "provider": "optimade.2dmatpedia.org",
-      "execution_route": "optimade:optimade.2dmatpedia.org",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 4,
-        "upstream_total": 4,
-        "pages_fetched": 1,
-        "last_cursor": "http://optimade.2dmatpedia.org/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0a21802d8e85555f565ef4957f116577436d93f174bebdfc3406cb60ad07bc0a",
-        "source_id": "2dm-4453",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 2
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
       "source": "alexandria",
       "provider": "Alexandria",
       "execution_route": "alexandria",
-      "route_status": "partial",
+      "route_status": "succeeded",
       "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
+        "state": "complete",
+        "returned_count": 22,
         "upstream_total": null,
         "pages_fetched": 1,
         "last_cursor": null,
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
+        "exhaustion_evidence": "alexandria_next_cursor_absent",
+        "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 15,
+      "record_count_in_rq2_shard": 22,
       "data_categories": [
         "electronic_property",
         "material_identity",
@@ -516,12 +591,12 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0a9de010212b8420a6486401726f22173fe990d433ae54edaf507ef8dbcad217",
-        "source_id": "agm003144811",
+        "source_record_item_id": "sha256:02ea421c0841340b496ebfe67c904ee946985e5f430db9310c53a85632c012ce",
+        "source_id": "agm003144799",
         "formula": "Bi2Se3",
         "context": {
           "structure_or_phase": {
-            "space_group_number": 15
+            "space_group_number": 11
           },
           "method_or_observable": {
             "functional_status": "not_provided"
@@ -531,587 +606,22 @@
         "observations": [
           {
             "source": "alexandria",
-            "source_id": "agm003144811",
+            "source_id": "agm003144799",
             "formula": "Bi2Se3",
             "property": "band_gap_eV",
-            "value": 0.0,
+            "value": 1.0498,
             "unit": "eV",
             "semantic": "electronic_band_gap",
             "context": {}
           },
           {
             "source": "alexandria",
-            "source_id": "agm003144811",
-            "formula": "Bi2Se3",
-            "property": "energy_above_hull_eV",
-            "value": 0.2774101,
-            "unit": "eV/atom",
-            "semantic": "energy_above_convex_hull_per_atom",
-            "context": {}
-          }
-        ]
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 5,
-        "upstream_total": 5,
-        "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbe-v1/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 5,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0e0e9c97f58d387f0324f14cb8dae8ab8f9b90537d69708fa88e62f790c4f512",
-        "source_id": "88eb0143-b6fa-4070-aaf3-a440e65e0e4d",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 5,
-        "upstream_total": 5,
-        "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v2/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 5,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0e2e485d43591de13e2fe01eebd0f546c38f07c1d3c39b9f26d23478f89b33bb",
-        "source_id": "0c0090b4-a141-4f9c-92c6-44f171c596fc",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "materialsgalaxy:topo_crystals",
-      "provider": "MaterialsGalaxy",
-      "execution_route": "materialsgalaxy",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 70,
-        "pages_fetched": 1,
-        "last_cursor": "1",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 2,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "source_native_topology",
-        "structure_or_phase"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "topology_class_no_soc",
-        "topology_class_soc"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:0f00a54000a8d8af666e93c3fa446cd81d4eff263b12e17637acf54ec6afd45a",
-        "source_id": "mg-35598",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "R-3m",
-            "space_group_number": 166,
-            "dimensionality": 2
-          },
-          "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "band_gap_eV",
-              "context": {
-                "dimensionality": 2
-              }
-            },
-            {
-              "property": "topology_class_no_soc",
-              "context": {
-                "soc": false
-              }
-            },
-            {
-              "property": "topology_class_soc",
-              "context": {
-                "soc": true
-              }
-            }
-          ]
-        },
-        "observations": [
-          {
-            "source": "materialsgalaxy:topo_crystals",
-            "source_id": "mg-35598",
-            "formula": "Bi2Se3",
-            "property": "band_gap_eV",
-            "value": 0.37930000000000064,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {
-              "dimensionality": 2
-            }
-          },
-          {
-            "source": "materialsgalaxy:topo_crystals",
-            "source_id": "mg-35598",
-            "formula": "Bi2Se3",
-            "property": "topology_class_no_soc",
-            "value": "Triv_Ins",
-            "unit": null,
-            "semantic": "source_native_topology_classification",
-            "context": {
-              "soc": false
-            }
-          },
-          {
-            "source": "materialsgalaxy:topo_crystals",
-            "source_id": "mg-35598",
-            "formula": "Bi2Se3",
-            "property": "topology_class_soc",
-            "value": "TI",
-            "unit": null,
-            "semantic": "source_native_topology_classification",
-            "context": {
-              "soc": true
-            }
-          }
-        ]
-      }
-    },
-    {
-      "source": "materials_project",
-      "provider": "Materials Project",
-      "execution_route": "materials_project",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 4,
-        "upstream_total": null,
-        "pages_fetched": 1,
-        "last_cursor": null,
-        "exhaustion_evidence": "mp_api_chunk_sequence_exhausted",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase",
-        "thermodynamic_property"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "energy_above_hull_eV",
-        "formation_energy_per_atom_eV",
-        "is_stable"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:1737f830f653e7cbf90480ccf66c20e9f31ed13f8138341134ccbb80bf26dec4",
-        "source_id": "mp-23164",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "Pnma",
-            "space_group_number": 62
-          },
-          "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "is_stable",
-              "context": {
-                "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
-              }
-            }
-          ]
-        },
-        "observations": [
-          {
-            "source": "materials_project",
-            "source_id": "aaafsjbr",
-            "formula": "Bi2Se3",
-            "property": "band_gap_eV",
-            "value": 0.9577999999999998,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {}
-          },
-          {
-            "source": "materials_project",
-            "source_id": "mp-23164",
-            "formula": "Bi2Se3",
-            "property": "energy_above_hull_eV",
-            "value": 0.01470964100000316,
-            "unit": "eV/atom",
-            "semantic": "energy_above_convex_hull_per_atom",
-            "context": {}
-          },
-          {
-            "source": "materials_project",
-            "source_id": "mp-23164",
-            "formula": "Bi2Se3",
-            "property": "formation_energy_per_atom_eV",
-            "value": -0.419367294437501,
-            "unit": "eV/atom",
-            "semantic": "formation_energy_per_atom",
-            "context": {}
-          },
-          {
-            "source": "materials_project",
-            "source_id": "mp-23164",
-            "formula": "Bi2Se3",
-            "property": "is_stable",
-            "value": false,
-            "unit": null,
-            "semantic": "thermodynamic_stability_label",
-            "context": {
-              "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "source": "cod",
-      "provider": "COD",
-      "execution_route": "cod",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 4,
-        "upstream_total": 4,
-        "pages_fetched": 1,
-        "last_cursor": null,
-        "exhaustion_evidence": "rest_count_matches_json_rows",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:1dfbb8dc60e695fae905c1318dce686268a617ae251a81481f01a83f9ba2cdda",
-        "source_id": "9007376",
-        "formula": "Bi2 Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "P n m a",
-            "space_group_number": 62
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "materialsgalaxy:CODX",
-      "provider": "MaterialsGalaxy",
-      "execution_route": "materialsgalaxy",
-      "route_status": "partial",
-      "record_completeness": {
-        "state": "truncated",
-        "returned_count": 15,
-        "upstream_total": 70,
-        "pages_fetched": 1,
-        "last_cursor": "1",
-        "exhaustion_evidence": null,
-        "truncation_reason": "evidence_bundle_item_capacity_reached"
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:2904b072670fa208112d0b6c422ea1d5474f8943707c1578e83878c79b6978e6",
-        "source_id": "mg-1383200",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "R-3m",
-            "space_group_number": 166,
-            "dimensionality": 2
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "jarvis_dft",
-      "provider": "JARVIS-DFT",
-      "execution_route": "jarvis_dft",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 2,
-        "upstream_total": 2,
-        "pages_fetched": 1,
-        "last_cursor": null,
-        "exhaustion_evidence": "fixed_snapshot_scanned_to_end",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 2,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase",
-        "thermodynamic_property"
-      ],
-      "property_names": [
-        "band_gap_eV",
-        "energy_above_hull_eV",
-        "formation_energy_per_atom_eV"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:4ea1614b8a43fc898d94b08b10c98f2fdba3cb2669b84189719b57f222ef0858",
-        "source_id": "JVASP-1067",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "space_group_symbol": "R-3m",
-            "space_group_number": 166,
-            "dimensionality": "2D-bulk"
-          },
-          "method_or_observable": {},
-          "property_contexts": [
-            {
-              "property": "band_gap_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "OptB88vdW",
-                "method_family": "DFT"
-              }
-            },
-            {
-              "property": "energy_above_hull_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "OptB88vdW",
-                "method_family": "DFT"
-              }
-            },
-            {
-              "property": "formation_energy_per_atom_eV",
-              "context": {
-                "dimensionality": "2D-bulk",
-                "functional": "OptB88vdW",
-                "method_family": "DFT"
-              }
-            }
-          ]
-        },
-        "observations": [
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-1067#field=optb88vdw_bandgap",
-            "formula": "Bi2Se3",
-            "property": "band_gap_eV",
-            "value": 0.319,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "OptB88vdW",
-              "method_family": "DFT"
-            }
-          },
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-1067",
+            "source_id": "agm003144799",
             "formula": "Bi2Se3",
             "property": "energy_above_hull_eV",
             "value": 0.0,
             "unit": "eV/atom",
             "semantic": "energy_above_convex_hull_per_atom",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "OptB88vdW",
-              "method_family": "DFT"
-            }
-          },
-          {
-            "source": "jarvis_dft",
-            "source_id": "JVASP-1067",
-            "formula": "Bi2Se3",
-            "property": "formation_energy_per_atom_eV",
-            "value": -0.40429,
-            "unit": "eV/atom",
-            "semantic": "formation_energy_per_atom",
-            "context": {
-              "dimensionality": "2D-bulk",
-              "functional": "OptB88vdW",
-              "method_family": "DFT"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 4,
-        "upstream_total": 4,
-        "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v1/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 4,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:53f608b40204224f9f3f6b9ab3734b7eff31ac12f924d31c0d3ce3484c817f47",
-        "source_id": "865f2d91-f670-4a2f-8955-15a8de54ec97",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/archive/m0-zg",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/archive/m0-zg",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 2,
-        "upstream_total": 2,
-        "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/archive/m0-zg/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 2,
-      "data_categories": [
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:632815e5767f68255a94a8450526f60c1d1ed234fe4df25f693f26cbc9524975",
-        "source_id": "MAT00010230",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 3
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": []
-      }
-    },
-    {
-      "source": "optimade:optimade.materialscloud.org/main/mc2d",
-      "provider": "optimade.materialscloud.org",
-      "execution_route": "optimade:optimade.materialscloud.org/main/mc2d",
-      "route_status": "succeeded",
-      "record_completeness": {
-        "state": "complete",
-        "returned_count": 3,
-        "upstream_total": 3,
-        "pages_fetched": 1,
-        "last_cursor": "https://optimade.materialscloud.org/main/mc2d/v1/structures",
-        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
-        "truncation_reason": null
-      },
-      "record_count_in_primary_bundle": 3,
-      "data_categories": [
-        "electronic_property",
-        "material_identity",
-        "structure_or_phase"
-      ],
-      "property_names": [
-        "band_gap_eV"
-      ],
-      "representative_record": {
-        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:9d7fab9570139eec698dfc639d7e0c7123d19015d4062388659c5dd70de983b1",
-        "source_id": "fa97b494-eeab-4f0d-905c-4d55072dfa1f",
-        "formula": "Bi2Se3",
-        "context": {
-          "structure_or_phase": {
-            "nperiodic_dimensions": 2
-          },
-          "method_or_observable": {},
-          "property_contexts": []
-        },
-        "observations": [
-          {
-            "source": "optimade:optimade.materialscloud.org/main/mc2d",
-            "source_id": "fa97b494-eeab-4f0d-905c-4d55072dfa1f",
-            "formula": "Bi2Se3",
-            "property": "band_gap_eV",
-            "value": 0.836180438006094,
-            "unit": "eV",
-            "semantic": "electronic_band_gap",
             "context": {}
           }
         ]
@@ -1131,7 +641,7 @@
         "exhaustion_evidence": "c2db_candidate_rows_exhausted",
         "truncation_reason": null
       },
-      "record_count_in_primary_bundle": 1,
+      "record_count_in_rq2_shard": 1,
       "data_categories": [
         "electronic_property",
         "material_identity",
@@ -1145,7 +655,7 @@
       ],
       "representative_record": {
         "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
-        "source_record_item_id": "sha256:c63d58bc2fc134615ddde4ddf5dfdaed51986c162f16e1fe9949d557f2e90e33",
+        "source_record_item_id": "sha256:df0ff0d0ace01085b5089380da0a38d12aee6287cd52981cec0f6f7379daa410",
         "source_id": "1Bi2Se3-1",
         "formula": "Bi2Se3",
         "context": {
@@ -1225,6 +735,701 @@
           }
         ]
       }
+    },
+    {
+      "source": "cod",
+      "provider": "COD",
+      "execution_route": "cod",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 4,
+        "upstream_total": 4,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": "rest_count_matches_json_rows",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 4,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:3c39597ff2b2c39e2bb91c94755e7fb6bd76ec88df05003e0edad3a37842ee48",
+        "source_id": "9007376",
+        "formula": "Bi2 Se3",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "P n m a",
+            "space_group_number": 62
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "jarvis_dft",
+      "provider": "JARVIS-DFT",
+      "execution_route": "jarvis_dft",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 2,
+        "upstream_total": 2,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": "fixed_snapshot_scanned_to_end",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 2,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:a907d32b54a6dbd54ffd5184a3c4940fa1777762339aa0745af4f10224d07b2b",
+        "source_id": "JVASP-5215",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "Pnma",
+            "space_group_number": 62,
+            "dimensionality": "2D-bulk"
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "dimensionality": "2D-bulk",
+                "functional": "MBJ",
+                "method_family": "DFT"
+              }
+            },
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "dimensionality": "2D-bulk",
+                "functional": "OptB88vdW",
+                "method_family": "DFT"
+              }
+            },
+            {
+              "property": "energy_above_hull_eV",
+              "context": {
+                "dimensionality": "2D-bulk",
+                "functional": "OptB88vdW",
+                "method_family": "DFT"
+              }
+            },
+            {
+              "property": "formation_energy_per_atom_eV",
+              "context": {
+                "dimensionality": "2D-bulk",
+                "functional": "OptB88vdW",
+                "method_family": "DFT"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-5215#field=mbj_bandgap",
+            "formula": "Bi2Se3",
+            "property": "band_gap_eV",
+            "value": 1.389,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "dimensionality": "2D-bulk",
+              "functional": "MBJ",
+              "method_family": "DFT"
+            }
+          },
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-5215#field=optb88vdw_bandgap",
+            "formula": "Bi2Se3",
+            "property": "band_gap_eV",
+            "value": 0.985,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "dimensionality": "2D-bulk",
+              "functional": "OptB88vdW",
+              "method_family": "DFT"
+            }
+          },
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-5215",
+            "formula": "Bi2Se3",
+            "property": "energy_above_hull_eV",
+            "value": 0.0252,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {
+              "dimensionality": "2D-bulk",
+              "functional": "OptB88vdW",
+              "method_family": "DFT"
+            }
+          },
+          {
+            "source": "jarvis_dft",
+            "source_id": "JVASP-5215",
+            "formula": "Bi2Se3",
+            "property": "formation_energy_per_atom_eV",
+            "value": -0.3791,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {
+              "dimensionality": "2D-bulk",
+              "functional": "OptB88vdW",
+              "method_family": "DFT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "materials_project",
+      "provider": "Materials Project",
+      "execution_route": "materials_project",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 4,
+        "upstream_total": null,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": "mp_api_chunk_sequence_exhausted",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 4,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV",
+        "is_stable"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:06c9fb403c750299485441398c825ee3a1f6eb8d563298dacdcf0d96e84fd06c",
+        "source_id": "mp-1182583",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "C2/m",
+            "space_group_number": 12
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "is_stable",
+              "context": {
+                "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "materials_project",
+            "source_id": "aaaeahao",
+            "formula": "Bi2Se3",
+            "property": "band_gap_eV",
+            "value": 0.0,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-1182583",
+            "formula": "Bi2Se3",
+            "property": "energy_above_hull_eV",
+            "value": 0.6882820620000025,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-1182583",
+            "formula": "Bi2Se3",
+            "property": "formation_energy_per_atom_eV",
+            "value": 0.2542051265624991,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {}
+          },
+          {
+            "source": "materials_project",
+            "source_id": "mp-1182583",
+            "formula": "Bi2Se3",
+            "property": "is_stable",
+            "value": false,
+            "unit": null,
+            "semantic": "thermodynamic_stability_label",
+            "context": {
+              "stability_definition": "Materials Project SummaryDoc: true means the source-selected thermodynamic entry is a stable entry on the source phase-diagram convex hull"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "materialsgalaxy:topo_crystals",
+      "provider": "MaterialsGalaxy",
+      "execution_route": "materialsgalaxy",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 2,
+        "upstream_total": 2,
+        "pages_fetched": 1,
+        "last_cursor": "1",
+        "exhaustion_evidence": "materials_galaxy_total_reconciled",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 2,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "source_native_topology",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV",
+        "topology_class_no_soc",
+        "topology_class_soc"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:89b896d781dce6f106487c4a0335b2509593b50dd2ae6f97f5aa256d7fa97c1a",
+        "source_id": "mg-35598",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "R-3m",
+            "space_group_number": 166,
+            "dimensionality": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "band_gap_eV",
+              "context": {
+                "dimensionality": 2
+              }
+            },
+            {
+              "property": "topology_class_no_soc",
+              "context": {
+                "soc": false
+              }
+            },
+            {
+              "property": "topology_class_soc",
+              "context": {
+                "soc": true
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-35598",
+            "formula": "Bi2Se3",
+            "property": "band_gap_eV",
+            "value": 0.37930000000000064,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {
+              "dimensionality": 2
+            }
+          },
+          {
+            "source": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-35598",
+            "formula": "Bi2Se3",
+            "property": "topology_class_no_soc",
+            "value": "Triv_Ins",
+            "unit": null,
+            "semantic": "source_native_topology_classification",
+            "context": {
+              "soc": false
+            }
+          },
+          {
+            "source": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-35598",
+            "formula": "Bi2Se3",
+            "property": "topology_class_soc",
+            "value": "TI",
+            "unit": null,
+            "semantic": "source_native_topology_classification",
+            "context": {
+              "soc": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "source": "nomad",
+      "provider": "NOMAD",
+      "execution_route": "nomad",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 79,
+        "upstream_total": 79,
+        "pages_fetched": 1,
+        "last_cursor": null,
+        "exhaustion_evidence": "nomad_cursor_exhausted",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 79,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:02f0bb6c309163bf644d675bd8085f19c19172afc936909acf18c0d19146c721",
+        "source_id": "rc1NesFOW866L-fELSx88mnkx1hF",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "space_group_symbol": "R-3m",
+            "space_group_number": 166
+          },
+          "method_or_observable": {
+            "method_name": "DFT"
+          },
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade-misc.odbx.science",
+      "provider": "optimade-misc.odbx.science",
+      "execution_route": "optimade:optimade-misc.odbx.science",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 3,
+        "upstream_total": 3,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade-misc.odbx.science/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 3,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase",
+        "thermodynamic_property"
+      ],
+      "property_names": [
+        "energy_above_hull_eV",
+        "formation_energy_per_atom_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:2e59e05748fe328cedb5e3f90b21a7928529ca73de3ac550c67089065201263d",
+        "source_id": "camd-oqmd_3895",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": [
+            {
+              "property": "energy_above_hull_eV",
+              "context": {
+                "hull_construction": "global convex hull spanned by all other structures in the database"
+              }
+            }
+          ]
+        },
+        "observations": [
+          {
+            "source": "optimade:optimade-misc.odbx.science",
+            "source_id": "camd-oqmd_3895",
+            "formula": "Bi2Se3",
+            "property": "energy_above_hull_eV",
+            "value": 0.0,
+            "unit": "eV/atom",
+            "semantic": "energy_above_convex_hull_per_atom",
+            "context": {
+              "hull_construction": "global convex hull spanned by all other structures in the database"
+            }
+          },
+          {
+            "source": "optimade:optimade-misc.odbx.science",
+            "source_id": "camd-oqmd_3895",
+            "formula": "Bi2Se3",
+            "property": "formation_energy_per_atom_eV",
+            "value": -0.387503701999999,
+            "unit": "eV/atom",
+            "semantic": "formation_energy_per_atom",
+            "context": {}
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.2dmatpedia.org",
+      "provider": "optimade.2dmatpedia.org",
+      "execution_route": "optimade:optimade.2dmatpedia.org",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 4,
+        "upstream_total": 4,
+        "pages_fetched": 1,
+        "last_cursor": "http://optimade.2dmatpedia.org/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 4,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:4a2c789af7356d8cef7f3bf30b1342191faa95023ebc4ee754e7bdab43c3b8a5",
+        "source_id": "2dm-4453",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/archive/m0-zg",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 2,
+        "upstream_total": 2,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/archive/m0-zg/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 2,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:6d13b8d10d435bc1b3d04c44a311ee0a14e18fc49f782d088c782bf59320a9de",
+        "source_id": "MAT00010230",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc2d",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc2d",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 3,
+        "upstream_total": 3,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc2d/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 3,
+      "data_categories": [
+        "electronic_property",
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [
+        "band_gap_eV"
+      ],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:28cdb07fa1c748ba0b730505f7c61574b2bffa1db8cf15e694b0b37ff9808d95",
+        "source_id": "fa97b494-eeab-4f0d-905c-4d55072dfa1f",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 2
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": [
+          {
+            "source": "optimade:optimade.materialscloud.org/main/mc2d",
+            "source_id": "fa97b494-eeab-4f0d-905c-4d55072dfa1f",
+            "formula": "Bi2Se3",
+            "property": "band_gap_eV",
+            "value": 0.836180438006094,
+            "unit": "eV",
+            "semantic": "electronic_band_gap",
+            "context": {}
+          }
+        ]
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 5,
+        "upstream_total": 5,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbe-v1/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 5,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:08af69940b24383a4170195d1bd7ef4bc43fa1991ca98b50d5c22ddb505344bb",
+        "source_id": "848ea096-4440-4db8-8380-5ed11af6b516",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 4,
+        "upstream_total": 4,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v1/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 4,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:3ce16f9b93d1fd0b022b2ed76897c595800b2a815fdfb155698783588a8664af",
+        "source_id": "aa30bbcd-ab79-403c-ade3-b11a9045b6ea",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
+    },
+    {
+      "source": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "provider": "optimade.materialscloud.org",
+      "execution_route": "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+      "route_status": "succeeded",
+      "record_completeness": {
+        "state": "complete",
+        "returned_count": 5,
+        "upstream_total": 5,
+        "pages_fetched": 1,
+        "last_cursor": "https://optimade.materialscloud.org/main/mc3d-pbesol-v2/v1/structures",
+        "exhaustion_evidence": "optimade_links_next_absent_for_all_selected_providers",
+        "truncation_reason": null
+      },
+      "record_count_in_rq2_shard": 5,
+      "data_categories": [
+        "material_identity",
+        "structure_or_phase"
+      ],
+      "property_names": [],
+      "representative_record": {
+        "selection_rule": "first record for this exact source in stable primary-Bundle order; not selected by value or scientific favorability",
+        "source_record_item_id": "sha256:19f1a2a00d3b56813204643c22a8a975f7c518fba7373283437fe457dbe8ec7e",
+        "source_id": "df9d9de8-5170-4bd1-93b9-20a1aff44ebc",
+        "formula": "Bi2Se3",
+        "context": {
+          "structure_or_phase": {
+            "nperiodic_dimensions": 3
+          },
+          "method_or_observable": {},
+          "property_contexts": []
+        },
+        "observations": []
+      }
     }
   ],
   "provider_groups": [
@@ -1236,6 +1441,8 @@
     "Materials Project",
     "MaterialsGalaxy",
     "NOMAD",
+    "OQMD",
+    "optimade-misc.odbx.science",
     "optimade.2dmatpedia.org",
     "optimade.materialscloud.org"
   ],
@@ -1285,7 +1492,9 @@
         }
       ],
       "support_status": "supported",
-      "missing_supporting_contributions": []
+      "missing_supporting_contributions": [],
+      "complete_inventory_support_status": "eligible",
+      "non_exhaustive_supporting_contributions": []
     },
     {
       "statement": "MaterialsGalaxy contributes exact R-3m and Pnma topology labels under no-SOC and SOC request contexts, while the broader aggregate supplies separately attributed structural and scalar electronic context rather than an independent topology verdict.",
@@ -1305,7 +1514,9 @@
         }
       ],
       "support_status": "supported",
-      "missing_supporting_contributions": []
+      "missing_supporting_contributions": [],
+      "complete_inventory_support_status": "eligible",
+      "non_exhaustive_supporting_contributions": []
     }
   ],
   "all_declared_claims_supported": true,
@@ -1386,44 +1597,44 @@
         "case_name": "bi2se3-topology",
         "source": "materialsgalaxy:topo_crystals",
         "source_id": "mg-35598",
-        "artifact_item_id": "sha256:0907b34470c1fa2d786d7a5211a727b28658edc5eb4deb314f332eed01895c12",
+        "artifact_item_id": "sha256:020af1fe2df7c23f287d46fb845567cca1b65c7e878eee1db04dac84865c9e9e",
+        "artifact_type": "topology_soc",
+        "payload_type": "matrouter.materialsgalaxy-topology-artifact",
+        "payload_sha256": "3112ea2840a8eb60bca031b1765f9f3d9098e7db661e7aec337469cced79fa57",
+        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-35598\",\"payload_sha256\":\"3112ea2840a8eb60bca031b1765f9f3d9098e7db661e7aec337469cced79fa57\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-35598\",\"parameters\":{\"soc\":true},\"retrieved_at\":\"2026-08-11T20:00:05.762766+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-35598?soc=true\"},\"soc\":true,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-35598\",\"source_native_indicators\":{\"ind_group\":\"Z2_Z2_Z2_Z4\",\"sym_ind\":[0,0,0,3],\"z2224_ind\":[0,0,0,3]},\"source_native_structure_identity\":{\"crystal_system\":\"Trigonal\",\"number\":166,\"symbol\":\"R-3m\"},\"source_native_topo_class\":\"TI\"}",
+        "limitations_json": "[]"
+      },
+      {
+        "case_name": "bi2se3-topology",
+        "source": "materialsgalaxy:topo_crystals",
+        "source_id": "mg-2145449",
+        "artifact_item_id": "sha256:bf7ac7b3f4d25fbd97a4159c1a6ede348e5df0e157c2ae38b4ec29b9a3968ef5",
         "artifact_type": "topology_no_soc",
         "payload_type": "matrouter.materialsgalaxy-topology-artifact",
-        "payload_sha256": "824bbe552db6b48fe99950952b2803caefcb3591e4c6f1c4d7a0ee2cd7964101",
-        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_no_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-35598\",\"payload_sha256\":\"824bbe552db6b48fe99950952b2803caefcb3591e4c6f1c4d7a0ee2cd7964101\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-35598\",\"parameters\":{\"soc\":false},\"retrieved_at\":\"2026-08-11T17:08:41.746987+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-35598?soc=false\"},\"soc\":false,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-35598\",\"source_native_indicators\":{\"ind_group\":\"Z2\",\"sym_ind\":[0],\"z2224_ind\":[0,0,0,0]},\"source_native_structure_identity\":{\"crystal_system\":\"Trigonal\",\"number\":166,\"symbol\":\"R-3m\"},\"source_native_topo_class\":\"Triv_Ins\"}",
+        "payload_sha256": "fc773a48a9f745689a94ea2329de35daf048742b26864c6614885a43a21224d7",
+        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_no_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-2145449\",\"payload_sha256\":\"fc773a48a9f745689a94ea2329de35daf048742b26864c6614885a43a21224d7\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-2145449\",\"parameters\":{\"soc\":false},\"retrieved_at\":\"2026-08-11T20:00:05.926698+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-2145449?soc=false\"},\"soc\":false,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-2145449\",\"source_native_indicators\":{\"z2224_ind\":[0,0,0,0]},\"source_native_structure_identity\":{\"crystal_system\":\"Orthorhombic\",\"number\":62,\"symbol\":\"Pnma\"},\"source_native_topo_class\":\"Triv_Ins\"}",
         "limitations_json": "[]"
       },
       {
         "case_name": "bi2se3-topology",
         "source": "materialsgalaxy:topo_crystals",
         "source_id": "mg-35598",
-        "artifact_item_id": "sha256:737455c972442c1853e54d09e172ddabf937d57fcaf0c1081751a7ce76d9a5d7",
-        "artifact_type": "topology_soc",
-        "payload_type": "matrouter.materialsgalaxy-topology-artifact",
-        "payload_sha256": "82571fad20ae7579b116095c0df347048300c5e6225e79476845ff93fd9b35b7",
-        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-35598\",\"payload_sha256\":\"82571fad20ae7579b116095c0df347048300c5e6225e79476845ff93fd9b35b7\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-35598\",\"parameters\":{\"soc\":true},\"retrieved_at\":\"2026-08-11T17:08:41.886916+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-35598?soc=true\"},\"soc\":true,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-35598\",\"source_native_indicators\":{\"ind_group\":\"Z2_Z2_Z2_Z4\",\"sym_ind\":[0,0,0,3],\"z2224_ind\":[0,0,0,3]},\"source_native_structure_identity\":{\"crystal_system\":\"Trigonal\",\"number\":166,\"symbol\":\"R-3m\"},\"source_native_topo_class\":\"TI\"}",
-        "limitations_json": "[]"
-      },
-      {
-        "case_name": "bi2se3-topology",
-        "source": "materialsgalaxy:topo_crystals",
-        "source_id": "mg-2145449",
-        "artifact_item_id": "sha256:8a18e2f324380ecce7f63c62ca8955a3ce36d4b17a110ceecc2f00673825e85d",
-        "artifact_type": "topology_soc",
-        "payload_type": "matrouter.materialsgalaxy-topology-artifact",
-        "payload_sha256": "60d5594962a065d8f5d461c0e513cc379177da6f9ff964ed50814be1ad1c2036",
-        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-2145449\",\"payload_sha256\":\"60d5594962a065d8f5d461c0e513cc379177da6f9ff964ed50814be1ad1c2036\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-2145449\",\"parameters\":{\"soc\":true},\"retrieved_at\":\"2026-08-11T17:08:42.278794+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-2145449?soc=true\"},\"soc\":true,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-2145449\",\"source_native_indicators\":{\"ind_group\":\"Z4\",\"sym_ind\":[0],\"z2224_ind\":[0,0,0,0]},\"source_native_structure_identity\":{\"crystal_system\":\"Orthorhombic\",\"number\":62,\"symbol\":\"Pnma\"},\"source_native_topo_class\":\"Triv_Ins\"}",
-        "limitations_json": "[]"
-      },
-      {
-        "case_name": "bi2se3-topology",
-        "source": "materialsgalaxy:topo_crystals",
-        "source_id": "mg-2145449",
-        "artifact_item_id": "sha256:8a28fcc16b31eeb1abd6f3e64a031bc02b0613da4240e56ce405ae27c399df89",
+        "artifact_item_id": "sha256:d017f9d0904b3f71b5e211bc89cfddf5eb90bea4f2bcf4017d99708a68138128",
         "artifact_type": "topology_no_soc",
         "payload_type": "matrouter.materialsgalaxy-topology-artifact",
-        "payload_sha256": "4c9bee55dd0d146e589eb10330ebcf670ac267e89bc2b6b7d5374c74d6aaf399",
-        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_no_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-2145449\",\"payload_sha256\":\"4c9bee55dd0d146e589eb10330ebcf670ac267e89bc2b6b7d5374c74d6aaf399\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-2145449\",\"parameters\":{\"soc\":false},\"retrieved_at\":\"2026-08-11T17:08:42.066071+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-2145449?soc=false\"},\"soc\":false,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-2145449\",\"source_native_indicators\":{\"z2224_ind\":[0,0,0,0]},\"source_native_structure_identity\":{\"crystal_system\":\"Orthorhombic\",\"number\":62,\"symbol\":\"Pnma\"},\"source_native_topo_class\":\"Triv_Ins\"}",
+        "payload_sha256": "653863593e9756d29dd3c53055726a96af734891fbf5424fa0d5a04700995e52",
+        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_no_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-35598\",\"payload_sha256\":\"653863593e9756d29dd3c53055726a96af734891fbf5424fa0d5a04700995e52\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-35598\",\"parameters\":{\"soc\":false},\"retrieved_at\":\"2026-08-11T20:00:05.606433+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-35598?soc=false\"},\"soc\":false,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-35598\",\"source_native_indicators\":{\"ind_group\":\"Z2\",\"sym_ind\":[0],\"z2224_ind\":[0,0,0,0]},\"source_native_structure_identity\":{\"crystal_system\":\"Trigonal\",\"number\":166,\"symbol\":\"R-3m\"},\"source_native_topo_class\":\"Triv_Ins\"}",
+        "limitations_json": "[]"
+      },
+      {
+        "case_name": "bi2se3-topology",
+        "source": "materialsgalaxy:topo_crystals",
+        "source_id": "mg-2145449",
+        "artifact_item_id": "sha256:d1a5ab3ae49305b73327a52db5ec1311ca405bd13d5d1286864b8395800c7c0a",
+        "artifact_type": "topology_soc",
+        "payload_type": "matrouter.materialsgalaxy-topology-artifact",
+        "payload_sha256": "450d7cc5fe72190781ddc44a6727aba43bd1ba526a98198909bbdb1e2403151b",
+        "descriptor_json": "{\"artifact_index\":0,\"artifact_type\":\"topology_soc\",\"container_payload_type\":\"matrouter.materialsgalaxy-topology-artifact\",\"formula\":\"Bi2Se3\",\"limitations\":[\"source_native_classification_not_independent_topology_validation\",\"soc_flag_is_source_request_context_not_independent_method_reproduction\",\"source_native_indicators_not_independently_recomputed\",\"classification_definition_not_reported_by_source_artifact\",\"artifact_does_not_validate_surface_states_or_all_polymorphs\"],\"mg_id\":\"mg-2145449\",\"payload_sha256\":\"450d7cc5fe72190781ddc44a6727aba43bd1ba526a98198909bbdb1e2403151b\",\"retrieval\":{\"endpoint\":\"/materials/topological_properties/mg-2145449\",\"parameters\":{\"soc\":true},\"retrieved_at\":\"2026-08-11T20:00:06.108622+00:00\",\"source_url\":\"https://materialsgalaxy.iphy.ac.cn/api/v1/materials/topological_properties/mg-2145449?soc=true\"},\"soc\":true,\"source\":\"materialsgalaxy:topo_crystals\",\"source_definition\":{\"definition\":null,\"status\":\"not_reported_by_source_artifact\"},\"source_id\":\"mg-2145449\",\"source_native_indicators\":{\"ind_group\":\"Z4\",\"sym_ind\":[0],\"z2224_ind\":[0,0,0,0]},\"source_native_structure_identity\":{\"crystal_system\":\"Orthorhombic\",\"number\":62,\"symbol\":\"Pnma\"},\"source_native_topo_class\":\"Triv_Ins\"}",
         "limitations_json": "[]"
       }
     ],

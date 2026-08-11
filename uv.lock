@@ -868,7 +868,7 @@ wheels = [
 
 [[package]]
 name = "matrouter"
-version = "0.9.1"
+version = "0.9.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastmcp" },
@@ -881,9 +881,9 @@ dependencies = [
     { name = "pymatgen" },
     { name = "pymatgen-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c1/4e/aa2ad4d498788e4ba9ab9ee74d86ed13bd510b30126af2048533d37f04cf/matrouter-0.9.1.tar.gz", hash = "sha256:23a09f5da1693bc5665014c2264b3423d82628bafa2c78f3c63b94531df50a73", size = 691087, upload-time = "2026-08-11T15:22:09.068Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/09/ac/6fc810ed6774cc472d116c94fcb3bb61542f89a39a5b9286280a0c811c6b/matrouter-0.9.2.tar.gz", hash = "sha256:a1669ffc869e6b193b8e2cca2d5d4aa6559b3c5ade0bed9458f60e74aa62f649", size = 691448, upload-time = "2026-08-11T19:42:00.817Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9f/18/d817d352b12567e6e75cea672f337387a10763573a7cdbf73edcff2c224d/matrouter-0.9.1-py3-none-any.whl", hash = "sha256:6de8a7be9da7d4dfa60570a537dcd8576431bee0bec657028b211c7874f37707", size = 293025, upload-time = "2026-08-11T15:22:07.662Z" },
+    { url = "https://files.pythonhosted.org/packages/3a/c9/45cf56ad6a74d4e02afce6ef37a1b970a4cc5e8402d6c62a8a1b767a75fc/matrouter-0.9.2-py3-none-any.whl", hash = "sha256:27aef98fe51cf556ac93179d6e3699c470ef574b338b74494c88c403881c3c28", size = 293100, upload-time = "2026-08-11T19:41:59.319Z" },
 ]
 
 [[package]]
@@ -900,7 +900,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "matrouter", specifier = "==0.9.1" }]
+requires-dist = [{ name = "matrouter", specifier = "==0.9.2" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff" }]

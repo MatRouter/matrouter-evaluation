@@ -1,19 +1,26 @@
 {
-  "schema_version": "matrouter.paper-manifest/13",
-  "experiment_id": "matrouter-v0.9.1-three-scientific-cases",
-  "status": "three_case_frozen_protocol_run_ineligible",
+  "schema_version": "matrouter.paper-manifest/14",
+  "experiment_id": "matrouter-v0.9.2-three-scientific-cases",
+  "status": "three_case_frozen_protocol_complete",
   "case_count": 3,
-  "paper_results_eligible": false,
+  "paper_results_eligible": true,
   "paper_results_eligibility_semantics": "Protocol eligibility under the frozen case gates; not validation of scientific truth, accuracy, significance, or external reproducibility.",
-  "ineligibility_reasons": [
-    "mos2-band-gap did not meet its preregistered case-level eligibility condition or has an unresolved product blocker.",
-    "lifepo4-stability did not meet its preregistered case-level eligibility condition or has an unresolved product blocker."
-  ],
+  "ineligibility_reasons": [],
   "protocol_version": "matrouter.paper-three-case-protocol",
   "research_questions": {
     "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
-    "RQ2": "What material-data landscape does the cross-source aggregate provide for the case—sources, data categories, scientific contexts, specialist data, and explicit gaps—and how does that landscape guide the next research step?",
+    "RQ2": "What material-data landscape do the preregistered non-selective per-route source-record exhaustion shards provide for the case—sources, data categories, scientific contexts, specialist data, completeness, and explicit gaps—and how does that landscape guide the next research step?",
     "RQ3": "Can an Agent use the aggregate to locate preregistered exact source-bound records and artifacts for explicit lightweight methods, while making unsupported heavy calculations an explicit external handoff rather than a proxy result?"
+  },
+  "rq2_source_record_exhaustion_shard_policy": {
+    "selection": "every_ready_primary_search_materials_execution_route_in_stable_exact_route_order",
+    "source_scope": "selected",
+    "record_scope": "exhaust_upstream",
+    "record_limit": "begin_evidence_run.capacity.max_single_source_record_items",
+    "max_pages_per_route": 100,
+    "max_elapsed_seconds_per_route": 300.0,
+    "max_normalized_bytes_per_route": 100000000,
+    "bundle_policy": "one_bounded_evidence_run_and_bundle_per_exact_execution_route"
   },
   "rq3_method_applicability": {
     "mos2-band-gap": {
@@ -44,34 +51,34 @@
   "core_boundary": "MatRouter routes source-qualified evidence and exact method inputs; the Agent builds the case-specific material landscape and scientific handoff.",
   "reference_assessments_enabled": false,
   "release_identity": {
-    "schema_version": "matrouter.paper-product-identity/6",
+    "schema_version": "matrouter.paper-product-identity/7",
     "status": "verified_pypi_release",
     "package_name": "matrouter",
-    "package_version": "0.9.1",
-    "public_VERSION": "0.9.1",
-    "product_commit": "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
-    "release_tag": "v0.9.1",
-    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.9.1",
-    "release_published_at": "2026-08-11T15:18:28Z",
-    "pypi_url": "https://pypi.org/project/matrouter/0.9.1/",
-    "wheel_filename": "matrouter-0.9.1-py3-none-any.whl",
-    "wheel_size_bytes": 293025,
-    "wheel_sha256": "6de8a7be9da7d4dfa60570a537dcd8576431bee0bec657028b211c7874f37707",
-    "sdist_filename": "matrouter-0.9.1.tar.gz",
-    "sdist_size_bytes": 691087,
-    "sdist_sha256": "23a09f5da1693bc5665014c2264b3423d82628bafa2c78f3c63b94531df50a73",
+    "package_version": "0.9.2",
+    "public_VERSION": "0.9.2",
+    "product_commit": "5a272788915ee4c2bf19b06455729e5198eaef9f",
+    "release_tag": "v0.9.2",
+    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.9.2",
+    "release_published_at": "2026-08-11T19:35:29Z",
+    "pypi_url": "https://pypi.org/project/matrouter/0.9.2/",
+    "wheel_filename": "matrouter-0.9.2-py3-none-any.whl",
+    "wheel_size_bytes": 293100,
+    "wheel_sha256": "27aef98fe51cf556ac93179d6e3699c470ef574b338b74494c88c403881c3c28",
+    "sdist_filename": "matrouter-0.9.2.tar.gz",
+    "sdist_size_bytes": 691448,
+    "sdist_sha256": "a1669ffc869e6b193b8e2cca2d5d4aa6559b3c5ade0bed9458f60e74aa62f649",
     "pypi_provenance": {
       "publisher": "publish.yml on MatRouter/matrouter",
-      "source_repository_commit": "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
-      "source_repository_ref": "refs/tags/v0.9.1",
-      "publication_workflow": "publish.yml@a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
+      "source_repository_commit": "5a272788915ee4c2bf19b06455729e5198eaef9f",
+      "source_repository_ref": "refs/tags/v0.9.2",
+      "publication_workflow": "publish.yml@5a272788915ee4c2bf19b06455729e5198eaef9f",
       "trigger_event": "release",
       "trusted_publishing": true
     },
     "distribution_metadata": {
-      "metadata_version": "2.4",
+      "metadata_version": "2.5",
       "name": "matrouter",
-      "version": "0.9.1",
+      "version": "0.9.2",
       "requires_python": ">=3.11",
       "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
       "repository": "https://github.com/MatRouter/matrouter"
@@ -126,8 +133,8 @@
       "mpds": true,
       "materialsgalaxy": true
     },
-    "declared_source_authority_count": 40,
-    "ready_pair_count": 203,
+    "declared_source_authority_count": 37,
+    "ready_pair_count": 194,
     "requires_configuration_pair_count": 0,
     "optimade_child_route_count": 21,
     "optimade_child_routes": [
@@ -247,21 +254,6 @@
           "state": "ready"
         },
         {
-          "qualified_source": "materialsgalaxy",
-          "output_sources": [
-            "materialsgalaxy:CODX",
-            "materialsgalaxy:ferroelectric",
-            "materialsgalaxy:generated_structures",
-            "materialsgalaxy:generated_topo_crystals",
-            "materialsgalaxy:layered_structures",
-            "materialsgalaxy:nonlinear_optical",
-            "materialsgalaxy:sc_growth",
-            "materialsgalaxy:topo_crystals",
-            "materialsgalaxy:topo_phonons"
-          ],
-          "state": "ready"
-        },
-        {
           "qualified_source": "optimade:optimade.materialscloud.org/archive/jk-9v",
           "output_sources": [
             "optimade:optimade.materialscloud.org/archive/jk-9v"
@@ -314,6 +306,18 @@
           "qualified_source": "optimade:optimade-gnome.odbx.science",
           "output_sources": [
             "optimade:optimade-gnome.odbx.science"
+          ],
+          "state": "ready"
+        },
+        {
+          "qualified_source": "materialsgalaxy",
+          "output_sources": [
+            "materialsgalaxy:ferroelectric",
+            "materialsgalaxy:layered_structures",
+            "materialsgalaxy:nonlinear_optical",
+            "materialsgalaxy:sc_growth",
+            "materialsgalaxy:topo_crystals",
+            "materialsgalaxy:topo_phonons"
           ],
           "state": "ready"
         },
@@ -460,6 +464,18 @@
           "state": "ready"
         },
         {
+          "qualified_source": "materialsgalaxy",
+          "output_sources": [
+            "materialsgalaxy:ferroelectric",
+            "materialsgalaxy:layered_structures",
+            "materialsgalaxy:nonlinear_optical",
+            "materialsgalaxy:sc_growth",
+            "materialsgalaxy:topo_crystals",
+            "materialsgalaxy:topo_phonons"
+          ],
+          "state": "ready"
+        },
+        {
           "qualified_source": "jarvis_dft",
           "output_sources": [
             "jarvis_dft"
@@ -477,21 +493,6 @@
           "qualified_source": "optimade:mpddoptimade.phaseslab.org",
           "output_sources": [
             "optimade:mpddoptimade.phaseslab.org"
-          ],
-          "state": "ready"
-        },
-        {
-          "qualified_source": "materialsgalaxy",
-          "output_sources": [
-            "materialsgalaxy:CODX",
-            "materialsgalaxy:ferroelectric",
-            "materialsgalaxy:generated_structures",
-            "materialsgalaxy:generated_topo_crystals",
-            "materialsgalaxy:layered_structures",
-            "materialsgalaxy:nonlinear_optical",
-            "materialsgalaxy:sc_growth",
-            "materialsgalaxy:topo_crystals",
-            "materialsgalaxy:topo_phonons"
           ],
           "state": "ready"
         },
@@ -729,6 +730,18 @@
           "state": "ready"
         },
         {
+          "qualified_source": "materialsgalaxy",
+          "output_sources": [
+            "materialsgalaxy:ferroelectric",
+            "materialsgalaxy:layered_structures",
+            "materialsgalaxy:nonlinear_optical",
+            "materialsgalaxy:sc_growth",
+            "materialsgalaxy:topo_crystals",
+            "materialsgalaxy:topo_phonons"
+          ],
+          "state": "ready"
+        },
+        {
           "qualified_source": "optimade:optimade.materialscloud.org/archive/ed-g2",
           "output_sources": [
             "optimade:optimade.materialscloud.org/archive/ed-g2"
@@ -760,21 +773,6 @@
           "qualified_source": "optimade:optimade.2dmatpedia.org",
           "output_sources": [
             "optimade:optimade.2dmatpedia.org"
-          ],
-          "state": "ready"
-        },
-        {
-          "qualified_source": "materialsgalaxy",
-          "output_sources": [
-            "materialsgalaxy:CODX",
-            "materialsgalaxy:ferroelectric",
-            "materialsgalaxy:generated_structures",
-            "materialsgalaxy:generated_topo_crystals",
-            "materialsgalaxy:layered_structures",
-            "materialsgalaxy:nonlinear_optical",
-            "materialsgalaxy:sc_growth",
-            "materialsgalaxy:topo_crystals",
-            "materialsgalaxy:topo_phonons"
           ],
           "state": "ready"
         },
@@ -887,86 +885,619 @@
     },
     "qualified_aggregate_execution_route_count": 32
   },
-  "live_run_duration_seconds": 295.31,
-  "runner_sha256": "a542e73d5a69be94604ef8417e0a18674013e6ab1d74a80cc85c6f4e8a2679de",
+  "live_run_duration_seconds": 480.654,
+  "runner_sha256": "c5bad81f5919470d1daab9ce53a60f975b55293d7edc73ef2f28f218b6f18196",
   "case_results": [
     {
       "case_name": "mos2-band-gap",
-      "raw_path": "raw/0.9.1/mos2-band-gap.json",
-      "raw_sha256": "4fd2cdf7213f1352909bb32f27a75c2dd3e4890530c7af97430c58601f1a3304",
+      "raw_path": "raw/0.9.2/mos2-band-gap.json",
+      "raw_sha256": "7d318692773ca47c9f6ca8357568cc2c8188e99b9566c6f90f25ca316fc394ad",
       "result_path": "results/cases/mos2-band-gap.json",
-      "result_sha256": "117d8674600eb8c5c4b3e2411ad70c82a63201bd55f7d9d6cce1baff3da83088",
+      "result_sha256": "f20457201585265af105053dd9a67df6d79d8af24a5b735c801bb0642658d576",
       "bundle_ids": [
-        "sha256:0fd62c3b064b3fb1b08052af346c54c44cf5ffd8540c0a00eea61abf68ead070",
-        "sha256:cb1f09829b7b2e09e0a581377df9f48ff2570affe668944519e40eec219cef36",
-        "sha256:fd6ab0347f40a5b44d016c49ca0e7711b120b002b3de570f6eae4fe5f3b148bf"
+        "sha256:290b2d9e68be2bffdf4ad340e067a763fcfc3c37a58f478503634646fa4e7623",
+        "sha256:c40d3687e2269c7e80976f129c9b7d5a1c262a03209d7106f216116b3477dcfc",
+        "sha256:d64f764f46cc481b16aac8c4fd903a5dd486693f8c2dd05cbe3dfc2585de8431",
+        "sha256:6c096fedc0e655ed1264955cf956a85f85de3592cb8cb5068a381704ccb71009",
+        "sha256:819ddd5c90d31b4154cdb6f82e5c7a79519cf8464b791bd355f650695ef2db77",
+        "sha256:855d849056a9f88bc9a48cc2467ddc34f80c82316599ba114afd6ffe49d8d198",
+        "sha256:b08c71821441187a1a204c2df19d5345d65dc0ad26640b0cb18b95c812bb9d03",
+        "sha256:527865761fbb0292fcecb44ec6716064d5c61ce9d54840f7307e8a15f40ef68e",
+        "sha256:d07458c04db75f80b7b6c5c5bf73bc06068c875eae71d25f2073dda1a6c05c31",
+        "sha256:b4323cae4fb260302a9902566159e011850112bf78ac44139e9edb1cc6c66d37",
+        "sha256:78d7d06d5491f52e288f25ffe25c1698f64d50eca01de138a9eece2f3a52a953",
+        "sha256:d1e543288c6651fd5224b1353c6b8972166ee7cd720ac46ad52fdd0f52fbc61c",
+        "sha256:bdc62339af6ad4ac5515e3f80881da6eb080a700875ce459a4577018b64cedd1",
+        "sha256:580d1a14ddc6a691ed0563a47e526f3f3bfc3fe117d0f3efbf59252d59fd8a1b",
+        "sha256:d9c6eabbd124e2fbad491234d44c10c1ec3e4d52e8093b628be3fb2da3dd1e99",
+        "sha256:e45375c871335a0dc264559154df496574db6b81f255a384d41ffb9792a30e8b",
+        "sha256:838a67585c5792043e4dc59a698502698f968b4313fe4b75e95da0bb4f66ad40",
+        "sha256:5d39a0030ed31e1eb721656b418d8ffcadd7bc9fad6fd80221ea57f7e0e913c3",
+        "sha256:edd75b42e4a8770005d83b6c3786ea09d7e473201ea470fc8cab9a7ea908d82a",
+        "sha256:a40147a4152ae67f5ce99806dedea6fec9539b799901979cf2912ef2eb81b9be",
+        "sha256:cc732a1160b333912e55480378463585ebed633024aa398b40324a2fea826abe",
+        "sha256:d5214fd6248eef4526dfecc1b88e5e67d95b1b5065f207ae8d0cb804e3a5bd63",
+        "sha256:b7703c54f528ab7e37040f7a5e680156527657cc00ea447c191aec86fcfd3ef2",
+        "sha256:be0d8d6f2a7ab52403acf5f604504ec18d0bb13d275abaa2f6fe98e42f303ea1",
+        "sha256:e4b72dc7984bf276ec6b0a48b691885d3c19ee2f2d1f94ddff4385e4f4008d95",
+        "sha256:197ab43febf079ea857fc2a26998d408b2b06a465ba4cf340efc8440412ccf43",
+        "sha256:683964bb313b76d574668f03d23f704c30fd73bf2908eca41ef19787b77861a6",
+        "sha256:d9fde20f423543589e3eadd03f8c9cd9e5ca0572162ee97146f6673328840a24",
+        "sha256:027a3710daf74b579cdd48d47c90969d5d67c317aa87fbb35eaae349d7e652ab",
+        "sha256:b24de63946aa1655f479763ed4d28210e241202332d1c6c8e77a2e9b45aebff3",
+        "sha256:ac6ba96a227a4c1db19d9a0950ac479a8fdeb52f82d2fe2819df096f2e23be1a",
+        "sha256:6951ed328e2cce06fd14868e3d5ac3e9c5eb4bbe571cc24c6d246ceb6ca8bd2a",
+        "sha256:c0be3b1ec1fc05ce165c716d082051ba45dd39a612dd669dbffc6104b5ca6d66",
+        "sha256:bb462accdc04d92f5a18e0dcb98ab4545df003373db39162ea191cf250337407",
+        "sha256:2071f2bef12ff5297c331ee63a7c430e676457bf37b33453a784fd9d5fa8c06b"
       ],
-      "case_spec_sha256": "13423a98cb03ea837aac787116511ce0f6e4b379ff0f9d55db47d294dbaf77e6",
-      "paper_result_status": "protocol_ineligible"
+      "rq2_source_record_exhaustion": {
+        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "ready_route_count": 32,
+        "shard_count": 32,
+        "shard_routes": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy",
+          "mpds",
+          "nomad",
+          "optimade:mpddoptimade.phaseslab.org",
+          "optimade:optimade-gnome.odbx.science",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/1z-pd",
+          "optimade:optimade.materialscloud.org/archive/ed-g2",
+          "optimade:optimade.materialscloud.org/archive/jk-9v",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/archive/zt-z4",
+          "optimade:optimade.materialscloud.org/main/2dtopo",
+          "optimade:optimade.materialscloud.org/main/autowannier",
+          "optimade:optimade.materialscloud.org/main/curated-cofs",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+          "optimade:optimade.materialscloud.org/main/stoceriaitf",
+          "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+          "optimade:optimade.odbx.science",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd",
+          "tcod"
+        ],
+        "shard_bundle_ids": [
+          "sha256:c40d3687e2269c7e80976f129c9b7d5a1c262a03209d7106f216116b3477dcfc",
+          "sha256:d64f764f46cc481b16aac8c4fd903a5dd486693f8c2dd05cbe3dfc2585de8431",
+          "sha256:6c096fedc0e655ed1264955cf956a85f85de3592cb8cb5068a381704ccb71009",
+          "sha256:819ddd5c90d31b4154cdb6f82e5c7a79519cf8464b791bd355f650695ef2db77",
+          "sha256:855d849056a9f88bc9a48cc2467ddc34f80c82316599ba114afd6ffe49d8d198",
+          "sha256:b08c71821441187a1a204c2df19d5345d65dc0ad26640b0cb18b95c812bb9d03",
+          "sha256:527865761fbb0292fcecb44ec6716064d5c61ce9d54840f7307e8a15f40ef68e",
+          "sha256:d07458c04db75f80b7b6c5c5bf73bc06068c875eae71d25f2073dda1a6c05c31",
+          "sha256:b4323cae4fb260302a9902566159e011850112bf78ac44139e9edb1cc6c66d37",
+          "sha256:78d7d06d5491f52e288f25ffe25c1698f64d50eca01de138a9eece2f3a52a953",
+          "sha256:d1e543288c6651fd5224b1353c6b8972166ee7cd720ac46ad52fdd0f52fbc61c",
+          "sha256:bdc62339af6ad4ac5515e3f80881da6eb080a700875ce459a4577018b64cedd1",
+          "sha256:580d1a14ddc6a691ed0563a47e526f3f3bfc3fe117d0f3efbf59252d59fd8a1b",
+          "sha256:d9c6eabbd124e2fbad491234d44c10c1ec3e4d52e8093b628be3fb2da3dd1e99",
+          "sha256:e45375c871335a0dc264559154df496574db6b81f255a384d41ffb9792a30e8b",
+          "sha256:838a67585c5792043e4dc59a698502698f968b4313fe4b75e95da0bb4f66ad40",
+          "sha256:5d39a0030ed31e1eb721656b418d8ffcadd7bc9fad6fd80221ea57f7e0e913c3",
+          "sha256:edd75b42e4a8770005d83b6c3786ea09d7e473201ea470fc8cab9a7ea908d82a",
+          "sha256:a40147a4152ae67f5ce99806dedea6fec9539b799901979cf2912ef2eb81b9be",
+          "sha256:cc732a1160b333912e55480378463585ebed633024aa398b40324a2fea826abe",
+          "sha256:d5214fd6248eef4526dfecc1b88e5e67d95b1b5065f207ae8d0cb804e3a5bd63",
+          "sha256:b7703c54f528ab7e37040f7a5e680156527657cc00ea447c191aec86fcfd3ef2",
+          "sha256:be0d8d6f2a7ab52403acf5f604504ec18d0bb13d275abaa2f6fe98e42f303ea1",
+          "sha256:e4b72dc7984bf276ec6b0a48b691885d3c19ee2f2d1f94ddff4385e4f4008d95",
+          "sha256:197ab43febf079ea857fc2a26998d408b2b06a465ba4cf340efc8440412ccf43",
+          "sha256:683964bb313b76d574668f03d23f704c30fd73bf2908eca41ef19787b77861a6",
+          "sha256:d9fde20f423543589e3eadd03f8c9cd9e5ca0572162ee97146f6673328840a24",
+          "sha256:027a3710daf74b579cdd48d47c90969d5d67c317aa87fbb35eaae349d7e652ab",
+          "sha256:b24de63946aa1655f479763ed4d28210e241202332d1c6c8e77a2e9b45aebff3",
+          "sha256:ac6ba96a227a4c1db19d9a0950ac479a8fdeb52f82d2fe2819df096f2e23be1a",
+          "sha256:6951ed328e2cce06fd14868e3d5ac3e9c5eb4bbe571cc24c6d246ceb6ca8bd2a",
+          "sha256:c0be3b1ec1fc05ce165c716d082051ba45dd39a612dd669dbffc6104b5ca6d66"
+        ],
+        "all_ready_routes_sharded": true,
+        "source_record_count": 510,
+        "source_record_item_count": 510,
+        "source_record_sources": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy:nonlinear_optical",
+          "materialsgalaxy:topo_crystals",
+          "materialsgalaxy:topo_phonons",
+          "nomad",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd"
+        ],
+        "source_record_providers": [
+          "AFLOW",
+          "Alexandria",
+          "C2DB",
+          "COD",
+          "JARVIS-DFT",
+          "Materials Project",
+          "MaterialsGalaxy",
+          "NOMAD",
+          "OQMD",
+          "optimade-misc.odbx.science",
+          "optimade.2dmatpedia.org",
+          "optimade.materialscloud.org",
+          "optimade.openmaterialsdb.se"
+        ],
+        "status_counts": {
+          "empty": 13,
+          "failed": 2,
+          "succeeded": 17
+        },
+        "record_completeness_counts": {
+          "complete": 17,
+          "empty": 13,
+          "failed": 2
+        },
+        "complete_inventory_eligible": false,
+        "gap_count": 2,
+        "gaps": [
+          {
+            "source": "mpds",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null
+          },
+          {
+            "source": "optimade:mpddoptimade.phaseslab.org",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          }
+        ]
+      },
+      "case_spec_sha256": "6156053e449108d1ae4769adbcadf3d71c31da5bd97ed16721712fceccb4e64b",
+      "paper_result_status": "protocol_eligible"
     },
     {
       "case_name": "lifepo4-stability",
-      "raw_path": "raw/0.9.1/lifepo4-stability.json",
-      "raw_sha256": "63b86b5aced513e940b7d3ed07baa82f973bf996f70acaf4659f9aef65182381",
+      "raw_path": "raw/0.9.2/lifepo4-stability.json",
+      "raw_sha256": "ed1590629812db5b2b9006baa9fd6c2033845749448bb007363d1ff060c3b6d6",
       "result_path": "results/cases/lifepo4-stability.json",
-      "result_sha256": "2312c143bb76efff94e14d724582521a9604581be2d7b20f8d19a4738dcfd625",
+      "result_sha256": "6e05be4e62e5e60c7522ddd510502e60f2c34da464109c2db008de68f473a482",
       "bundle_ids": [
-        "sha256:eafda5a30d1ca65085248b628c74160cacc79467e9065fca746e5e6d8cacb7d4",
-        "sha256:c8f620d9cab3ec7fa141a7b792687dd1fa1953c02d3b38bc054b06d3d7cd77d7"
+        "sha256:10053cf976adccdc78049af0f17c6cd34cde4635f229c221004aed113bed33de",
+        "sha256:360973eabd0001c59212f8a25973b7631ea1470499ae632854619e808119e481",
+        "sha256:0128d718f833d63579796677b483e70ef1bd1aa36f5df691d6965118254c26f8",
+        "sha256:683b491ac521eaa50a0bba4049193b768196e05f177f4a7c348940cfa59a2349",
+        "sha256:704b0986fa3195f5b453517c5c69f1509a4ef0bd30ce0dfceb7b66c91dd7420c",
+        "sha256:380868df0e48126a28eeeb9f3a5dc5d549c6a8fc917efc63965171ae1fe948bb",
+        "sha256:76b7eaf5481b8757585c44972d61fcc81a0e93754296125deecf9b12f01c89df",
+        "sha256:7f4d6070c9557c961ce0c05624af64cb1ef05387b0a05966c513dad1849d9d14",
+        "sha256:1f063bb7c5183c4bf808b7f0d10d7b2cd424dbcc0b9a2c3686f476502a8facb4",
+        "sha256:df4f75b194c1fcc165e31d5dc5de64f1e26fa284349acabfed7c9f2356a9ba7a",
+        "sha256:3dd70ebae49e27c66a45d43fb441c1642acfb1a653c34e15a5ab1ad41505a8e3",
+        "sha256:c224bec448312c7d1cf7cc06be2b9806b0e4c4fef47c56fc2ea707af1abb3458",
+        "sha256:1272ed893bf328d3effc62f0e84c6af59867d218944c58007fff2427b00d9322",
+        "sha256:42de70246238c31cd72c0b0c0c4b85acf498c6de8d9f60e1dd6a6925f865d93e",
+        "sha256:3a8523f68a61b61eea25bf4b89f39a2b35ecacb9468929857faf23acb4fd6881",
+        "sha256:e0b8526797637a83a377adb1a7ee869eb4853f980e9dc1a29d26734cafedbed8",
+        "sha256:3127e968f5edb634cb3b16b539d75d884cf177ae0c3254757824f3d4f64c2f71",
+        "sha256:f4e2068306fecd758d605f34ea8218e512e8779e4ffc7cfca84f4fd893f5a1a8",
+        "sha256:543ddf14043e789564fffaffea23f8695e291003fb30c99e4f2a2b4d893be39f",
+        "sha256:dfbe32baf2ead62e5b713ba383599160f0199308737cc4239fd167bfcc53f598",
+        "sha256:4bfeed6f7c3bf2fdddde230b1893eb456cb5d8c3bf9aa6cab05e5cc53160a70b",
+        "sha256:d07f8fc78d2e19bc7b104f387623ded086501886967725799a8f3d453aeea667",
+        "sha256:e368a2b289251a93e052f6324a19c2c70f8f660b55831481c0ba51838569e7ac",
+        "sha256:4fcaf69ffcf85bf0d3a5aa92deb8a3c6b73b0ff73ac41e64e4298d1be147a60d",
+        "sha256:81cac107f2a02f58cbd9980c8621d1c326a60f774688f56a0e3ad99ad9ee2603",
+        "sha256:b5d23847fd91cc0c8ea6f93c45223ee71588acc19a45945862300a5a513ca57d",
+        "sha256:7f44dfbd77ff0cef34c714feb4210337bd64697c6bc4bcae0f7252550d2827fe",
+        "sha256:9f433674cd82f6911e5994290e75da1ca84e8cb9d2b192c773660fc4523ebe36",
+        "sha256:2ddda9ad30c7be9b6b4525d8215cf7b14b7ebb15389794cfeff3ed2b25349f02",
+        "sha256:531fc9a3523b0dac7f854021629e1c81a379b436972078c2b4fe790d3b243440",
+        "sha256:cd73876a15f380382bbb385f2aba0ee9a48646bbf0ba3c732b0ca74a6442ef4f",
+        "sha256:4990f62cc4118c15f6d99b604415ddbe2f81d8c258abb6353cdb80f4a29e89d2",
+        "sha256:6e7fb27999d9c2e760bda687150c76792c42cfbdc8bdc29995b1d9d614f14a79",
+        "sha256:76e268658857341325d7fa3656106bcb11520d91f09675678049e9915a9271bd"
       ],
-      "case_spec_sha256": "72e85fc089fc086d361067c4caa3c783f2bbdb0b1626888b57ee61ca9b602ff3",
-      "paper_result_status": "protocol_ineligible"
+      "rq2_source_record_exhaustion": {
+        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "ready_route_count": 32,
+        "shard_count": 32,
+        "shard_routes": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy",
+          "mpds",
+          "nomad",
+          "optimade:mpddoptimade.phaseslab.org",
+          "optimade:optimade-gnome.odbx.science",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/1z-pd",
+          "optimade:optimade.materialscloud.org/archive/ed-g2",
+          "optimade:optimade.materialscloud.org/archive/jk-9v",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/archive/zt-z4",
+          "optimade:optimade.materialscloud.org/main/2dtopo",
+          "optimade:optimade.materialscloud.org/main/autowannier",
+          "optimade:optimade.materialscloud.org/main/curated-cofs",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+          "optimade:optimade.materialscloud.org/main/stoceriaitf",
+          "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+          "optimade:optimade.odbx.science",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd",
+          "tcod"
+        ],
+        "shard_bundle_ids": [
+          "sha256:360973eabd0001c59212f8a25973b7631ea1470499ae632854619e808119e481",
+          "sha256:0128d718f833d63579796677b483e70ef1bd1aa36f5df691d6965118254c26f8",
+          "sha256:683b491ac521eaa50a0bba4049193b768196e05f177f4a7c348940cfa59a2349",
+          "sha256:704b0986fa3195f5b453517c5c69f1509a4ef0bd30ce0dfceb7b66c91dd7420c",
+          "sha256:380868df0e48126a28eeeb9f3a5dc5d549c6a8fc917efc63965171ae1fe948bb",
+          "sha256:76b7eaf5481b8757585c44972d61fcc81a0e93754296125deecf9b12f01c89df",
+          "sha256:7f4d6070c9557c961ce0c05624af64cb1ef05387b0a05966c513dad1849d9d14",
+          "sha256:1f063bb7c5183c4bf808b7f0d10d7b2cd424dbcc0b9a2c3686f476502a8facb4",
+          "sha256:df4f75b194c1fcc165e31d5dc5de64f1e26fa284349acabfed7c9f2356a9ba7a",
+          "sha256:3dd70ebae49e27c66a45d43fb441c1642acfb1a653c34e15a5ab1ad41505a8e3",
+          "sha256:c224bec448312c7d1cf7cc06be2b9806b0e4c4fef47c56fc2ea707af1abb3458",
+          "sha256:1272ed893bf328d3effc62f0e84c6af59867d218944c58007fff2427b00d9322",
+          "sha256:42de70246238c31cd72c0b0c0c4b85acf498c6de8d9f60e1dd6a6925f865d93e",
+          "sha256:3a8523f68a61b61eea25bf4b89f39a2b35ecacb9468929857faf23acb4fd6881",
+          "sha256:e0b8526797637a83a377adb1a7ee869eb4853f980e9dc1a29d26734cafedbed8",
+          "sha256:3127e968f5edb634cb3b16b539d75d884cf177ae0c3254757824f3d4f64c2f71",
+          "sha256:f4e2068306fecd758d605f34ea8218e512e8779e4ffc7cfca84f4fd893f5a1a8",
+          "sha256:543ddf14043e789564fffaffea23f8695e291003fb30c99e4f2a2b4d893be39f",
+          "sha256:dfbe32baf2ead62e5b713ba383599160f0199308737cc4239fd167bfcc53f598",
+          "sha256:4bfeed6f7c3bf2fdddde230b1893eb456cb5d8c3bf9aa6cab05e5cc53160a70b",
+          "sha256:d07f8fc78d2e19bc7b104f387623ded086501886967725799a8f3d453aeea667",
+          "sha256:e368a2b289251a93e052f6324a19c2c70f8f660b55831481c0ba51838569e7ac",
+          "sha256:4fcaf69ffcf85bf0d3a5aa92deb8a3c6b73b0ff73ac41e64e4298d1be147a60d",
+          "sha256:81cac107f2a02f58cbd9980c8621d1c326a60f774688f56a0e3ad99ad9ee2603",
+          "sha256:b5d23847fd91cc0c8ea6f93c45223ee71588acc19a45945862300a5a513ca57d",
+          "sha256:7f44dfbd77ff0cef34c714feb4210337bd64697c6bc4bcae0f7252550d2827fe",
+          "sha256:9f433674cd82f6911e5994290e75da1ca84e8cb9d2b192c773660fc4523ebe36",
+          "sha256:2ddda9ad30c7be9b6b4525d8215cf7b14b7ebb15389794cfeff3ed2b25349f02",
+          "sha256:531fc9a3523b0dac7f854021629e1c81a379b436972078c2b4fe790d3b243440",
+          "sha256:cd73876a15f380382bbb385f2aba0ee9a48646bbf0ba3c732b0ca74a6442ef4f",
+          "sha256:4990f62cc4118c15f6d99b604415ddbe2f81d8c258abb6353cdb80f4a29e89d2",
+          "sha256:6e7fb27999d9c2e760bda687150c76792c42cfbdc8bdc29995b1d9d614f14a79"
+        ],
+        "all_ready_routes_sharded": true,
+        "source_record_count": 469,
+        "source_record_item_count": 469,
+        "source_record_sources": [
+          "aflow",
+          "alexandria",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy:topo_crystals",
+          "nomad",
+          "optimade:optimade-gnome.odbx.science",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd"
+        ],
+        "source_record_providers": [
+          "AFLOW",
+          "Alexandria",
+          "COD",
+          "JARVIS-DFT",
+          "Materials Project",
+          "MaterialsGalaxy",
+          "NOMAD",
+          "OQMD",
+          "optimade-gnome.odbx.science",
+          "optimade-misc.odbx.science",
+          "optimade.2dmatpedia.org",
+          "optimade.materialscloud.org",
+          "optimade.openmaterialsdb.se"
+        ],
+        "status_counts": {
+          "empty": 13,
+          "failed": 2,
+          "succeeded": 17
+        },
+        "record_completeness_counts": {
+          "complete": 17,
+          "empty": 13,
+          "failed": 2
+        },
+        "complete_inventory_eligible": false,
+        "gap_count": 2,
+        "gaps": [
+          {
+            "source": "mpds",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null
+          },
+          {
+            "source": "optimade:mpddoptimade.phaseslab.org",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          }
+        ]
+      },
+      "case_spec_sha256": "cd8904c12532626ad79d211f321f3b14c5069ad3e8a06bdcd50ab358c0cd1906",
+      "paper_result_status": "protocol_eligible"
     },
     {
       "case_name": "bi2se3-topology",
-      "raw_path": "raw/0.9.1/bi2se3-topology.json",
-      "raw_sha256": "e8e6978a8c7a9224f5c9b9a433f0abd7ba1e00fe7c0bc573b7326692b4e194ac",
+      "raw_path": "raw/0.9.2/bi2se3-topology.json",
+      "raw_sha256": "773a110d41e966c92dbb262deeb00197f8fd3ffecaf718a74152196eee2774ab",
       "result_path": "results/cases/bi2se3-topology.json",
-      "result_sha256": "fa39d9f56afd081a23464160ef1d7feb9a6422b72b258c0356330ff9d0d41862",
+      "result_sha256": "70b5aa6c868cfef9b316efc3a9994e311e6c643ab194792834a0852a1e6dad9a",
       "bundle_ids": [
-        "sha256:c38ae04c6fd576fedb88619dd8cf9342b58075c16f3723483dd01028fcbed469",
-        "sha256:aebb458b6db82f8c0c5637f14a034f66a1308b48f7be021d07cc93bb07e827e7"
+        "sha256:44d5c9b516d1d0f033d245ef9201dfde69a9faad99b5d51305775928fea28e6c",
+        "sha256:e51b0108362902c14099fe9a0949f4db0c0f98f60825e5fccacbbdc949fa7c67",
+        "sha256:e5571d97dced60a049f4c81f1e96e5a5577810e828cdb2182667631105d16072",
+        "sha256:33f744cd24c85d08fda6105be2fae2a024ebbff8283849ceae14f11f36ac363a",
+        "sha256:4eb0a20ebf0df863af385516624e9f7890b0e755d4750642a44e0999a8759a8c",
+        "sha256:908440727963919e2f1ec3bbfab83731bdaed3ac1500b85217fce1790b1a163f",
+        "sha256:415d067ebc50b6cb34adb7bf2d38a3f6a456dcb2202eec2fc45bd2a13e6b2543",
+        "sha256:7d3f855400111e50096013f4e577378cc2688b34d0e00af15637caed22533b99",
+        "sha256:e48c4ec362d3577bd196e26793733bcec94221fa25fb14a72347b274dc6e247d",
+        "sha256:44ad3ca4328d7b8b9201aa1ea0209712a209c7b56332dca156db5f2e525ab1c0",
+        "sha256:4628194c4a7efc28a9fb61133254b55971e33dc348ec2c82059b5ef6609e1a18",
+        "sha256:5a3699590d18a833a8fe85d7f162a975cf61aeb0511a9141699897ac5dceebb6",
+        "sha256:137ba31c90cd72bb20ab22221138791ad2d56163ad8c3f3ca2a77617c388a559",
+        "sha256:5a81a224baa33cacad900025e6784b37346a3352a23c5f31a88e9828a60af750",
+        "sha256:6ddf3b9f6ccc363157e090a5d7a00624e0fa7ca0dd488b531327447a8155261f",
+        "sha256:5aea5c80fa4f74d87df174e99cca1228c827a6df2dc0a737f6e3437afe5c723c",
+        "sha256:e4573c34d6b6c133e19aa9274bfa86acedcbe512d15527c455ece8b193365772",
+        "sha256:11a4dcc72a483d357f3b38ef620cb99a360529a8231126c87012f395829302f9",
+        "sha256:1aab6a5847d4a66539ba9375240ca5584cfb5e62a0cb528776294a83c27d0c87",
+        "sha256:a3a1bb55e1ad7582f53856e46348a1a2b70b740a503a5caae20bf9223ce8b18d",
+        "sha256:562be27e95bfdcbd767e3204f9fc3094d8ec97590461ea8378d7508a19dcd6e1",
+        "sha256:1675ad8b1e4d5c0a47d7e7f99744860ec75cd4ac28c39931a55c1ce8a2357663",
+        "sha256:5d0fc2238a0cf62f231e7563f61b978b3b15778a8509a2b9f62b83c328c212ac",
+        "sha256:32c0c7878389fcd637cce363fa6727817fc7c4148e569347ed9d75d84ef14042",
+        "sha256:1e32714a046224212a69468063d77954f6c9af57763509c12ff2830f54d7e9b3",
+        "sha256:77b1cff5fdad46ece144bc9f1bc071c21019424b870bb32b0e243a47c78ed02e",
+        "sha256:aa82f3f937c963d109838ec32c880214dad89277535311f90bd3d4b62af56031",
+        "sha256:2f78bfb1dced11a925d1d4e1a75c0cfefe35c551c3e987116e1bd47bbbfa1cb2",
+        "sha256:074b11c2ee13852e87aa56cc6580304fc5111927df7acccde0eec5219db48814",
+        "sha256:1b7ed810723d308f6fcddfc742ca4b757bb3d77e4b8022fbce85f0c90f313953",
+        "sha256:ddc8ba9893a4a2f24ff9eebd7838411a3dfd1deefccaaafce5724c70e04dcf37",
+        "sha256:b4dce5d2b4f99fa25d9c18f8092f97f1d28947e7eabb560e26fa3910d4b6d985",
+        "sha256:3a8a6e5ef25bc57d8347b103338d03e533bd40e4e9c4a7a63cc054d3bda611e3",
+        "sha256:fb4f8435dbbe80f0c96af93ca26444f7a4c7aeb3857bccd5de7d53c45079164d"
       ],
-      "case_spec_sha256": "0ff845fb334169ec91e7027c1232df02a51fa29c60039d748ec5b08f6240d19b",
+      "rq2_source_record_exhaustion": {
+        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "ready_route_count": 32,
+        "shard_count": 32,
+        "shard_routes": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy",
+          "mpds",
+          "nomad",
+          "optimade:mpddoptimade.phaseslab.org",
+          "optimade:optimade-gnome.odbx.science",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/1z-pd",
+          "optimade:optimade.materialscloud.org/archive/ed-g2",
+          "optimade:optimade.materialscloud.org/archive/jk-9v",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/archive/zt-z4",
+          "optimade:optimade.materialscloud.org/main/2dtopo",
+          "optimade:optimade.materialscloud.org/main/autowannier",
+          "optimade:optimade.materialscloud.org/main/curated-cofs",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
+          "optimade:optimade.materialscloud.org/main/pyrene-mofs",
+          "optimade:optimade.materialscloud.org/main/stoceriaitf",
+          "optimade:optimade.materialscloud.org/main/tin-antimony-sulfoiodide",
+          "optimade:optimade.odbx.science",
+          "optimade:optimade.openmaterialsdb.se",
+          "oqmd",
+          "tcod"
+        ],
+        "shard_bundle_ids": [
+          "sha256:e51b0108362902c14099fe9a0949f4db0c0f98f60825e5fccacbbdc949fa7c67",
+          "sha256:e5571d97dced60a049f4c81f1e96e5a5577810e828cdb2182667631105d16072",
+          "sha256:33f744cd24c85d08fda6105be2fae2a024ebbff8283849ceae14f11f36ac363a",
+          "sha256:4eb0a20ebf0df863af385516624e9f7890b0e755d4750642a44e0999a8759a8c",
+          "sha256:908440727963919e2f1ec3bbfab83731bdaed3ac1500b85217fce1790b1a163f",
+          "sha256:415d067ebc50b6cb34adb7bf2d38a3f6a456dcb2202eec2fc45bd2a13e6b2543",
+          "sha256:7d3f855400111e50096013f4e577378cc2688b34d0e00af15637caed22533b99",
+          "sha256:e48c4ec362d3577bd196e26793733bcec94221fa25fb14a72347b274dc6e247d",
+          "sha256:44ad3ca4328d7b8b9201aa1ea0209712a209c7b56332dca156db5f2e525ab1c0",
+          "sha256:4628194c4a7efc28a9fb61133254b55971e33dc348ec2c82059b5ef6609e1a18",
+          "sha256:5a3699590d18a833a8fe85d7f162a975cf61aeb0511a9141699897ac5dceebb6",
+          "sha256:137ba31c90cd72bb20ab22221138791ad2d56163ad8c3f3ca2a77617c388a559",
+          "sha256:5a81a224baa33cacad900025e6784b37346a3352a23c5f31a88e9828a60af750",
+          "sha256:6ddf3b9f6ccc363157e090a5d7a00624e0fa7ca0dd488b531327447a8155261f",
+          "sha256:5aea5c80fa4f74d87df174e99cca1228c827a6df2dc0a737f6e3437afe5c723c",
+          "sha256:e4573c34d6b6c133e19aa9274bfa86acedcbe512d15527c455ece8b193365772",
+          "sha256:11a4dcc72a483d357f3b38ef620cb99a360529a8231126c87012f395829302f9",
+          "sha256:1aab6a5847d4a66539ba9375240ca5584cfb5e62a0cb528776294a83c27d0c87",
+          "sha256:a3a1bb55e1ad7582f53856e46348a1a2b70b740a503a5caae20bf9223ce8b18d",
+          "sha256:562be27e95bfdcbd767e3204f9fc3094d8ec97590461ea8378d7508a19dcd6e1",
+          "sha256:1675ad8b1e4d5c0a47d7e7f99744860ec75cd4ac28c39931a55c1ce8a2357663",
+          "sha256:5d0fc2238a0cf62f231e7563f61b978b3b15778a8509a2b9f62b83c328c212ac",
+          "sha256:32c0c7878389fcd637cce363fa6727817fc7c4148e569347ed9d75d84ef14042",
+          "sha256:1e32714a046224212a69468063d77954f6c9af57763509c12ff2830f54d7e9b3",
+          "sha256:77b1cff5fdad46ece144bc9f1bc071c21019424b870bb32b0e243a47c78ed02e",
+          "sha256:aa82f3f937c963d109838ec32c880214dad89277535311f90bd3d4b62af56031",
+          "sha256:2f78bfb1dced11a925d1d4e1a75c0cfefe35c551c3e987116e1bd47bbbfa1cb2",
+          "sha256:074b11c2ee13852e87aa56cc6580304fc5111927df7acccde0eec5219db48814",
+          "sha256:1b7ed810723d308f6fcddfc742ca4b757bb3d77e4b8022fbce85f0c90f313953",
+          "sha256:ddc8ba9893a4a2f24ff9eebd7838411a3dfd1deefccaaafce5724c70e04dcf37",
+          "sha256:b4dce5d2b4f99fa25d9c18f8092f97f1d28947e7eabb560e26fa3910d4b6d985",
+          "sha256:3a8a6e5ef25bc57d8347b103338d03e533bd40e4e9c4a7a63cc054d3bda611e3"
+        ],
+        "all_ready_routes_sharded": true,
+        "source_record_count": 152,
+        "source_record_item_count": 152,
+        "source_record_sources": [
+          "aflow",
+          "alexandria",
+          "c2db",
+          "cod",
+          "jarvis_dft",
+          "materials_project",
+          "materialsgalaxy:topo_crystals",
+          "nomad",
+          "optimade:optimade-misc.odbx.science",
+          "optimade:optimade.2dmatpedia.org",
+          "optimade:optimade.materialscloud.org/archive/m0-zg",
+          "optimade:optimade.materialscloud.org/main/mc2d",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
+          "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2"
+        ],
+        "source_record_providers": [
+          "AFLOW",
+          "Alexandria",
+          "C2DB",
+          "COD",
+          "JARVIS-DFT",
+          "Materials Project",
+          "MaterialsGalaxy",
+          "NOMAD",
+          "optimade-misc.odbx.science",
+          "optimade.2dmatpedia.org",
+          "optimade.materialscloud.org"
+        ],
+        "status_counts": {
+          "empty": 14,
+          "failed": 3,
+          "succeeded": 15
+        },
+        "record_completeness_counts": {
+          "complete": 15,
+          "empty": 14,
+          "failed": 3
+        },
+        "complete_inventory_eligible": false,
+        "gap_count": 3,
+        "gaps": [
+          {
+            "source": "mpds",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null
+          },
+          {
+            "source": "optimade:mpddoptimade.phaseslab.org",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          },
+          {
+            "source": "oqmd",
+            "status": "failed",
+            "record_completeness": "failed",
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_timeout",
+            "truncation_reason": null
+          }
+        ]
+      },
+      "case_spec_sha256": "2c42bc6f2ba6c8d239939c35f6755d011d7b7a2c4d737522d912014e1f67cd9b",
       "paper_result_status": "protocol_eligible"
     }
   ],
   "exports": [
     {
       "path": "results/cases.csv",
-      "sha256": "1ce30465e34a230e8bf89083705e409c85360a7913d9d53736002e8a08b13142"
+      "sha256": "b7359eb97ec15f8b654510f81a05944ff51c8390714937785163d0f1ed6e49cd"
     },
     {
       "path": "results/coverage.csv",
-      "sha256": "99d2c2c8e1728ff6737d1adc3e0afd4ab047918e9b110d76264d5506ee3a19da"
+      "sha256": "bcb93a81af15f64fd17b875c715ce7ec73ec02b8ac7f4fcde5cf88c93939c922"
     },
     {
       "path": "results/source-outcome-audit.csv",
-      "sha256": "106d4037d68ba8c49d163637b4e007782fb4ceec1dd8914f3d4cfcabde8475a1"
+      "sha256": "ac76bbb1dead815bd1ae37b22aa613bcfd525c838a4e43a3579886646e568e0d"
+    },
+    {
+      "path": "results/rq2-source-outcome-audit.csv",
+      "sha256": "ea13fbcc4845e86ccd61b3cf396695d58ba312bad033c89ba31368d89ebc473e"
     },
     {
       "path": "results/observations.csv",
-      "sha256": "ec018fa7094c2665eeb1b6574980027947df4a71617f1ef2b412d064ea10ef3f"
+      "sha256": "cde901060a4a2ce2f3e074f1e57c814b5d12f638f8c22f0b9a8f0dfae9f55865"
     },
     {
       "path": "results/structures.csv",
-      "sha256": "bfc94b0347a123cb286ce0393e65efcd7c3c2339ae7e3d3f68afd2906a9c67ab"
+      "sha256": "cb4db7850de61895a7f02ead85d4a144441657ba4f6c5d797ef3db77a4d77d6b"
     },
     {
       "path": "results/artifacts.csv",
-      "sha256": "8cb6feb1cbdd4c84e250396d6973e3a2302ab1038fa98b9a7d3dba1eec07fe42"
+      "sha256": "70c6df86d0cbacf1218b307ccf26f28a481a61266a6f6b08a0b86f70d9bd8379"
     },
     {
       "path": "results/phase-diagram-entries.csv",
-      "sha256": "85db5d1ed0aa144a17b3aff4fd16bbec787b56812cef9431f3dcdc38d49c9ea1"
+      "sha256": "ffefaf60e90798a89dca8e1814ada2c589123757f545ebdddf9b66f25a7b425b"
     },
     {
       "path": "results/topology-soc-comparison.csv",
-      "sha256": "d3d134f718e93943d4dca95a0460d06eb2984fed930222d7c5b5476646650bed"
+      "sha256": "af63e3fa18f088473f1a82ce010a1aaa5290476309c2e4b1ac3f8acb1f9d1143"
     },
     {
       "path": "results/figure-ready.json",
-      "sha256": "a026fda42d441ebc8db0dd3aea585d17b11a14c761dd0330d7a948d39a32db7a"
+      "sha256": "c46e7116d5c25da131ec1876cd9e62984cae84c8fa42dca36bf24c2fc999022e"
     },
     {
       "path": "results/product-blockers.json",
@@ -974,31 +1505,31 @@
     },
     {
       "path": "results/internal-protocol-review.json",
-      "sha256": "cdadd5fa34760a27f52dbbb900f5957c95a6a7521dcb45dcaffdf2c4c0d2b708"
+      "sha256": "11825824b749f7d6f69364747ffcebaa661233c63eac1d5d49c1c380cd60e888"
     },
     {
       "path": "results/case-traces/bi2se3-topology.json",
-      "sha256": "e360ee005ae83bfd5ffcf2210d136012599926e9a27c3e7c27b18908f7bd5d64"
+      "sha256": "22990c41b8d1def37f34584e009593124c96cccf25e7f7a18371302cfc6744cf"
     },
     {
       "path": "results/case-traces/lifepo4-stability.json",
-      "sha256": "eaaec6c42cd4b1c6171c1cd6993a27307164ac9fc3fdf24294164f5f36da156e"
+      "sha256": "1f55b8daabf748a46c579887b4c7f239a256da549476c915068335fc5bb7f2b7"
     },
     {
       "path": "results/case-traces/mos2-band-gap.json",
-      "sha256": "bbf7c239cef2e5c60d4818cf8c3521af8b80413ef8a7945dff64b718f6a84d4e"
+      "sha256": "59885d70c91a93b1ce9903117ea97b923f91acf93536e198414c9d7cc8c739af"
     },
     {
-      "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-f14cc6108e89.svg",
-      "sha256": "abbabc3ce2956d39789458c35e6a8a23fb1e2e1038564629c18bef42eb99ea27"
+      "path": "results/artifacts/materials-project-GGA_GGA-U_R2SCAN-f330f598e2e5.svg",
+      "sha256": "658b1990c268857fceacfbaec46ef5cdf70815a1b90a590af9ee3ac2f277ed70"
     },
     {
       "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-band.svg",
-      "sha256": "ce277536eccd7ecc27ee0026730387d6f9386ff8ad556bcbf6d4b48f90dac458"
+      "sha256": "12dee5459445e790d0158eccb9a6350fc280360f0e3905094b22894d0a8242cc"
     },
     {
       "path": "results/artifacts/mos2-band-gap-materials-project-mp-2815-dos.svg",
-      "sha256": "52f65518bdee6508317530311e0935ac031c02da7eefe9562d5adbf975fd8a42"
+      "sha256": "7ed53175a76f66fb72b4c892d65a2da3a6515331fdbbb473936fb7643ebbb944"
     }
   ]
 }

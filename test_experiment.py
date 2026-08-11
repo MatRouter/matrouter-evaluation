@@ -26,9 +26,10 @@ class CapsuleTests(unittest.TestCase):
         cls.manifest = (
             experiment.load_json(manifest_path) if manifest_path.is_file() else None
         )
-        if cls.manifest and cls.manifest.get("schema_version") == (
-            "matrouter.paper-manifest/13"
-        ):
+        if cls.manifest and cls.manifest.get("schema_version") in {
+            "matrouter.paper-manifest/13",
+            "matrouter.paper-manifest/14",
+        }:
             cls.results = {
                 case_name: experiment.load_json(
                     ROOT / "results" / "cases" / f"{case_name}.json"
@@ -39,22 +40,70 @@ class CapsuleTests(unittest.TestCase):
             cls.manifest = None
             cls.results = {}
 
-    def test_release_identity_is_v091_without_product_epochs(self) -> None:
+    @staticmethod
+    def _with_forward_rq2_shards(result: dict[str, object]) -> dict[str, object]:
+        promoted = copy.deepcopy(result)
+        primary_capsule = next(
+            capsule
+            for capsule in promoted["evidence_bundles"]
+            if capsule["bundle_role"] == "primary_aggregate"
+        )
+        primary = primary_capsule["evidence_bundle"]
+        shard_capsules = []
+        for route in sorted(primary["routes"], key=lambda row: row["qualified_source"]):
+            if route["state"] != "ready" or route["operation"] != "search_materials":
+                continue
+            outcome_items = [
+                item
+                for item in primary["items"]
+                if item["item_kind"] == "source_outcome"
+                and item["route_id"] == route["route_id"]
+            ]
+            output_sources = set(route.get("output_sources", []))
+            record_items = [
+                item
+                for item in primary["items"]
+                if item["item_kind"] == "source_record"
+                and (
+                    json.loads(item["record_json"])["source"]
+                    == route["qualified_source"]
+                    or json.loads(item["record_json"])["source"] in output_sources
+                )
+            ]
+            shard_capsules.append(
+                {
+                    "bundle_role": "source_record_exhaustion_shard",
+                    "qualified_source_route": route["qualified_source"],
+                    "evidence_bundle": {
+                        **primary,
+                        "bundle_id": f"{primary['bundle_id']}-test-{route['route_id']}",
+                        "routes": [route],
+                        "items": [*outcome_items, *record_items],
+                    },
+                }
+            )
+        promoted["evidence_bundles"].extend(shard_capsules)
+        promoted["rq2_source_record_exhaustion"] = (
+            experiment._rq2_source_record_summary(promoted["evidence_bundles"], primary)
+        )
+        return promoted
+
+    def test_release_identity_is_v092_without_product_epochs(self) -> None:
         identity = experiment.load_json(ROOT / "product-identity.release.json")
-        self.assertEqual(identity["package_version"], "0.9.1")
-        self.assertEqual(identity["public_VERSION"], "0.9.1")
+        self.assertEqual(identity["package_version"], "0.9.2")
+        self.assertEqual(identity["public_VERSION"], "0.9.2")
         self.assertEqual(
             identity["product_commit"],
-            "a728afed38085881ad1f9fd3f1248f99a2cf5e0e",
+            "5a272788915ee4c2bf19b06455729e5198eaef9f",
         )
-        self.assertEqual(identity["release_tag"], "v0.9.1")
+        self.assertEqual(identity["release_tag"], "v0.9.2")
         self.assertEqual(
             identity["wheel_sha256"],
-            "6de8a7be9da7d4dfa60570a537dcd8576431bee0bec657028b211c7874f37707",
+            "27aef98fe51cf556ac93179d6e3699c470ef574b338b74494c88c403881c3c28",
         )
         self.assertEqual(
             identity["sdist_sha256"],
-            "23a09f5da1693bc5665014c2264b3423d82628bafa2c78f3c63b94531df50a73",
+            "a1669ffc869e6b193b8e2cca2d5d4aa6559b3c5ade0bed9458f60e74aa62f649",
         )
         self.assertEqual(identity["core_profile"]["tool_count"], 13)
         self.assertTrue(identity["route_contract"]["route_candidate_output_sources"])
@@ -114,9 +163,9 @@ class CapsuleTests(unittest.TestCase):
                     experiment, "verify_release_identity", return_value=identity
                 ),
                 patch.object(experiment, "preflight") as preflight_mock,
-                patch.object(experiment, "_clear_retired_active_outputs") as clear_mock,
+                patch.object(experiment, "_clear_active_results") as clear_mock,
                 self.assertRaisesRegex(
-                    RuntimeError, "v0.9.1 release-bound run is pending"
+                    RuntimeError, "v0.9.2 release-bound run is pending"
                 ),
             ):
                 experiment.run_all()
@@ -129,9 +178,9 @@ class CapsuleTests(unittest.TestCase):
 
     def test_run_rejects_existing_final_raw_before_destructive_cleanup(self) -> None:
         identity = {
-            "package_version": "0.9.1",
-            "public_VERSION": "0.9.1",
-            "release_tag": "v0.9.1",
+            "package_version": "0.9.2",
+            "public_VERSION": "0.9.2",
+            "release_tag": "v0.9.2",
         }
         with tempfile.TemporaryDirectory() as directory:
             temporary_root = Path(directory)
@@ -139,7 +188,7 @@ class CapsuleTests(unittest.TestCase):
             temporary_results = temporary_root / "results"
             old_raw = temporary_raw / "0.8.0" / "preserved.json"
             old_result = temporary_results / "preserved.json"
-            planned = temporary_raw / "0.9.1" / f"{experiment.CASES[0]}.json"
+            planned = temporary_raw / "0.9.2" / f"{experiment.CASES[0]}.json"
             experiment.write_json(old_raw, {"sentinel": "old-raw"})
             experiment.write_json(old_result, {"sentinel": "old-result"})
             experiment.write_json(planned, {"sentinel": "existing-target"})
@@ -153,7 +202,7 @@ class CapsuleTests(unittest.TestCase):
                     experiment, "verify_release_identity", return_value=identity
                 ),
                 patch.object(experiment, "preflight") as preflight_mock,
-                patch.object(experiment, "_clear_retired_active_outputs") as clear_mock,
+                patch.object(experiment, "_clear_active_results") as clear_mock,
                 self.assertRaisesRegex(
                     FileExistsError, "no active outputs were cleared"
                 ),
@@ -165,6 +214,23 @@ class CapsuleTests(unittest.TestCase):
                 before,
                 {path: path.read_bytes() for path in (old_raw, old_result, planned)},
             )
+
+    def test_active_result_cleanup_never_removes_frozen_raw(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            temporary_root = Path(directory)
+            temporary_raw = temporary_root / "raw"
+            temporary_results = temporary_root / "results"
+            frozen = temporary_raw / "0.9.1" / "preserved.json"
+            derived = temporary_results / "preserved.json"
+            experiment.write_json(frozen, {"sentinel": "frozen-raw"})
+            experiment.write_json(derived, {"sentinel": "derived-result"})
+            with (
+                patch.object(experiment, "RAW", temporary_raw),
+                patch.object(experiment, "RESULTS", temporary_results),
+            ):
+                experiment._clear_active_results()
+            self.assertEqual(experiment.load_json(frozen), {"sentinel": "frozen-raw"})
+            self.assertFalse(temporary_results.exists())
 
     def test_exactly_three_named_cases(self) -> None:
         self.assertEqual(
@@ -184,7 +250,7 @@ class CapsuleTests(unittest.TestCase):
         )
         self.assertEqual(
             experiment.COMMON_RESEARCH_QUESTIONS["RQ2"],
-            "What material-data landscape does the cross-source aggregate provide for the case—sources, data categories, scientific contexts, specialist data, and explicit gaps—and how does that landscape guide the next research step?",
+            "What material-data landscape do the preregistered non-selective per-route source-record exhaustion shards provide for the case—sources, data categories, scientific contexts, specialist data, completeness, and explicit gaps—and how does that landscape guide the next research step?",
         )
         for case_name in experiment.CASES:
             spec = experiment.case_spec(case_name)
@@ -231,6 +297,22 @@ class CapsuleTests(unittest.TestCase):
             experiment.case_spec("lifepo4-stability")["stage_2_targets"], []
         )
 
+    def test_next_release_specs_exclude_removed_materialsgalaxy_datasets(self) -> None:
+        excluded = {
+            "materialsgalaxy:generated_structures",
+            "materialsgalaxy:generated_topo_crystals",
+            "materialsgalaxy:CODX",
+        }
+        for case_name in experiment.CASES:
+            serialized = experiment.canonical_json(experiment.case_spec(case_name))
+            self.assertTrue(all(source not in serialized for source in excluded))
+
+        bi2se3_targets = experiment.case_spec("bi2se3-topology")["stage_2_targets"]
+        self.assertEqual(
+            {target["qualified_source_route"] for target in bi2se3_targets},
+            {"materialsgalaxy:topo_crystals"},
+        )
+
     def test_runner_has_only_preregistered_exact_target_selection(self) -> None:
         source = inspect.getsource(experiment.acquire_case)
         self.assertNotIn("_first_refs_by_source", source)
@@ -240,10 +322,10 @@ class CapsuleTests(unittest.TestCase):
         self.assertIn('target["enrichment_routes"]', source)
 
     def test_primary_aggregate_uses_public_tool_without_fake_merge(self) -> None:
-        source = inspect.getsource(experiment.acquire_case)
+        source = inspect.getsource(experiment.acquire_source_record_layers)
         self.assertEqual(source.count(".aggregate_source_records("), 1)
         self.assertIn('"bundle_role": "primary_aggregate"', source)
-        self.assertIn('"canonical_bundle": aggregate_bundle', source)
+        self.assertIn('"canonical_bundle": primary_bundle', source)
         self.assertNotIn("for source_index, catalog_route", source)
 
     def test_v091_route_candidate_and_materialsgalaxy_parent_route_semantics(
@@ -310,6 +392,215 @@ class CapsuleTests(unittest.TestCase):
         self.assertEqual(
             [bundle["bundle_id"] for bundle in experiment._target_bundles(result)],
             ["target"],
+        )
+
+    def test_rq2_exhaustion_shards_extend_primary_prefix_in_stable_route_order(
+        self,
+    ) -> None:
+        from matrouter.retrieval import AdapterSearchResult, RecordCompleteness
+        from matrouter.router import MatRouter
+        from matrouter.source_manifest import Access, AdapterManifest, RouteOperation
+
+        class SourceRecordAdapter:
+            def __init__(self, name: str, record_count: int) -> None:
+                self.NAME = name
+                self.records = tuple(
+                    {
+                        "source": name,
+                        "source_id": f"{name}-{index:02d}",
+                        "formula": "Si",
+                        "elements": ["Si"],
+                        "source_metadata": {"provider": name},
+                    }
+                    for index in range(record_count)
+                )
+
+            @property
+            def manifest(self) -> AdapterManifest:
+                return AdapterManifest(
+                    name=self.NAME,
+                    endpoint=f"https://{self.NAME}.example",
+                    targets=("material",),
+                    operations={RouteOperation.SEARCH_MATERIALS: Access.PUBLIC},
+                )
+
+            def search(self, query: dict[str, object]) -> AdapterSearchResult:
+                return AdapterSearchResult(
+                    records=self.records,
+                    completeness=RecordCompleteness(
+                        state="complete" if self.records else "empty",
+                        returned_count=len(self.records),
+                        upstream_total=len(self.records),
+                        pages_fetched=1,
+                        exhaustion_evidence="fixture_exhausted",
+                    ),
+                )
+
+        adapters = [
+            SourceRecordAdapter(
+                f"fixture_{index:02d}",
+                20 if index == 0 else 0,
+            )
+            for index in range(32)
+        ]
+        router = MatRouter(adapters)  # type: ignore[arg-type]
+        try:
+            layers = experiment.acquire_source_record_layers(
+                router,
+                case_name="synthetic",
+                formula="Si",
+            )
+        finally:
+            router.close()
+
+        capsules = layers["bundle_capsules"]
+        primary = next(
+            row["evidence_bundle"]
+            for row in capsules
+            if row["bundle_role"] == "primary_aggregate"
+        )
+        primary_records = [
+            json.loads(item["record_json"])
+            for item in primary["items"]
+            if item["item_kind"] == "source_record"
+            and json.loads(item["record_json"])["source"] == "fixture_00"
+        ]
+        self.assertEqual(len(primary_records), 15)
+
+        shards = [
+            row
+            for row in capsules
+            if row["bundle_role"] == "source_record_exhaustion_shard"
+        ]
+        self.assertEqual(
+            [row["qualified_source_route"] for row in shards],
+            [f"fixture_{index:02d}" for index in range(32)],
+        )
+        first_shard_records = [
+            json.loads(item["record_json"])
+            for item in shards[0]["evidence_bundle"]["items"]
+            if item["item_kind"] == "source_record"
+        ]
+        self.assertEqual(len(first_shard_records), 20)
+        empty_outcome = next(
+            item["outcome"]
+            for item in shards[1]["evidence_bundle"]["items"]
+            if item["item_kind"] == "source_outcome"
+        )
+        self.assertEqual(
+            (empty_outcome["status"], empty_outcome["record_completeness"]["state"]),
+            ("empty", "empty"),
+        )
+        self.assertEqual(layers["primary_summary"]["qualified_route_count"], 32)
+        self.assertEqual(layers["primary_summary"]["source_record_count"], 15)
+        shard_audit = experiment._rq2_shard_capture_audit(
+            {
+                "runs": layers["raw_runs"],
+                "rq2_source_record_exhaustion": layers["rq2_shard_summary"],
+            }
+        )
+        self.assertTrue(shard_audit["passed"])
+        audit_rows = experiment._rq2_source_outcome_audit_rows(
+            {
+                "case_name": "synthetic",
+                "evidence_bundles": capsules,
+            }
+        )
+        self.assertEqual(len(audit_rows), 32)
+        self.assertEqual(audit_rows[0]["qualified_source_route"], "fixture_00")
+        self.assertEqual(audit_rows[0]["record_count"], 20)
+
+    def test_rq2_inventory_gate_rejects_single_source_capacity_truncation(
+        self,
+    ) -> None:
+        from matrouter.retrieval import AdapterSearchResult, RecordCompleteness
+        from matrouter.router import MatRouter
+        from matrouter.source_manifest import Access, AdapterManifest, RouteOperation
+
+        class SourceRecordAdapter:
+            def __init__(self, name: str, record_count: int) -> None:
+                self.NAME = name
+                self.records = tuple(
+                    {
+                        "source": name,
+                        "source_id": f"{name}-{index:03d}",
+                        "formula": "Si",
+                        "elements": ["Si"],
+                        "source_metadata": {"provider": name},
+                    }
+                    for index in range(record_count)
+                )
+
+            @property
+            def manifest(self) -> AdapterManifest:
+                return AdapterManifest(
+                    name=self.NAME,
+                    endpoint=f"https://{self.NAME}.example",
+                    targets=("material",),
+                    operations={RouteOperation.SEARCH_MATERIALS: Access.PUBLIC},
+                )
+
+            def search(self, query: dict[str, object]) -> AdapterSearchResult:
+                return AdapterSearchResult(
+                    records=self.records,
+                    completeness=RecordCompleteness(
+                        state="complete" if self.records else "empty",
+                        returned_count=len(self.records),
+                        upstream_total=len(self.records),
+                        pages_fetched=1,
+                        exhaustion_evidence="fixture_exhausted",
+                    ),
+                )
+
+        router = MatRouter(  # type: ignore[arg-type]
+            [
+                SourceRecordAdapter("fixture_full", 520),
+                SourceRecordAdapter("fixture_empty", 0),
+            ]
+        )
+        try:
+            layers = experiment.acquire_source_record_layers(
+                router,
+                case_name="synthetic",
+                formula="Si",
+            )
+        finally:
+            router.close()
+
+        shards = {
+            row["qualified_source_route"]: row["evidence_bundle"]
+            for row in layers["bundle_capsules"]
+            if row["bundle_role"] == "source_record_exhaustion_shard"
+        }
+        full_outcome = next(
+            item["outcome"]
+            for item in shards["fixture_full"]["items"]
+            if item["item_kind"] == "source_outcome"
+        )
+        self.assertEqual(full_outcome["record_count"], 511)
+        self.assertEqual(full_outcome["record_completeness"]["state"], "truncated")
+        self.assertEqual(
+            full_outcome["record_completeness"]["truncation_reason"],
+            "evidence_bundle_item_capacity_reached",
+        )
+        summary = layers["rq2_shard_summary"]
+        self.assertFalse(summary["complete_inventory_eligible"])
+        self.assertEqual(
+            summary["record_completeness_counts"], {"empty": 1, "truncated": 1}
+        )
+        self.assertEqual(
+            summary["gaps"],
+            [
+                {
+                    "source": "fixture_full",
+                    "status": "partial",
+                    "record_completeness": "truncated",
+                    "record_count": 511,
+                    "upstream_total": 520,
+                    "reason_code": "evidence_bundle_item_capacity_reached",
+                    "truncation_reason": "evidence_bundle_item_capacity_reached",
+                }
+            ],
         )
 
     def test_aggregate_requires_records_from_two_sources_and_providers(self) -> None:
@@ -443,7 +734,7 @@ class CapsuleTests(unittest.TestCase):
             raw(["a", "b"]), experiment.case_spec("lifepo4-stability")
         )
         self.assertTrue(passing["single_primary_all_route_aggregate"])
-        self.assertTrue(passing["capture_eligible_under_frozen_protocol"])
+        self.assertFalse(passing["capture_eligible_under_frozen_protocol"])
 
         _, failing = experiment._capture_protocol_status(
             raw(["a"]), experiment.case_spec("lifepo4-stability")
@@ -737,7 +1028,9 @@ class CapsuleTests(unittest.TestCase):
                 experiment.validate()
 
     def test_material_landscape_records_unsupported_claim_as_gap(self) -> None:
-        result = experiment.load_json(ROOT / "results" / "cases" / "mos2-band-gap.json")
+        result = self._with_forward_rq2_shards(
+            experiment.load_json(ROOT / "results" / "cases" / "mos2-band-gap.json")
+        )
         spec = copy.deepcopy(experiment.case_spec("mos2-band-gap"))
         spec["material_landscape"]["cross_source_union_adds"][0][
             "supporting_contributions"
@@ -764,7 +1057,9 @@ class CapsuleTests(unittest.TestCase):
         )
 
     def test_unsupported_material_landscape_claim_makes_case_ineligible(self) -> None:
-        result = experiment.load_json(ROOT / "results" / "cases" / "mos2-band-gap.json")
+        result = self._with_forward_rq2_shards(
+            experiment.load_json(ROOT / "results" / "cases" / "mos2-band-gap.json")
+        )
         spec = copy.deepcopy(experiment.case_spec("mos2-band-gap"))
         spec["material_landscape"]["cross_source_union_adds"][0][
             "supporting_contributions"
@@ -784,8 +1079,8 @@ class CapsuleTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, source)
         for case_name in experiment.CASES:
-            result = experiment.load_json(
-                ROOT / "results" / "cases" / f"{case_name}.json"
+            result = self._with_forward_rq2_shards(
+                experiment.load_json(ROOT / "results" / "cases" / f"{case_name}.json")
             )
             spec = experiment.case_spec(case_name)
             result["task_spec"] = spec
@@ -866,6 +1161,46 @@ class CapsuleTests(unittest.TestCase):
         self.assertIn("stage_2_target_audit", source)
         self.assertIn("preregistered_exact_target_followups_succeed", source)
         self.assertIn("applicable_methods_bind_declared_exact_bundle_inputs", source)
+
+    def test_mos2_boundary_review_uses_structured_case_semantics(self) -> None:
+        results = [
+            self._with_forward_rq2_shards(
+                experiment.load_json(ROOT / "results" / "cases" / f"{case_name}.json")
+            )
+            for case_name in experiment.CASES
+        ]
+        for result in results:
+            result["case_interpretation"]["rq2_shard_scope"] = (
+                experiment.RQ2_SHARD_SCOPE
+            )
+            result["protocol_conformance"]["rq2_source_record_exhaustion_shards"] = {
+                "passed": True
+            }
+        raw_paths = {
+            case_name: ROOT / "raw" / "0.9.1" / f"{case_name}.json"
+            for case_name in experiment.CASES
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            temporary_results = Path(directory)
+            experiment.write_json(
+                temporary_results / "product-blockers.json",
+                {
+                    "schema_version": "matrouter.paper-product-blockers/1",
+                    "blocker_count": 0,
+                    "blockers": [],
+                },
+            )
+            with patch.object(experiment, "RESULTS", temporary_results):
+                experiment.write_internal_protocol_review(results, raw_paths)
+            review = experiment.load_json(
+                temporary_results / "internal-protocol-review.json"
+            )
+
+        self.assertTrue(
+            review["checks"][
+                "mos2_catalog_not_phase_resolved_and_no_experimental_gap_claim"
+            ]
+        )
 
     def test_stage2_legacy_every_record_path_is_absent(self) -> None:
         source = (ROOT / "experiment.py").read_text()
@@ -1113,7 +1448,8 @@ class CapsuleTests(unittest.TestCase):
         with (ROOT / "results" / "observations.csv").open(newline="") as handle:
             observation_rows = list(csv.DictReader(handle))
         figure_cases = {row["case_name"]: row for row in figure["cases"]}
-        experiment._validate_paper_observation_export_consistency(self.results)
+        if self.manifest["schema_version"] == "matrouter.paper-manifest/14":
+            experiment._validate_paper_observation_export_consistency(self.results)
         for case_name in experiment.CASES:
             trace = self.results[case_name]["material_landscape"]
             self.assertEqual(
