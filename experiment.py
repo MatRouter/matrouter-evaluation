@@ -14,10 +14,12 @@ import shutil
 import time
 from collections import Counter
 from collections.abc import Iterator
+from datetime import UTC, datetime
 from importlib.metadata import distribution, version
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
+from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parent
 os.environ.setdefault("MPLCONFIGDIR", str(ROOT / ".runtime-cache" / "matplotlib"))
@@ -26,13 +28,17 @@ IDENTITY_PATH = ROOT / "product-identity.release.json"
 CASES = ("mos2-band-gap", "lifepo4-stability", "bi2se3-topology")
 PROTOCOL_VERSION = "matrouter.paper-three-case-protocol"
 FINAL_RELEASE_BINDING = {
-    "package_version": "0.9.2",
-    "public_VERSION": "0.9.2",
-    "release_tag": "v0.9.2",
+    "package_version": "0.10.2",
+    "public_VERSION": "0.10.2",
+    "release_tag": "v0.10.2",
 }
+FORMAL_CAPTURE_ENABLED = True
+FORMAL_CAPTURE_PAUSE_REASON = (
+    "Formal capture is disabled for the configured release identity."
+)
 COMMON_RESEARCH_QUESTIONS = {
     "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
-    "RQ2": "What material-data landscape do the preregistered non-selective per-route source-record exhaustion shards provide for the case—sources, data categories, scientific contexts, specialist data, completeness, and explicit gaps—and how does that landscape guide the next research step?",
+    "RQ2": "What material-data landscape does that same authoritative aggregate Bundle support—sources, data categories, scientific contexts, specialist data, completeness, and explicit gaps—and how does that landscape guide the next research step?",
     "RQ3": "Can an Agent use the aggregate to locate preregistered exact source-bound records and artifacts for explicit lightweight methods, while making unsupported heavy calculations an explicit external handoff rather than a proxy result?",
 }
 RAW = ROOT / "raw"
@@ -40,7 +46,6 @@ RESULTS = ROOT / "results"
 CASE_RESULTS = RESULTS / "cases"
 ARTIFACTS = RESULTS / "artifacts"
 
-SOURCE_RECORD_SAFETY_LIMIT = 60
 OPTIMADE_WILDCARD_EXCLUSIONS = {
     "unavailable": ["alexandria", "cmr", "mpod"],
     "out_of_scope": ["psdi"],
@@ -57,14 +62,6 @@ OPTIMADE_WILDCARD_EXCLUSIONS = {
         "tcod",
     ],
 }
-DISCOVERY_RETRIEVAL = {
-    "source_scope": "all_qualified",
-    "record_scope": "exhaust_upstream",
-    "max_pages": 100,
-    "max_elapsed_seconds": 300.0,
-    "max_bytes": 100_000_000,
-}
-THERMOCHEMICAL_LIMIT = 2000
 THERMO_TYPE = "GGA_GGA+U_R2SCAN"
 ON_HULL_TOLERANCE_EV_PER_ATOM = 1e-6
 PAPER_ELIGIBILITY_SEMANTICS = (
@@ -77,29 +74,37 @@ QUALIFIED_ROUTE_COUNT_SEMANTICS = (
     "returned records are exact provenance, not additional execution outcomes."
 )
 STAGE_1_SCOPE = (
-    "RQ1 uses one aggregate_source_records call for bounded parallel cross-source execution over "
-    "all parsed qualified routes (at most eight workers), preserves stable-order aggregation, "
-    "and returns one primary EvidenceBundle. Per-source pagination remains sequential. The public "
-    "512-item/16-MB capacity is shared by execution route; capacity and safety stops remain typed "
-    "partial or truncated. All qualified routes are attempted, but not every upstream record is "
-    "claimed retrieved."
+    "RQ1 and RQ2 share one aggregate_source_records call and one authoritative discovery Bundle. "
+    "MatRouter performs bounded parallel cross-source execution over all parsed qualified routes "
+    "with ordered_parallel_map (at most eight workers), preserves stable route-order aggregation, "
+    "and keeps pagination within each source sequential. The evaluation declares only "
+    "all_qualified plus exhaust_upstream; MatRouter owns the effective records, pages, elapsed-time, "
+    "normalized-byte, and Bundle-closure engineering ceilings. Capacity stops remain explicit in "
+    "RecordCompleteness. Outcomes and warnings are embedded in executions and do not consume the "
+    "scientific-item budget. All ready qualified "
+    "routes are attempted, but not every upstream record is claimed retrieved. RQ1 projects route "
+    "execution and closure; RQ2 projects source contributions and material-data context from the "
+    "same executions and source-record items."
 )
-RQ2_SHARD_POLICY = {
-    "selection": "every_ready_primary_search_materials_execution_route_in_stable_exact_route_order",
-    "source_scope": "selected",
+SHARED_DISCOVERY_POLICY = {
+    "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+    "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
-    "record_limit": "begin_evidence_run.capacity.max_single_source_record_items",
-    "max_pages_per_route": DISCOVERY_RETRIEVAL["max_pages"],
-    "max_elapsed_seconds_per_route": DISCOVERY_RETRIEVAL["max_elapsed_seconds"],
-    "max_normalized_bytes_per_route": DISCOVERY_RETRIEVAL["max_bytes"],
-    "bundle_policy": "one_bounded_evidence_run_and_bundle_per_exact_execution_route",
+    "engineering_ceiling_authority": "matrouter_product_defaults",
+    "evaluation_ceiling_overrides": [],
+    "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+    "per_source_pagination": "sequential",
+    "additional_source_record_acquisitions": 0,
+    "analysis_views": ["RQ1", "RQ2"],
+    "authoritative_bundle_count": 1,
 }
-RQ2_SHARD_SCOPE = (
-    "RQ2 uses one independent selected-source exhaust-upstream Evidence run and Bundle for every "
-    "ready primary search_materials execution route in stable exact-route order. Each run takes "
-    "its record limit from begin_evidence_run.capacity.max_single_source_record_items and retains "
-    "the common page, time, and byte ceilings. Records remain source-qualified and unmerged; "
-    "complete inventory eligibility requires every shard to be complete or verified empty."
+SHARED_DISCOVERY_SCOPE = (
+    "Each case has exactly one source-record acquisition: one all-qualified, exhaust-upstream "
+    "aggregate_source_records call. The evaluation supplies no records, pages, elapsed-time, "
+    "normalized-byte, or Bundle-closure ceiling overrides; the installed MatRouter release owns "
+    "those engineering defaults and the capture records their effective values. RQ1 and RQ2 are "
+    "two deterministic views of this single authority ledger; no second discovery or "
+    "selected-source supplement is permitted."
 )
 
 EXPECTED_TOOLS = (
@@ -149,6 +154,60 @@ def load_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
+
+
+def _utc_now() -> str:
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
+
+
+def _new_full_run_id(package_version: str) -> str:
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+    return f"matrouter-{package_version}-full-{stamp}-{uuid4().hex[:12]}"
+
+
+def _portable_site_package_path(path: Path) -> str:
+    resolved = path.resolve()
+    if "site-packages" not in resolved.parts:
+        raise ValueError("installed MatRouter path is not a site-packages distribution")
+    index = resolved.parts.index("site-packages")
+    return "/".join(resolved.parts[index:])
+
+
+def _runtime_distribution_audit() -> dict[str, Any]:
+    import matrouter
+
+    installed_distribution = distribution("matrouter")
+    distribution_root = Path(installed_distribution.locate_file("matrouter")).resolve()
+    imported_root = Path(matrouter.__file__).resolve().parent
+    product_source_pythonpath_entries = 0
+    for raw_entry in os.environ.get("PYTHONPATH", "").split(os.pathsep):
+        if not raw_entry:
+            continue
+        candidate = (Path(raw_entry).resolve() / "matrouter").resolve()
+        if (candidate / "__init__.py").is_file() and candidate != distribution_root:
+            product_source_pythonpath_entries += 1
+    if product_source_pythonpath_entries:
+        raise ValueError("PYTHONPATH must not inject MatRouter product source")
+    direct_url_absent = installed_distribution.read_text("direct_url.json") is None
+    paths_match = imported_root == distribution_root
+    if not direct_url_absent or not paths_match:
+        raise ValueError(
+            "runtime MatRouter must be the installed registry distribution"
+        )
+    return {
+        "distribution_name": installed_distribution.metadata["Name"],
+        "distribution_version": installed_distribution.metadata["Version"],
+        "public_VERSION": matrouter.VERSION,
+        "metadata_version": installed_distribution.metadata["Metadata-Version"],
+        "requires_python": installed_distribution.metadata["Requires-Python"],
+        "summary": installed_distribution.metadata["Summary"],
+        "imported_package_path": _portable_site_package_path(imported_root),
+        "distribution_package_path": _portable_site_package_path(distribution_root),
+        "imported_path_matches_distribution": paths_match,
+        "direct_url_json_absent": direct_url_absent,
+        "product_source_pythonpath_entries": product_source_pythonpath_entries,
+        "registry_distribution_verified": True,
+    }
 
 
 def wire(value: Any) -> Any:
@@ -206,11 +265,15 @@ def verify_release_identity() -> dict[str, Any]:
     from matrouter.evidence_contracts import (
         EvidenceBundle,
         EvidenceRequirement,
+        ExecutionWarningPayload,
         RouteCandidate,
+        RouteExecution,
         ScientificArtifactItem,
+        SourceOutcomePayload,
         StructureItem,
-        ThermochemicalEntrySetItem,
+        record_result,
     )
+    from matrouter.retrieval import RecordCompleteness
 
     identity = load_json(IDENTITY_PATH)
     installed_distribution = distribution("matrouter")
@@ -221,6 +284,8 @@ def verify_release_identity() -> dict[str, Any]:
     metadata = identity["distribution_metadata"]
     if installed_distribution.metadata["Name"] != metadata["name"]:
         raise ValueError("installed distribution name mismatch")
+    if installed_distribution.metadata["Version"] != metadata["version"]:
+        raise ValueError("installed distribution metadata version mismatch")
     if (
         installed_distribution.metadata["Metadata-Version"]
         != metadata["metadata_version"]
@@ -248,15 +313,78 @@ def verify_release_identity() -> dict[str, Any]:
         EvidenceBundle,
         StructureItem,
         ScientificArtifactItem,
-        ThermochemicalEntrySetItem,
+        RouteExecution,
+        SourceOutcomePayload,
+        ExecutionWarningPayload,
     ):
         if retired_identity_fields & model.model_fields.keys():
             raise ValueError(
                 f"{model.__name__} retains a retired product identity field"
             )
     route_contract = identity["route_contract"]
-    if "output_sources" not in RouteCandidate.model_fields:
-        raise ValueError("installed RouteCandidate lacks required output_sources")
+    if "aggregate_sources" not in RouteCandidate.model_fields:
+        raise ValueError("installed RouteCandidate lacks required aggregate_sources")
+    bundle_contract = identity["evidence_bundle_contract"]
+    if set(EvidenceBundle.model_fields) != {
+        "matrouter_version",
+        "bundle_id",
+        "requirements",
+        "routes",
+        bundle_contract["scientific_items_field"],
+        bundle_contract["execution_ledger_field"],
+    }:
+        raise ValueError(
+            "installed EvidenceBundle fields differ from the 0.10.2 contract"
+        )
+    if set(RouteExecution.model_fields) != {
+        "attempt_id",
+        "route_id",
+        "input_attempt_id",
+        "input_item_id",
+        "output_item_ids",
+        "outcome",
+        "warnings",
+        "started_at",
+        "completed_at",
+    }:
+        raise ValueError(
+            "installed RouteExecution fields differ from the release contract"
+        )
+    if "execution_status" not in SourceOutcomePayload.model_fields:
+        raise ValueError("installed SourceOutcomePayload lacks execution_status")
+    if (
+        record_result(
+            SourceOutcomePayload(
+                execution_status="succeeded",
+                reason_code="identity_probe",
+                record_completeness=RecordCompleteness(
+                    state="complete",
+                    returned_count=0,
+                    upstream_total=0,
+                    pages_fetched=1,
+                    exhaustion_evidence="identity_probe",
+                ),
+            ),
+            operation="search_materials",
+        )
+        != "empty"
+    ):
+        raise ValueError("installed derived record_result contract mismatch")
+    from matrouter.evidence_contracts import (
+        MAX_BUNDLE_CANONICAL_BYTES,
+        MAX_BUNDLE_EVIDENCE_ITEMS,
+        MAX_BUNDLE_EXECUTIONS,
+        MAX_BUNDLE_SOURCE_RECORDS,
+    )
+
+    capacity_checks = {
+        "max_source_records": MAX_BUNDLE_SOURCE_RECORDS,
+        "max_evidence_items": MAX_BUNDLE_EVIDENCE_ITEMS,
+        "max_executions": MAX_BUNDLE_EXECUTIONS,
+        "max_bundle_canonical_bytes": MAX_BUNDLE_CANONICAL_BYTES,
+    }
+    if any(bundle_contract[key] != value for key, value in capacity_checks.items()):
+        raise ValueError("installed EvidenceBundle capacity profile mismatch")
     from matrouter._parallel import MAX_PARALLEL_SOURCE_CALLS
 
     if (
@@ -279,7 +407,7 @@ def case_spec(case_name: str) -> dict[str, Any]:
     spec = load_json(ROOT / "cases" / f"{case_name}.json")
     if spec.get("case_name") != case_name:
         raise ValueError(f"{case_name}: case identity mismatch")
-    if spec.get("schema_version") != "matrouter.paper-case-spec/11":
+    if spec.get("schema_version") != "matrouter.paper-case-spec/13":
         raise ValueError(f"{case_name}: case schema mismatch")
     if spec.get("research_question_ids") != list(COMMON_RESEARCH_QUESTIONS):
         raise ValueError(f"{case_name}: common research-question binding mismatch")
@@ -320,17 +448,13 @@ def case_spec(case_name: str) -> dict[str, Any]:
         "evidence_kind": "source_record",
         "source_scope": "all_qualified",
         "record_scope": "exhaust_upstream",
-        "record_safety_limit_per_route": SOURCE_RECORD_SAFETY_LIMIT,
-        "max_pages_per_route": DISCOVERY_RETRIEVAL["max_pages"],
-        "max_elapsed_seconds_per_route": DISCOVERY_RETRIEVAL["max_elapsed_seconds"],
-        "max_normalized_bytes_per_route": DISCOVERY_RETRIEVAL["max_bytes"],
-        "public_bundle_item_limit": 512,
-        "public_bundle_canonical_byte_limit": 16_000_000,
+        "engineering_ceiling_authority": "matrouter_product_defaults",
+        "evaluation_ceiling_overrides": [],
     }
     if spec.get("stage_1") != expected_stage_1:
         raise ValueError(f"{case_name}: Stage 1 differs from the common frozen budget")
-    if spec.get("rq2_source_record_exhaustion_shards") != RQ2_SHARD_POLICY:
-        raise ValueError(f"{case_name}: RQ2 exhaustion-shard policy mismatch")
+    if spec.get("shared_discovery_policy") != SHARED_DISCOVERY_POLICY:
+        raise ValueError(f"{case_name}: shared discovery policy mismatch")
     targets = spec.get("stage_2_targets")
     if not isinstance(targets, list):
         raise TypeError(f"{case_name}: Stage 2 targets must be an explicit list")
@@ -363,25 +487,22 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
     aggregate_records = _bundle_items(
         aggregate_run["canonical_bundle"], "source_record"
     )
-    aggregate_identities = [
-        json.loads(item["record_json"]) for item in aggregate_records
-    ]
+    aggregate_identities = [_record_from_item(item) for item in aggregate_records]
     aggregate_discovered = {
         (record.get("source"), record.get("source_id"))
         for record in aggregate_identities
     }
     target_runs = [row for row in raw["runs"] if row["run_role"] == "target_followup"]
-    discovery_acquisitions = [
+    primary_acquisitions = {
+        acquisition["acquisition_id"]: acquisition
+        for acquisition in aggregate_run["acquisitions"]
+    }
+    additional_discovery_acquisitions = [
         acquisition
         for run in target_runs
         for acquisition in run["acquisitions"]
         if acquisition["route"]["operation"] == "search_materials"
     ]
-    discovered = {
-        (ref["source"], ref["source_id"])
-        for acquisition in discovery_acquisitions
-        for ref in acquisition.get("record_refs", [])
-    }
     requirements = {
         row["requirement_id"]: row
         for run in target_runs
@@ -395,7 +516,6 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
         source = target["qualified_source_route"]
         source_id = target["source_id"]
         found_in_aggregate = (source, source_id) in aggregate_discovered
-        found_for_followup = (source, source_id) in discovered
         route_rows: list[dict[str, Any]] = []
         for expected in target["enrichment_routes"]:
             matching_acquisitions = [
@@ -421,20 +541,30 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
                 if row["requirement_id"] in matching_ids
                 and row["operation"] == expected["operation"]
             ]
+            bound_to_primary = [
+                row
+                for row in matching_acquisitions
+                if row.get("input_acquisition_id") in primary_acquisitions
+                and row.get("input_record_ref")
+                in primary_acquisitions[row["input_acquisition_id"]].get(
+                    "record_refs", []
+                )
+            ]
             route_rows.append(
                 {
                     **expected,
                     "requirement_count": len(matching_requirements),
                     "ready_route_count": sum(
-                        row["state"] == "ready" for row in matching_routes
+                        _route_is_ready(row) for row in matching_routes
                     ),
                     "executed_count": len(matching_acquisitions),
+                    "bound_to_primary_discovery_count": len(bound_to_primary),
                     "succeeded_count": sum(
-                        row["outcome_draft"]["status"] == "succeeded"
+                        row["outcome"]["execution_status"] == "succeeded"
                         for row in matching_acquisitions
                     ),
                     "failed_count": sum(
-                        row["outcome_draft"]["status"] == "failed"
+                        row["outcome"]["execution_status"] == "failed"
                         for row in matching_acquisitions
                     ),
                 }
@@ -445,11 +575,10 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
                 "source_id": source_id,
                 "scientific_role": target["scientific_role"],
                 "found_in_primary_aggregate": found_in_aggregate,
-                "found_in_target_followup": found_for_followup,
                 "enrichment_routes": route_rows,
                 "status": (
                     "missing"
-                    if not (found_in_aggregate or found_for_followup)
+                    if not found_in_aggregate
                     else "present_no_enrichment"
                     if not route_rows
                     else "succeeded"
@@ -474,8 +603,7 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
     return {
         "preregistered_target_count": len(target_rows),
         "found_target_count": sum(
-            row["found_in_primary_aggregate"] or row["found_in_target_followup"]
-            for row in target_rows
+            row["found_in_primary_aggregate"] for row in target_rows
         ),
         "missing_target_count": sum(row["status"] == "missing" for row in target_rows),
         "expected_enrichment_route_count": expected_route_count,
@@ -486,6 +614,9 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
         "targets": target_rows,
         "qualified_source_route_count": len(raw["qualified_source_routes"]),
         "target_followup_run_count": len(target_runs),
+        "additional_source_record_acquisition_count": len(
+            additional_discovery_acquisitions
+        ),
         "passed": (
             all(
                 row["status"] in {"present_no_enrichment", "succeeded"}
@@ -493,78 +624,79 @@ def _stage2_target_audit(raw: dict[str, Any], spec: dict[str, Any]) -> dict[str,
             )
             and executed_route_count == expected_route_count
             and succeeded_route_count == expected_route_count
+            and not additional_discovery_acquisitions
+            and all(
+                route["bound_to_primary_discovery_count"] == route["executed_count"]
+                for target in target_rows
+                for route in target["enrichment_routes"]
+            )
         ),
     }
 
 
-def _rq2_shard_capture_audit(raw: dict[str, Any]) -> dict[str, Any]:
+def _shared_discovery_capture_audit(raw: dict[str, Any]) -> dict[str, Any]:
     primary_runs = [
         run for run in raw["runs"] if run["run_role"] == "primary_aggregate"
     ]
-    expected_routes = (
-        sorted(
-            route["qualified_source"]
-            for route in primary_runs[0].get("routes", [])
-            if route["state"] == "ready" and route["operation"] == "search_materials"
-        )
-        if len(primary_runs) == 1
-        else []
-    )
-    shard_runs = [
-        run
+    if len(primary_runs) != 1:
+        return {
+            "aggregate_source_records_call_count": raw.get(
+                "aggregate_source_records_call_count"
+            ),
+            "primary_aggregate_run_count": len(primary_runs),
+            "additional_source_record_acquisition_count": None,
+            "passed": False,
+        }
+    primary = primary_runs[0]
+    requirements = primary["requirements"]
+    requirement = requirements[0] if len(requirements) == 1 else {}
+    constraints = requirement.get("operational_constraints") or {}
+    retrieval = constraints.get("retrieval") or {}
+    discovery_acquisitions = [
+        acquisition
         for run in raw["runs"]
-        if run["run_role"] == "source_record_exhaustion_shard"
+        for acquisition in run["acquisitions"]
+        if acquisition["route"]["operation"] == "search_materials"
     ]
-    actual_routes = [run["qualified_source_route"] for run in shard_runs]
-    run_checks = []
-    for run in shard_runs:
-        source = run["qualified_source_route"]
-        requirements = run["requirements"]
-        routes = run["routes"]
-        acquisitions = run["acquisitions"]
-        capacity = run["run_capacity"]
-        requirement = requirements[0] if len(requirements) == 1 else {}
-        constraints = requirement.get("operational_constraints") or {}
-        retrieval = constraints.get("retrieval") or {}
-        passed = (
-            len(requirements) == 1
-            and requirement.get("evidence_kind") == "source_record"
-            and constraints.get("sources") == [source]
-            and constraints.get("limit")
-            == capacity.get("max_single_source_record_items")
-            and retrieval.get("source_scope") == "selected"
-            and retrieval.get("record_scope") == "exhaust_upstream"
-            and retrieval.get("max_pages") == DISCOVERY_RETRIEVAL["max_pages"]
-            and retrieval.get("max_elapsed_seconds")
-            == DISCOVERY_RETRIEVAL["max_elapsed_seconds"]
-            and retrieval.get("max_bytes") == DISCOVERY_RETRIEVAL["max_bytes"]
-            and len(routes) == 1
-            and routes[0].get("qualified_source") == source
-            and routes[0].get("operation") == "search_materials"
-            and routes[0].get("state") == "ready"
-            and len(acquisitions) == 1
-            and acquisitions[0].get("route", {}).get("qualified_source") == source
-            and acquisitions[0].get("outcome_draft") is not None
-        )
-        run_checks.append({"source": source, "passed": passed})
-    summary = raw.get("rq2_source_record_exhaustion") or {}
+    primary_acquisition_ids = {
+        acquisition["acquisition_id"] for acquisition in primary["acquisitions"]
+    }
+    additional_discovery = [
+        acquisition
+        for acquisition in discovery_acquisitions
+        if acquisition["acquisition_id"] not in primary_acquisition_ids
+    ]
+    bundle = primary["canonical_bundle"]
+    summary = raw.get("shared_discovery_ledger") or {}
+    ready_route_count = sum(
+        _route_is_ready(route) and route["operation"] == "search_materials"
+        for route in primary["routes"]
+    )
     passed = (
-        actual_routes == expected_routes
-        and all(row["passed"] for row in run_checks)
-        and summary.get("shard_routes") == expected_routes
-        and summary.get("shard_count") == len(expected_routes)
-        and summary.get("all_ready_routes_sharded") is True
+        raw.get("aggregate_source_records_call_count") == 1
+        and len(requirements) == 1
+        and requirement.get("evidence_kind") == "source_record"
+        and constraints.get("sources") == []
+        and retrieval.get("record_scope") == "exhaust_upstream"
+        and raw.get("retrieval_strategy", {}).get("shared_discovery_policy")
+        == SHARED_DISCOVERY_POLICY
+        and len(primary["acquisitions"]) == ready_route_count
+        and not additional_discovery
+        and summary.get("authoritative_bundle_id") == bundle["bundle_id"]
+        and summary.get("source_record_count")
+        == len(_bundle_items(bundle, "source_record"))
+        and summary.get("rq1_rq2_same_bundle") is True
     )
     return {
-        "expected_ready_route_count": len(expected_routes),
-        "shard_run_count": len(shard_runs),
-        "expected_routes": expected_routes,
-        "actual_routes": actual_routes,
-        "run_checks": run_checks,
-        "complete_inventory_eligible": summary.get(
-            "complete_inventory_eligible", False
+        "aggregate_source_records_call_count": raw.get(
+            "aggregate_source_records_call_count"
         ),
-        "gap_count": summary.get("gap_count"),
+        "primary_aggregate_run_count": 1,
+        "ready_route_count": ready_route_count,
+        "primary_discovery_acquisition_count": len(primary["acquisitions"]),
+        "additional_source_record_acquisition_count": len(additional_discovery),
+        "authoritative_bundle_id": bundle["bundle_id"],
+        "rq1_rq2_same_bundle": summary.get("rq1_rq2_same_bundle"),
         "passed": passed,
     }
 
@@ -585,12 +717,13 @@ def _capture_protocol_status(
             aggregate_summary
             and aggregate_summary["qualified_route_count"]
             == len(raw["qualified_source_routes"])
-            and aggregate_summary["source_outcome_count"]
-            == aggregate_summary["qualified_route_count"]
-            and aggregate_summary["all_qualified_routes_have_typed_outcome"]
+            and aggregate_summary["attempted_route_count"]
+            == aggregate_summary["ready_route_count"]
+            and aggregate_summary["all_ready_routes_have_execution"]
+            and aggregate_summary["all_qualified_routes_attempted"]
             and aggregate_summary["real_cross_source_records"]
         )
-        rq2_shard_audit = _rq2_shard_capture_audit(raw)
+        shared_discovery_audit = _shared_discovery_capture_audit(raw)
         conformance = {
             "single_primary_all_route_aggregate": aggregate_closed,
             "primary_aggregate_summary": aggregate_summary,
@@ -598,16 +731,15 @@ def _capture_protocol_status(
                 row["run_role"]
                 in {
                     "primary_aggregate",
-                    "source_record_exhaustion_shard",
                     "target_followup",
                     "thermochemical",
                 }
                 for row in raw["runs"]
             ),
-            "rq2_source_record_exhaustion_shards": rq2_shard_audit,
+            "shared_discovery_ledger": shared_discovery_audit,
             "stage_2_preregistered_exact_targets": True,
             "capture_eligible_under_frozen_protocol": aggregate_closed
-            and rq2_shard_audit["passed"],
+            and shared_discovery_audit["passed"],
             "reason": None,
         }
         if spec is not None:
@@ -616,7 +748,7 @@ def _capture_protocol_status(
             conformance["capture_eligible_under_frozen_protocol"] = (
                 aggregate_closed
                 and conformance["run_roles_valid"]
-                and rq2_shard_audit["passed"]
+                and shared_discovery_audit["passed"]
                 and audit["passed"]
             )
         return raw["retrieval_strategy"], conformance
@@ -636,28 +768,15 @@ def _subject(
 def _constraints(
     *,
     sources: tuple[str, ...] = (),
-    limit: int = SOURCE_RECORD_SAFETY_LIMIT,
     all_qualified: bool = False,
     filters: tuple[Any, ...] = (),
 ) -> Any:
     from matrouter.evidence_contracts import OperationalConstraints
     from matrouter.retrieval import RetrievalStrategy
 
-    retrieval = (
-        RetrievalStrategy(**DISCOVERY_RETRIEVAL)
-        if all_qualified
-        else RetrievalStrategy(
-            source_scope="selected",
-            record_scope="exhaust_upstream",
-            max_pages=DISCOVERY_RETRIEVAL["max_pages"],
-            max_elapsed_seconds=DISCOVERY_RETRIEVAL["max_elapsed_seconds"],
-            max_bytes=DISCOVERY_RETRIEVAL["max_bytes"],
-        )
-    )
     return OperationalConstraints(
         sources=() if all_qualified else sources,
-        limit=limit,
-        retrieval=retrieval,
+        retrieval=RetrievalStrategy(record_scope="exhaust_upstream"),
         filters=filters,
     )
 
@@ -666,10 +785,8 @@ def _create_requirement(
     tools: Any,
     run_id: str,
     *,
-    label: str,
     subject: Any,
     kind: str,
-    use: str,
     constraints: Any,
 ) -> Any:
     from matrouter.tools.evidence import CreateEvidenceRequirementRequest
@@ -677,10 +794,8 @@ def _create_requirement(
     return tools.create_evidence_requirement(
         CreateEvidenceRequirementRequest(
             evidence_run_id=run_id,
-            label=label,
             subject_scope=subject,
             evidence_kind=kind,
-            evidence_use=use,
             operational_constraints=constraints,
         )
     )
@@ -698,6 +813,11 @@ def _execute(
 ) -> Any:
     from matrouter.tools.evidence import ExecuteEvidenceRouteToolRequest
 
+    if route.operation == "search_materials":
+        raise ValueError(
+            "Source-record discovery is owned exclusively by the case's single "
+            "aggregate_source_records call"
+        )
     return tools.execute_evidence_route(
         ExecuteEvidenceRouteToolRequest(
             evidence_run_id=run_id,
@@ -750,6 +870,21 @@ def _all_exact_refs(acquisitions: list[Any]) -> list[tuple[Any, Any]]:
     )
 
 
+def _registered_acquisitions(
+    registry: Any, run_id: str, *, requirement_ids: set[str] | None = None
+) -> list[Any]:
+    """Snapshot exact acquisitions already committed by MatRouter in one run ledger."""
+    with registry.borrow(run_id) as state:
+        acquisitions = list(state.acquisitions.values())
+    if requirement_ids is not None:
+        acquisitions = [
+            row
+            for row in acquisitions
+            if row.requirement.requirement_id in requirement_ids
+        ]
+    return sorted(acquisitions, key=lambda row: row.acquisition_id)
+
+
 def _add_bound_detail(
     *,
     tools: Any,
@@ -771,19 +906,22 @@ def _add_bound_detail(
     requirement = _create_requirement(
         tools,
         run_id,
-        label=f"{case_name}-{_safe_label(source)}-{record_label}-{kind}",
         subject=_subject(formula=formula),
         kind=kind,
-        use=f"Exact {kind} evidence for the acquired {source}/{record_ref.source_id} record.",
-        constraints=_constraints(sources=(source,), limit=1),
+        constraints=_constraints(sources=(source,)),
     )
-    requirements.append(requirement)
+    if all(
+        existing.requirement_id != requirement.requirement_id
+        for existing in requirements
+    ):
+        requirements.append(requirement)
     candidates = _route(tools, run_id, requirement)
-    routes.extend(candidates)
+    existing_route_ids = {route.route_id for route in routes}
+    routes.extend(
+        route for route in candidates if route.route_id not in existing_route_ids
+    )
     selected = [
-        route
-        for route in candidates
-        if route.operation == operation and route.state == "ready"
+        route for route in candidates if route.operation == operation and route.is_ready
     ]
     for index, selected_route in enumerate(
         sorted(selected, key=lambda route: route.route_id)
@@ -802,7 +940,112 @@ def _add_bound_detail(
 
 
 def _bundle_items(bundle: dict[str, Any], item_kind: str) -> list[dict[str, Any]]:
-    return [item for item in bundle["items"] if item["item_kind"] == item_kind]
+    return [item for item in bundle["evidence_items"] if item["item_kind"] == item_kind]
+
+
+def _record_from_item(item: dict[str, Any]) -> dict[str, Any]:
+    if item.get("item_kind") != "source_record":
+        raise ValueError("expected one source_record evidence item")
+    record = json.loads(item["content"])
+    if not isinstance(record, dict):
+        raise TypeError("SourceRecordItem content must be a JSON object")
+    return record
+
+
+def _artifact_content(item: dict[str, Any]) -> dict[str, Any]:
+    if item.get("item_kind") != "scientific_artifact":
+        raise ValueError("expected one scientific_artifact evidence item")
+    content = json.loads(item["content"])
+    if not isinstance(content, dict):
+        raise TypeError("ScientificArtifactItem content must be a JSON object")
+    return content
+
+
+def _thermochemical_entry_count(item: dict[str, Any]) -> int:
+    content = _artifact_content(item)
+    entries = content.get("entries")
+    if not isinstance(entries, list):
+        raise TypeError("thermochemical entry-set content must contain entries")
+    return len(entries)
+
+
+def _route_is_ready(route: dict[str, Any]) -> bool:
+    return route.get("missing_setting") is None
+
+
+def _route_state(route: dict[str, Any]) -> str:
+    return "ready" if _route_is_ready(route) else "requires_configuration"
+
+
+def _route_aggregate_sources(route: dict[str, Any]) -> list[str]:
+    return list(route.get("aggregate_sources") or [])
+
+
+def _route_accepts_source(route: dict[str, Any], source: str) -> bool:
+    allowed = _route_aggregate_sources(route) or [route["qualified_source"]]
+    return source in allowed
+
+
+def _derived_record_result(outcome: dict[str, Any], operation: str) -> str | None:
+    from matrouter.evidence_contracts import SourceOutcomePayload, record_result
+
+    return record_result(
+        SourceOutcomePayload.model_validate(wire(outcome)), operation=operation
+    )
+
+
+def _execution_elapsed_seconds(execution: dict[str, Any]) -> float:
+    started = datetime.fromisoformat(execution["started_at"])
+    completed = datetime.fromisoformat(execution["completed_at"])
+    return round((completed - started).total_seconds(), 6)
+
+
+def _bundle_execution_rows(bundle: dict[str, Any]) -> list[dict[str, Any]]:
+    routes = {route["route_id"]: route for route in bundle["routes"]}
+    requirements = {
+        requirement["requirement_id"]: requirement
+        for requirement in bundle["requirements"]
+    }
+    evidence_items = {item["item_id"]: item for item in bundle["evidence_items"]}
+    rows: list[dict[str, Any]] = []
+    for execution in bundle["executions"]:
+        route = routes[execution["route_id"]]
+        requirement = requirements[route["requirement_id"]]
+        outcome = execution["outcome"]
+        completeness = outcome.get("record_completeness")
+        output_items = [
+            evidence_items[item_id] for item_id in execution["output_item_ids"]
+        ]
+        source_record_items = [
+            item for item in output_items if item["item_kind"] == "source_record"
+        ]
+        rows.append(
+            {
+                "attempt_id": execution["attempt_id"],
+                "route_id": route["route_id"],
+                "requirement_id": route["requirement_id"],
+                "qualified_source": route["qualified_source"],
+                "aggregate_sources": _route_aggregate_sources(route),
+                "operation": route["operation"],
+                "execution_status": outcome["execution_status"],
+                "record_completeness": completeness,
+                "record_result": _derived_record_result(outcome, route["operation"]),
+                "reason_code": outcome["reason_code"],
+                "failure_type": outcome.get("failure_type"),
+                "message": outcome.get("message"),
+                "warnings": execution.get("warnings") or [],
+                "output_item_ids": execution["output_item_ids"],
+                "output_items": output_items,
+                "source_record_items": source_record_items,
+                "source_record_count": len(source_record_items),
+                "returned_count": (
+                    completeness["returned_count"] if completeness is not None else 0
+                ),
+                "elapsed_seconds": _execution_elapsed_seconds(execution),
+                "operational_constraints": requirement["operational_constraints"],
+            }
+        )
+    return rows
 
 
 def _case_bundles(result: dict[str, Any]) -> list[dict[str, Any]]:
@@ -820,14 +1063,6 @@ def _primary_aggregate_bundle(result: dict[str, Any]) -> dict[str, Any]:
             f"{result['case_name']}: expected one primary aggregate Bundle"
         )
     return bundles[0]
-
-
-def _rq2_source_record_bundles(result: dict[str, Any]) -> list[dict[str, Any]]:
-    return [
-        capsule["evidence_bundle"]
-        for capsule in result["evidence_bundles"]
-        if capsule["bundle_role"] == "source_record_exhaustion_shard"
-    ]
 
 
 def _target_bundles(result: dict[str, Any]) -> list[dict[str, Any]]:
@@ -849,7 +1084,7 @@ def _case_items(result: dict[str, Any], item_kind: str) -> list[dict[str, Any]]:
 def _aggregate_summary(bundle: dict[str, Any]) -> dict[str, Any]:
     from matrouter.evidence_contracts import SourceRecordItem
 
-    outcomes = [item["outcome"] for item in _bundle_items(bundle, "source_outcome")]
+    executions = _bundle_execution_rows(bundle)
     source_records = _bundle_items(bundle, "source_record")
     record_identities = [
         SourceRecordItem.model_validate(wire(item)).identity for item in source_records
@@ -864,51 +1099,75 @@ def _aggregate_summary(bundle: dict[str, Any]) -> dict[str, Any]:
         and provider_identity_complete
         and len(record_providers) >= 2
     )
-    outcome_rows = [
+    execution_rows = [
         {
-            "source": outcome["source"],
-            "operation": outcome["operation"],
-            "status": outcome["status"],
-            "reason_code": outcome["reason_code"],
-            "record_count": outcome["record_count"],
-            "record_completeness": outcome.get("record_completeness"),
+            "qualified_source": execution["qualified_source"],
+            "aggregate_sources": execution["aggregate_sources"],
+            "operation": execution["operation"],
+            "execution_status": execution["execution_status"],
+            "record_result": execution["record_result"],
+            "reason_code": execution["reason_code"],
+            "record_count": execution["source_record_count"],
+            "returned_count": execution["returned_count"],
+            "record_completeness": execution["record_completeness"],
+            "warning_count": len(execution["warnings"]),
+            "warnings": execution["warnings"],
+            "elapsed_seconds": execution["elapsed_seconds"],
         }
-        for outcome in sorted(
-            outcomes, key=lambda row: (row["source"], row["operation"])
+        for execution in sorted(
+            executions,
+            key=lambda row: (
+                row["qualified_source"],
+                row["operation"],
+                row["attempt_id"],
+            ),
         )
     ]
     completeness_counts = Counter(
-        (outcome.get("record_completeness") or {}).get("state", "missing")
-        for outcome in outcomes
+        execution["record_completeness"]["state"]
+        for execution in executions
+        if execution["record_completeness"] is not None
+    )
+    record_result_counts = Counter(
+        execution["record_result"]
+        for execution in executions
+        if execution["record_result"] is not None
     )
     capacity_limitations = [
         row
-        for row in outcome_rows
+        for row in execution_rows
         if (row.get("record_completeness") or {}).get("state") == "truncated"
         or row["reason_code"] == "evidence_run_capacity_exceeded"
     ]
     qualified_sources = sorted(row["qualified_source"] for row in bundle["routes"])
-    outcome_sources = sorted(row["source"] for row in outcomes)
-    all_routes_have_typed_outcome = (
-        len(outcome_sources) == len(set(outcome_sources))
-        and outcome_sources == qualified_sources
+    ready_sources = sorted(
+        row["qualified_source"] for row in bundle["routes"] if _route_is_ready(row)
+    )
+    execution_sources = sorted(row["qualified_source"] for row in executions)
+    all_ready_routes_have_execution = (
+        len(execution_sources) == len(set(execution_sources))
+        and execution_sources == ready_sources
     )
     return {
         "bundle_id": bundle["bundle_id"],
-        "semantics": "The one primary agent-facing EvidenceBundle produced by aggregate_source_records through bounded parallel cross-source execution with at most eight workers and stable-order aggregation; per-source pagination remains sequential.",
+        "semantics": "The one primary agent-facing EvidenceBundle produced by aggregate_source_records through bounded parallel cross-source execution with at most eight workers and stable-order aggregation; scientific evidence_items remain separate from the per-route executions that embed outcomes and warnings.",
+        "bundle_canonical_bytes": len(canonical_bytes(bundle)),
+        "evidence_item_count": len(bundle["evidence_items"]),
+        "execution_count": len(bundle["executions"]),
         "execution_routes": [
             {
                 "qualified_source": row["qualified_source"],
-                "output_sources": row.get("output_sources", []),
-                "state": row["state"],
+                "aggregate_sources": _route_aggregate_sources(row),
+                "state": _route_state(row),
             }
             for row in bundle["routes"]
         ],
         "qualified_route_count": len(bundle["routes"]),
-        "ready_route_count": sum(row["state"] == "ready" for row in bundle["routes"]),
-        "attempted_route_count": len(outcomes),
-        "source_outcome_count": len(outcomes),
-        "all_qualified_routes_have_typed_outcome": all_routes_have_typed_outcome,
+        "ready_route_count": len(ready_sources),
+        "attempted_route_count": len(executions),
+        "all_ready_routes_have_execution": all_ready_routes_have_execution,
+        "all_qualified_routes_ready": ready_sources == qualified_sources,
+        "all_qualified_routes_attempted": execution_sources == qualified_sources,
         "source_record_count": len(source_records),
         "source_record_sources": record_sources,
         "source_record_source_count": len(record_sources),
@@ -916,13 +1175,15 @@ def _aggregate_summary(bundle: dict[str, Any]) -> dict[str, Any]:
         "source_record_provider_count": len(record_providers),
         "source_record_provider_identity_complete": provider_identity_complete,
         "real_cross_source_records": real_cross_source_records,
-        "status_counts": dict(
-            sorted(Counter(row["status"] for row in outcomes).items())
+        "execution_status_counts": dict(
+            sorted(Counter(row["execution_status"] for row in executions).items())
         ),
+        "record_result_counts": dict(sorted(record_result_counts.items())),
         "record_completeness_counts": dict(sorted(completeness_counts.items())),
         "capacity_limitations": capacity_limitations,
-        "source_outcomes": outcome_rows,
-        "materials_galaxy_parent_outcome_semantics": "The provider-level MaterialsGalaxy outcome describes one combined summary query. Child dataset provenance on returned records does not establish a separate child execution outcome, success, or exhaustive empty result.",
+        "total_warning_count": sum(len(row["warnings"]) for row in executions),
+        "executions": execution_rows,
+        "materials_galaxy_parent_outcome_semantics": "The provider-level MaterialsGalaxy execution describes one combined summary query. aggregate_sources declare the accepted child authorities; child record provenance does not establish a separate child execution outcome or closure result.",
     }
 
 
@@ -930,10 +1191,10 @@ def _property_occurrences(
     bundle: dict[str, Any],
 ) -> Iterator[dict[str, Any]]:
     """Yield normalized property occurrences for the paper observation export."""
-    for item in bundle["items"]:
+    for item in bundle["evidence_items"]:
         if item["item_kind"] != "source_record":
             continue
-        record = json.loads(item["record_json"])
+        record = _record_from_item(item)
         container_source = record["source"]
         container_source_id = record["source_id"]
         property_observations = record.get("property_observations") or {}
@@ -1078,7 +1339,7 @@ def _representative_record(
     observations = []
     for occurrence in _property_occurrences(
         {
-            "items": [item],
+            "evidence_items": [item],
         }
     ):
         fields = occurrence["observation_fields"]
@@ -1107,45 +1368,46 @@ def _source_contribution_map(
 
     contributions: dict[str, dict[str, Any]] = {}
     for bundle in bundles:
-        routes = bundle["routes"]
-        outcomes_by_route = {
-            item["route_id"]: item["outcome"]
-            for item in _bundle_items(bundle, "source_outcome")
-        }
+        executions = _bundle_execution_rows(bundle)
+        executions_by_output_item: dict[str, list[dict[str, Any]]] = {}
+        for execution in executions:
+            for item_id in execution["output_item_ids"]:
+                executions_by_output_item.setdefault(item_id, []).append(execution)
         for item in _bundle_items(bundle, "source_record"):
             identity = SourceRecordItem.model_validate(wire(item)).identity
-            record = json.loads(item["record_json"])
-            matching_routes = [
-                route
-                for route in routes
-                if identity.source == route["qualified_source"]
-                or identity.source in route.get("output_sources", [])
-            ]
-            if len(matching_routes) != 1:
+            record = _record_from_item(item)
+            matching_executions = executions_by_output_item.get(item["item_id"], [])
+            if len(matching_executions) != 1:
                 raise ValueError(
-                    f"{identity.source}:{identity.source_id}: exact execution route is ambiguous"
+                    f"{identity.source}:{identity.source_id}: exact execution binding is ambiguous"
                 )
-            route = matching_routes[0]
-            outcome = outcomes_by_route.get(route["route_id"])
-            if outcome is None:
+            execution = matching_executions[0]
+            if not _route_accepts_source(
+                {
+                    "qualified_source": execution["qualified_source"],
+                    "aggregate_sources": execution["aggregate_sources"],
+                },
+                identity.source,
+            ):
                 raise ValueError(
-                    f"{identity.source}: contributing source has no outcome"
+                    f"{identity.source}: contributing source is outside its execution route"
                 )
             contribution = contributions.setdefault(
                 identity.source,
                 {
                     "source": identity.source,
                     "provider": identity.provider,
-                    "execution_route": route["qualified_source"],
-                    "route_status": outcome["status"],
-                    "record_completeness": outcome["record_completeness"],
-                    "record_count_in_rq2_shard": 0,
+                    "execution_route": execution["qualified_source"],
+                    "execution_status": execution["execution_status"],
+                    "record_result": execution["record_result"],
+                    "record_completeness": execution["record_completeness"],
+                    "record_count_in_shared_discovery": 0,
                     "data_categories": set(),
                     "property_names": set(),
                     "representative_record": _representative_record(item, record),
                 },
             )
-            contribution["record_count_in_rq2_shard"] += 1
+            contribution["record_count_in_shared_discovery"] += 1
             contribution["data_categories"].update(_record_data_categories(record))
             contribution["property_names"].update(
                 (record.get("property_observations") or {}).keys()
@@ -1179,7 +1441,7 @@ def _method_trace(method: dict[str, Any]) -> dict[str, Any]:
         dataset = result["datasets"][0]
         input_manifest = dataset["input_manifest"]
         entry_set = input_manifest["entry_set"]
-        thermochemical_context = json.loads(entry_set["entry_set_json"])[
+        thermochemical_context = json.loads(entry_set["content"])[
             "thermochemical_context"
         ]
         summary = {
@@ -1208,8 +1470,7 @@ def _material_landscape_trace(
     result: dict[str, Any], spec: dict[str, Any]
 ) -> dict[str, Any]:
     primary = _primary_aggregate_bundle(result)
-    rq2_bundles = _rq2_source_record_bundles(result)
-    contributions = _source_contribution_map(rq2_bundles)
+    contributions = _source_contribution_map([primary])
     contributions_by_source = {row["source"]: row for row in contributions}
     union_claims: list[dict[str, Any]] = []
     unsupported_claim_gaps: list[dict[str, Any]] = []
@@ -1240,7 +1501,8 @@ def _material_landscape_trace(
                     {
                         "source": support["source"],
                         "execution_route": contribution["execution_route"],
-                        "route_status": contribution["route_status"],
+                        "execution_status": contribution["execution_status"],
+                        "record_result": contribution["record_result"],
                         "record_completeness": contribution["record_completeness"][
                             "state"
                         ],
@@ -1276,11 +1538,9 @@ def _material_landscape_trace(
         "case_name": result["case_name"],
         "scientific_task": spec["scientific_question"],
         "primary_aggregate_bundle_id": primary["bundle_id"],
-        "rq2_source_record_exhaustion_shard_bundle_ids": [
-            bundle["bundle_id"] for bundle in rq2_bundles
-        ],
+        "rq1_rq2_authoritative_bundle_id": primary["bundle_id"],
         "declared_source_scope": {
-            "catalog_and_configuration": "MatRouter v0.9.2 capability catalog under the captured runtime configuration",
+            "catalog_and_configuration": "MatRouter v0.10.2 capability catalog under the captured runtime configuration",
             **spec["stage_1"],
             "scope_limit": "All capability-matched execution routes were attempted within the declared budgets; this is not every real-world database or every upstream record.",
         },
@@ -1288,31 +1548,34 @@ def _material_landscape_trace(
             "qualified": aggregate["qualified_route_count"],
             "ready": aggregate["ready_route_count"],
             "attempted": aggregate["attempted_route_count"],
-            "status_counts": aggregate["status_counts"],
+            "execution_status_counts": aggregate["execution_status_counts"],
+            "record_result_counts": aggregate["record_result_counts"],
             "record_completeness_counts": aggregate["record_completeness_counts"],
-            "outcomes": [
+            "executions": [
                 {
-                    "source": outcome["source"],
-                    "status": outcome["status"],
-                    "record_count": outcome["record_count"],
-                    "reason_code": outcome["reason_code"],
-                    "completeness": (outcome.get("record_completeness") or {}).get(
+                    "qualified_source": execution["qualified_source"],
+                    "execution_status": execution["execution_status"],
+                    "record_result": execution["record_result"],
+                    "record_count": execution["record_count"],
+                    "reason_code": execution["reason_code"],
+                    "completeness": (execution.get("record_completeness") or {}).get(
                         "state"
                     ),
-                    "truncation_reason": (outcome.get("record_completeness") or {}).get(
-                        "truncation_reason"
-                    ),
+                    "truncation_reason": (
+                        execution.get("record_completeness") or {}
+                    ).get("truncation_reason"),
+                    "warnings": execution["warnings"],
                 }
-                for outcome in aggregate["source_outcomes"]
+                for execution in aggregate["executions"]
             ],
         },
-        "rq2_source_record_exhaustion": result["rq2_source_record_exhaustion"],
+        "shared_discovery_ledger": result["shared_discovery_ledger"],
         "rq2_interpretation_boundary": {
             "observed_landscape_supported": not unsupported_claim_gaps,
-            "complete_inventory_eligible": result["rq2_source_record_exhaustion"][
+            "complete_inventory_eligible": result["shared_discovery_ledger"][
                 "complete_inventory_eligible"
             ],
-            "semantics": "Shard records may support an observed source-qualified landscape even when a shard is failed, unknown, partial, or truncated. Complete-inventory wording is allowed only when every ready route is sharded and every shard is complete or verified empty.",
+            "semantics": "RQ2 reads the exact executions and source-record items already used by RQ1. Observed records may support a source-qualified landscape even when an execution failed or completeness is unknown or truncated; complete-inventory wording requires every ready route in that same Bundle to be complete or verified empty.",
         },
         "contributing_exact_sources": contributions,
         "provider_groups": aggregate["source_record_providers"],
@@ -1334,9 +1597,10 @@ def _material_landscape_trace(
                     "item_id": item["item_id"],
                     "source": item["identity"]["source"],
                     "source_id": item["identity"]["source_id"],
-                    "entry_count": item["entry_count"],
+                    "entry_count": _thermochemical_entry_count(item),
                 }
-                for item in _case_items(result, "thermochemical_entry_set")
+                for item in _case_items(result, "scientific_artifact")
+                if item["artifact_type"] == "thermochemical_entry_set"
             ],
             "methods": [_method_trace(method) for method in result["explicit_methods"]],
         },
@@ -1356,33 +1620,30 @@ def _paper_scientific_rows(
     observations: list[dict[str, Any]] = []
     structures: list[dict[str, Any]] = []
     artifacts: list[dict[str, Any]] = []
-    for rq2_bundle in _rq2_source_record_bundles(result):
-        for occurrence in _property_occurrences(rq2_bundle):
-            item = occurrence["item"]
-            observation = occurrence["observation"]
-            observation_fields = occurrence["observation_fields"]
-            observations.append(
-                {
-                    "case_name": case_name,
-                    "source": observation_fields["source"],
-                    "source_id": observation_fields["source_id"],
-                    "formula": observation_fields["formula"],
-                    "property": observation_fields["property"],
-                    "semantic": observation.get("semantic"),
-                    "value_json": canonical_json(observation_fields["value"]),
-                    "unit": observation_fields["unit"],
-                    "context_json": canonical_json(observation.get("context") or {}),
-                    "provenance_json": canonical_json(
-                        observation.get("provenance") or {}
-                    ),
-                    "limitations_json": canonical_json(
-                        observation.get("limitations") or []
-                    ),
-                    "record_item_id": item["item_id"],
-                }
-            )
+    for occurrence in _property_occurrences(primary):
+        item = occurrence["item"]
+        observation = occurrence["observation"]
+        observation_fields = occurrence["observation_fields"]
+        observations.append(
+            {
+                "case_name": case_name,
+                "source": observation_fields["source"],
+                "source_id": observation_fields["source_id"],
+                "formula": observation_fields["formula"],
+                "property": observation_fields["property"],
+                "semantic": observation.get("semantic"),
+                "value_json": canonical_json(observation_fields["value"]),
+                "unit": observation_fields["unit"],
+                "context_json": canonical_json(observation.get("context") or {}),
+                "provenance_json": canonical_json(observation.get("provenance") or {}),
+                "limitations_json": canonical_json(
+                    observation.get("limitations") or []
+                ),
+                "record_item_id": item["item_id"],
+            }
+        )
     for bundle in [primary, *_target_bundles(result)]:
-        for item in bundle["items"]:
+        for item in bundle["evidence_items"]:
             if item["item_kind"] == "structure":
                 identity = item["identity"]
                 content = item["content"]
@@ -1398,19 +1659,16 @@ def _paper_scientific_rows(
                         "source_id": identity["source_id"],
                         "structure_item_id": item["item_id"],
                         "media_type": item["media_type"],
-                        "payload_type": item["payload_type"],
                         "content_sha256": sha256_bytes(content.encode()),
+                        "content_bytes": len(content.encode()),
                         "pbc_json": canonical_json(parsed_content.get("pbc"))
                         if isinstance(parsed_content, dict)
                         else "null",
-                        "limitations_json": canonical_json(
-                            item.get("limitations") or []
-                        ),
                     }
                 )
             elif item["item_kind"] == "scientific_artifact":
                 identity = item["identity"]
-                descriptor = json.loads(item["descriptor_json"])
+                content = _artifact_content(item)
                 artifacts.append(
                     {
                         "case_name": case_name,
@@ -1418,12 +1676,9 @@ def _paper_scientific_rows(
                         "source_id": identity["source_id"],
                         "artifact_item_id": item["item_id"],
                         "artifact_type": item["artifact_type"],
-                        "payload_type": item["payload_type"],
-                        "payload_sha256": descriptor.get("payload_sha256"),
-                        "descriptor_json": canonical_json(descriptor),
-                        "limitations_json": canonical_json(
-                            item.get("limitations") or []
-                        ),
+                        "content_sha256": sha256_bytes(item["content"].encode()),
+                        "content_bytes": len(item["content"].encode()),
+                        "content_json": canonical_json(content),
                     }
                 )
     return {
@@ -1436,38 +1691,60 @@ def _paper_scientific_rows(
 def _aggregate_coverage_rows(
     case_name: str, bundle: dict[str, Any]
 ) -> list[dict[str, Any]]:
-    outcomes = {
-        item["outcome"]["source"]: item["outcome"]
-        for item in _bundle_items(bundle, "source_outcome")
-        if item["outcome"]["operation"] == "search_materials"
+    executions = {
+        row["qualified_source"]: row
+        for row in _bundle_execution_rows(bundle)
+        if row["operation"] == "search_materials"
     }
     rows: list[dict[str, Any]] = []
     for route in sorted(bundle["routes"], key=lambda row: row["qualified_source"]):
-        outcome = outcomes.get(route["qualified_source"])
-        completeness = (outcome or {}).get("record_completeness") or {}
+        execution = executions.get(route["qualified_source"])
+        completeness = (execution or {}).get("record_completeness") or {}
+        record_result = (execution or {}).get("record_result")
         rows.append(
             {
                 "case_name": case_name,
                 "source": route["qualified_source"],
-                "output_sources_json": canonical_json(route.get("output_sources", [])),
+                "aggregate_sources_json": canonical_json(
+                    _route_aggregate_sources(route)
+                ),
                 "qualified": True,
-                "route_state": route["state"],
-                "executed": outcome is not None,
-                "status": outcome["status"] if outcome is not None else "not_executed",
-                "succeeded": outcome is not None and outcome["status"] == "succeeded",
-                "verified_empty": outcome is not None
-                and outcome["status"] == "empty"
-                and completeness.get("state") == "empty",
-                "partial": outcome is not None and outcome["status"] == "partial",
-                "failed": outcome is not None and outcome["status"] == "failed",
-                "record_count": outcome["record_count"] if outcome is not None else 0,
-                "completeness": completeness.get("state", "not_executed"),
+                "route_state": _route_state(route),
+                "executed": execution is not None,
+                "execution_status": (
+                    execution["execution_status"]
+                    if execution is not None
+                    else "not_executed"
+                ),
+                "record_result": record_result or "not_executed",
+                "succeeded": execution is not None
+                and execution["execution_status"] == "succeeded",
+                "verified_empty": record_result == "empty",
+                "truncated": record_result == "truncated",
+                "upstream_total_unknown": record_result == "upstream_total_unknown",
+                "failed": record_result == "failed",
+                "record_count": (
+                    execution["source_record_count"] if execution is not None else 0
+                ),
+                "returned_count": completeness.get("returned_count"),
+                "completeness": completeness.get("state", "not_applicable"),
                 "upstream_total": completeness.get("upstream_total"),
                 "pages_fetched": completeness.get("pages_fetched", 0),
                 "truncation_reason": completeness.get("truncation_reason"),
-                "reason_code": outcome["reason_code"]
-                if outcome is not None
-                else "route_not_ready",
+                "reason_code": (
+                    execution["reason_code"]
+                    if execution is not None
+                    else "route_not_ready"
+                ),
+                "warning_count": (
+                    len(execution["warnings"]) if execution is not None else 0
+                ),
+                "warnings_json": canonical_json(
+                    execution["warnings"] if execution is not None else []
+                ),
+                "elapsed_seconds": (
+                    execution["elapsed_seconds"] if execution is not None else None
+                ),
             }
         )
     return rows
@@ -1475,114 +1752,361 @@ def _aggregate_coverage_rows(
 
 def _source_outcome_audit_rows(result: dict[str, Any]) -> list[dict[str, Any]]:
     bundle = _primary_aggregate_bundle(result)
-    outcomes = {
-        item["outcome"]["source"]: item["outcome"]
-        for item in _bundle_items(bundle, "source_outcome")
-        if item["outcome"]["operation"] == "search_materials"
+    executions = {
+        row["qualified_source"]: row
+        for row in _bundle_execution_rows(bundle)
+        if row["operation"] == "search_materials"
     }
-    record_sources = [
-        json.loads(item["record_json"])["source"]
-        for item in _bundle_items(bundle, "source_record")
-    ]
-
-    def optional_value(value: object) -> object:
-        if isinstance(value, dict) and "present" in value:
-            return value.get("value") if value["present"] else None
-        return value
 
     rows: list[dict[str, Any]] = []
     for route in sorted(bundle["routes"], key=lambda row: row["qualified_source"]):
         qualified_source = route["qualified_source"]
-        outcome = outcomes[qualified_source]
-        output_sources = set(route.get("output_sources", []))
+        execution = executions[qualified_source]
         actual_sources = [
-            source
-            for source in record_sources
-            if source == qualified_source or source in output_sources
+            _record_from_item(item)["source"]
+            for item in execution["source_record_items"]
         ]
         actual_count = len(actual_sources)
-        completeness = outcome["record_completeness"]
-        returned_count = completeness["returned_count"]
+        completeness = execution["record_completeness"]
+        if completeness is None:
+            returned_count = 0
+        else:
+            returned_count = completeness["returned_count"]
+        constraints = execution["operational_constraints"]
+        retrieval = constraints["retrieval"]
         rows.append(
             {
                 "case_name": result["case_name"],
                 "qualified_source_route": qualified_source,
-                "output_sources_json": canonical_json(route.get("output_sources", [])),
-                "route_state": route["state"],
-                "status": outcome["status"],
-                "reason_code": outcome["reason_code"],
-                "record_count": outcome["record_count"],
+                "aggregate_sources_json": canonical_json(
+                    _route_aggregate_sources(route)
+                ),
+                "route_state": _route_state(route),
+                "execution_status": execution["execution_status"],
+                "record_result": execution["record_result"],
+                "reason_code": execution["reason_code"],
+                "record_count": execution["source_record_count"],
                 "returned_count": returned_count,
                 "actual_bundle_record_count": actual_count,
                 "actual_bundle_record_sources_json": canonical_json(
                     sorted(Counter(actual_sources).items())
                 ),
-                "record_count_matches_actual": outcome["record_count"] == actual_count,
+                "record_count_matches_actual": execution["source_record_count"]
+                == actual_count,
                 "returned_count_matches_actual": returned_count == actual_count,
-                "record_completeness_state": completeness["state"],
-                "upstream_total": completeness.get("upstream_total"),
-                "pages_fetched": completeness["pages_fetched"],
-                "last_cursor": completeness.get("last_cursor"),
-                "exhaustion_evidence": completeness.get("exhaustion_evidence"),
-                "truncation_reason": completeness.get("truncation_reason"),
-                "failure_type": optional_value(outcome.get("failure_type")),
-                "message": optional_value(outcome.get("message")),
-                "extensions_json": canonical_json(outcome.get("extensions", [])),
+                "record_completeness_state": (
+                    completeness["state"] if completeness is not None else None
+                ),
+                "upstream_total": (
+                    completeness.get("upstream_total")
+                    if completeness is not None
+                    else None
+                ),
+                "pages_fetched": (
+                    completeness["pages_fetched"] if completeness is not None else 0
+                ),
+                "last_cursor": (
+                    completeness.get("last_cursor")
+                    if completeness is not None
+                    else None
+                ),
+                "exhaustion_evidence": (
+                    completeness.get("exhaustion_evidence")
+                    if completeness is not None
+                    else None
+                ),
+                "truncation_reason": (
+                    completeness.get("truncation_reason")
+                    if completeness is not None
+                    else None
+                ),
+                "normalized_record_bytes_in_bundle": sum(
+                    len(item["content"].encode())
+                    for item in execution["source_record_items"]
+                ),
+                "elapsed_seconds": execution["elapsed_seconds"],
+                "effective_product_record_limit": constraints["limit"],
+                "effective_product_max_pages": retrieval["max_pages"],
+                "effective_product_max_elapsed_seconds": retrieval[
+                    "max_elapsed_seconds"
+                ],
+                "effective_product_max_normalized_bytes": retrieval["max_bytes"],
+                "warning_count": len(execution["warnings"]),
+                "warnings_json": canonical_json(execution["warnings"]),
+                "failure_type": execution["failure_type"],
+                "message": execution["message"],
             }
         )
     return rows
 
 
-def _rq2_source_outcome_audit_rows(result: dict[str, Any]) -> list[dict[str, Any]]:
+def _record_completeness_assessment(
+    execution: dict[str, Any],
+    bundle: dict[str, Any],
+    run_capacity: dict[str, Any],
+) -> dict[str, Any]:
+    completeness = execution["record_completeness"]
+    if execution["execution_status"] == "failed":
+        return {
+            "classification": "failed_execution_preserved",
+            "closure_supported": False,
+            "budget_stop_supported": None,
+            "independently_reconstructable": True,
+            "basis": execution["reason_code"],
+            "judgment": "The route was executed and failed; it is neither empty nor complete.",
+        }
+    if completeness is None:
+        raise ValueError("successful record-set execution lacks RecordCompleteness")
+    state = completeness["state"]
+    if state == "complete":
+        returned = completeness["returned_count"]
+        upstream_total = completeness.get("upstream_total")
+        exhaustion_evidence = completeness.get("exhaustion_evidence")
+        reconciles_total = upstream_total is None or returned == upstream_total
+        closure_supported = bool(exhaustion_evidence) and reconciles_total
+        return {
+            "classification": (
+                "verified_empty"
+                if execution["record_result"] == "empty"
+                else "complete"
+            ),
+            "closure_supported": closure_supported,
+            "budget_stop_supported": None,
+            "independently_reconstructable": True,
+            "basis": exhaustion_evidence,
+            "judgment": (
+                "Closure is supported by explicit exhaustion evidence and any known upstream total reconciles with returned_count."
+                if closure_supported
+                else "The stored closure fields do not support a complete or empty claim."
+            ),
+        }
+    if state == "upstream_total_unknown":
+        unknown_is_preserved = (
+            completeness.get("upstream_total") is None
+            and completeness.get("exhaustion_evidence") is None
+        )
+        return {
+            "classification": "upstream_total_unknown_preserved",
+            "closure_supported": False,
+            "budget_stop_supported": None,
+            "independently_reconstructable": True,
+            "basis": "No proven upstream total or exhaustion evidence is stored.",
+            "judgment": (
+                "Unknown completeness is validly preserved and is not treated as empty or complete."
+                if unknown_is_preserved
+                else "The unknown-completeness fields are internally inconsistent."
+            ),
+        }
+
+    reason = completeness.get("truncation_reason")
+    constraints = execution["operational_constraints"]
+    retrieval = constraints["retrieval"]
+    bundle_source_record_count = len(_bundle_items(bundle, "source_record"))
+    normalized_bytes = sum(
+        len(item["content"].encode()) for item in execution["source_record_items"]
+    )
+    exact_budget_checks: dict[str, bool] = {
+        "max_records_reached": completeness["returned_count"] >= constraints["limit"],
+        "max_pages_reached": completeness["pages_fetched"] >= retrieval["max_pages"],
+        "max_elapsed_seconds_reached": execution["elapsed_seconds"]
+        >= retrieval["max_elapsed_seconds"],
+        "evidence_bundle_source_record_capacity_reached": bundle_source_record_count
+        >= run_capacity["max_source_records"],
+    }
+    if reason in exact_budget_checks:
+        supported = exact_budget_checks[reason]
+        return {
+            "classification": "truncated_at_declared_budget",
+            "closure_supported": False,
+            "budget_stop_supported": supported,
+            "independently_reconstructable": True,
+            "basis": reason,
+            "judgment": (
+                "The stored counter reaches the declared stop represented by truncation_reason."
+                if supported
+                else "The stored counters do not independently confirm the declared stop."
+            ),
+        }
+    if reason == "max_bytes_reached":
+        return {
+            "classification": "truncated_at_normalized_byte_budget",
+            "closure_supported": False,
+            "budget_stop_supported": normalized_bytes < retrieval["max_bytes"],
+            "independently_reconstructable": False,
+            "basis": reason,
+            "judgment": "The admitted prefix remains below the byte ceiling; the rejected next record is intentionally absent, so the exact crossing cannot be reconstructed from the Bundle alone.",
+        }
+    if reason == "evidence_bundle_byte_capacity_reached":
+        return {
+            "classification": "truncated_at_bundle_byte_budget",
+            "closure_supported": False,
+            "budget_stop_supported": len(canonical_bytes(bundle))
+            <= run_capacity["max_bundle_canonical_bytes"],
+            "independently_reconstructable": False,
+            "basis": reason,
+            "judgment": "The final Bundle remains within its byte ceiling; the rejected next item is absent, so the exact crossing cannot be reconstructed from the Bundle alone.",
+        }
+    return {
+        "classification": "truncated_with_typed_stop",
+        "closure_supported": False,
+        "budget_stop_supported": bool(reason),
+        "independently_reconstructable": False,
+        "basis": reason,
+        "judgment": "The typed truncation is preserved, but this audit has no counter rule for its exact stop reason.",
+    }
+
+
+def _source_completeness_review(results: list[dict[str, Any]]) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
-    for capsule in result["evidence_bundles"]:
-        if capsule["bundle_role"] != "source_record_exhaustion_shard":
-            continue
-        bundle = capsule["evidence_bundle"]
-        route = bundle["routes"][0]
-        outcome_items = _bundle_items(bundle, "source_outcome")
-        if len(bundle["routes"]) != 1 or len(outcome_items) != 1:
-            raise ValueError("RQ2 source-record shard must have one route and outcome")
-        outcome = outcome_items[0]["outcome"]
-        qualified_source = capsule["qualified_source_route"]
-        output_sources = set(route.get("output_sources", []))
-        record_sources = [
-            json.loads(item["record_json"])["source"]
-            for item in _bundle_items(bundle, "source_record")
-        ]
-        actual_sources = [
-            source
-            for source in record_sources
-            if source == qualified_source or source in output_sources
-        ]
-        completeness = outcome["record_completeness"]
-        rows.append(
+    for result in results:
+        seen_attempt_ids: set[str] = set()
+        for capsule in result["evidence_bundles"]:
+            bundle = capsule["evidence_bundle"]
+            run_capacity = capsule["run_capacity"]
+            for execution in _bundle_execution_rows(bundle):
+                if execution["record_result"] is None:
+                    continue
+                if execution["attempt_id"] in seen_attempt_ids:
+                    continue
+                seen_attempt_ids.add(execution["attempt_id"])
+                completeness = execution["record_completeness"] or {}
+                rows.append(
+                    {
+                        "case_name": result["case_name"],
+                        "attempt_id": execution["attempt_id"],
+                        "bundle_role": capsule["bundle_role"],
+                        "bundle_id": bundle["bundle_id"],
+                        "qualified_source_route": execution["qualified_source"],
+                        "operation": execution["operation"],
+                        "execution_status": execution["execution_status"],
+                        "record_result": execution["record_result"],
+                        "record_completeness_state": completeness.get("state"),
+                        "returned_count": completeness.get("returned_count"),
+                        "output_item_count": len(execution["output_items"]),
+                        "source_record_item_count": execution["source_record_count"],
+                        "upstream_total": completeness.get("upstream_total"),
+                        "pages_fetched": completeness.get("pages_fetched"),
+                        "exhaustion_evidence": completeness.get("exhaustion_evidence"),
+                        "truncation_reason": completeness.get("truncation_reason"),
+                        "elapsed_seconds": execution["elapsed_seconds"],
+                        "reason_code": execution["reason_code"],
+                        "failure_type": execution["failure_type"],
+                        "message": execution["message"],
+                        "warnings": execution["warnings"],
+                        "bundle_source_record_count": len(
+                            _bundle_items(bundle, "source_record")
+                        ),
+                        "bundle_evidence_item_count": len(bundle["evidence_items"]),
+                        "bundle_execution_count": len(bundle["executions"]),
+                        "bundle_canonical_bytes": len(canonical_bytes(bundle)),
+                        "effective_product_run_capacity": run_capacity,
+                        "effective_product_record_limit": execution[
+                            "operational_constraints"
+                        ]["limit"],
+                        "effective_product_max_pages": execution[
+                            "operational_constraints"
+                        ]["retrieval"]["max_pages"],
+                        "effective_product_max_elapsed_seconds": execution[
+                            "operational_constraints"
+                        ]["retrieval"]["max_elapsed_seconds"],
+                        "effective_product_max_normalized_bytes": execution[
+                            "operational_constraints"
+                        ]["retrieval"]["max_bytes"],
+                        "assessment": _record_completeness_assessment(
+                            execution, bundle, run_capacity
+                        ),
+                    }
+                )
+    return {
+        "schema_version": "matrouter.paper-source-completeness-review/1",
+        "semantics": "Deterministic internal review of each unique record-result-bearing case-ledger attempt at its first Bundle materialization. It keeps cumulative Bundle reassembly from double-counting attempts, preserves the independent execution_status, RecordCompleteness, and derived record_result axes, and is not an external scientific review.",
+        "row_count": len(rows),
+        "classification_counts": dict(
+            sorted(Counter(row["assessment"]["classification"] for row in rows).items())
+        ),
+        "rows": rows,
+    }
+
+
+def _rq1_rq2_shared_ledger_report(results: list[dict[str, Any]]) -> dict[str, Any]:
+    cases: list[dict[str, Any]] = []
+    for result in results:
+        primary = _primary_aggregate_bundle(result)
+        executions = {
+            row["qualified_source"]: row for row in _bundle_execution_rows(primary)
+        }
+        route_rows: list[dict[str, Any]] = []
+        for route in sorted(primary["routes"], key=lambda row: row["qualified_source"]):
+            source = route["qualified_source"]
+            execution = executions.get(source)
+            route_rows.append(
+                {
+                    "qualified_source_route": source,
+                    "route_state": _route_state(route),
+                    "shared_execution_attempt_id": (
+                        execution["attempt_id"] if execution is not None else None
+                    ),
+                    "rq1_route_closure_view": (
+                        None
+                        if execution is None
+                        else {
+                            "attempted": True,
+                            "execution_status": execution["execution_status"],
+                            "record_result": execution["record_result"],
+                            "returned_count": execution["returned_count"],
+                            "record_completeness": execution["record_completeness"],
+                        }
+                    ),
+                    "rq2_source_contribution_view": (
+                        None
+                        if execution is None
+                        else {
+                            "source_record_count": execution["source_record_count"],
+                            "source_record_item_ids": [
+                                item["item_id"]
+                                for item in execution["source_record_items"]
+                            ],
+                        }
+                    ),
+                    "analysis_invariant": "Both views reference this one route execution; RQ2 performs no acquisition.",
+                }
+            )
+        aggregate = result["aggregate"]
+        shared = result["shared_discovery_ledger"]
+        cases.append(
             {
                 "case_name": result["case_name"],
-                "shard_bundle_id": bundle["bundle_id"],
-                "qualified_source_route": qualified_source,
-                "output_sources_json": canonical_json(route.get("output_sources", [])),
-                "status": outcome["status"],
-                "reason_code": outcome["reason_code"],
-                "record_count": outcome["record_count"],
-                "returned_count": completeness["returned_count"],
-                "actual_bundle_record_count": len(actual_sources),
-                "actual_bundle_record_sources_json": canonical_json(
-                    sorted(Counter(actual_sources).items())
-                ),
-                "record_count_matches_actual": outcome["record_count"]
-                == len(actual_sources),
-                "returned_count_matches_actual": completeness["returned_count"]
-                == len(actual_sources),
-                "record_completeness_state": completeness["state"],
-                "upstream_total": completeness.get("upstream_total"),
-                "pages_fetched": completeness["pages_fetched"],
-                "last_cursor": completeness.get("last_cursor"),
-                "exhaustion_evidence": completeness.get("exhaustion_evidence"),
-                "truncation_reason": completeness.get("truncation_reason"),
+                "authoritative_bundle_id": primary["bundle_id"],
+                "aggregate_source_records_call_count": shared[
+                    "aggregate_source_records_call_count"
+                ],
+                "additional_source_record_acquisition_count": shared[
+                    "additional_source_record_acquisition_count"
+                ],
+                "rq1_qualified_route_count": aggregate["qualified_route_count"],
+                "rq1_ready_route_count": aggregate["ready_route_count"],
+                "rq1_attempted_route_count": aggregate["attempted_route_count"],
+                "shared_discovery_source_record_count": aggregate[
+                    "source_record_count"
+                ],
+                "rq2_contributing_exact_sources": shared["source_record_sources"],
+                "invariants": {
+                    "rq1_rq2_same_bundle": shared["rq1_rq2_same_bundle"],
+                    "rq1_rq2_same_executions": True,
+                    "rq1_rq2_same_source_record_items": True,
+                    "separate_rq2_retrieval_count": 0,
+                },
+                "count_semantics": "There is one discovery record total per case. RQ1 reports coverage, execution, and closure; RQ2 reports source contribution and material context from those same records.",
+                "routes": route_rows,
             }
         )
-    return rows
+    return {
+        "schema_version": "matrouter.paper-rq1-rq2-shared-ledger-audit/1",
+        "protocol_version": PROTOCOL_VERSION,
+        "semantics": "This audit proves shared identity; it does not compare two retrievals because no second RQ2 acquisition exists.",
+        "case_count": len(cases),
+        "cases": cases,
+    }
 
 
 def _provider_database_scope(qualified_source_route: str) -> str:
@@ -1621,7 +2145,7 @@ def _portable_method_result(value: dict[str, Any]) -> dict[str, Any]:
 
 
 def _compute_lifepo4_phase_diagram(bundle_model: Any) -> dict[str, Any] | None:
-    from matrouter.evidence_contracts import ThermochemicalEntrySetItem
+    from matrouter.evidence_contracts import ScientificArtifactItem
     from matrouter.phase_diagram import (
         PhaseDiagramDataset,
         PhaseDiagramMethodParameters,
@@ -1631,27 +2155,36 @@ def _compute_lifepo4_phase_diagram(bundle_model: Any) -> dict[str, Any] | None:
     )
 
     bundle = bundle_model.model_dump(mode="json", exclude_computed_fields=True)
-    thermo_outcomes = [
-        item["outcome"]
-        for item in bundle["items"]
-        if item["item_kind"] == "source_outcome"
-        and item["outcome"]["operation"] == "get_thermochemical_entries"
+    thermo_executions = [
+        row
+        for row in _bundle_execution_rows(bundle)
+        if row["operation"] == "get_thermochemical_entries"
     ]
-    if len(thermo_outcomes) != 1:
+    if len(thermo_executions) != 1:
         return None
-    outcome = thermo_outcomes[0]
-    completeness = outcome.get("record_completeness") or {}
-    if outcome["status"] != "succeeded" or completeness.get("state") != "complete":
+    execution = thermo_executions[0]
+    completeness = execution.get("record_completeness") or {}
+    if (
+        execution["execution_status"] != "succeeded"
+        or completeness.get("state") != "complete"
+    ):
         return None
     entry_sets = [
         item
-        for item in bundle_model.items
-        if isinstance(item, ThermochemicalEntrySetItem)
+        for item in bundle_model.evidence_items
+        if isinstance(item, ScientificArtifactItem)
+        and item.artifact_type == "thermochemical_entry_set"
     ]
     if len(entry_sets) != 1:
         return None
     entry_set = entry_sets[0]
-    if entry_set.identity.source != "materials_project" or entry_set.entry_count < 2:
+    entry_payload = entry_set.scientific_payload()
+    entries = entry_payload.get("entries") if isinstance(entry_payload, dict) else None
+    if (
+        entry_set.identity.source != "materials_project"
+        or not isinstance(entries, list)
+        or len(entries) < 2
+    ):
         return None
     request = PhaseDiagramRequest(
         datasets=(
@@ -1699,21 +2232,21 @@ def _match_preregistered_mos2_structures(
     selected: list[tuple[str, StructureItem]] = []
     for target_name in ("first", "second"):
         target = method_spec[target_name]
-        matches = [
-            (
+        matches_by_item_id = {
+            item["item_id"]: (
                 capsule["evidence_bundle"]["bundle_id"],
                 StructureItem.model_validate(wire(item)),
             )
             for capsule in bundle_capsules
             if capsule["bundle_role"] == "target_followup"
-            for item in capsule["evidence_bundle"]["items"]
+            for item in capsule["evidence_bundle"]["evidence_items"]
             if item["item_kind"] == "structure"
             and item["identity"]["source"] == target["qualified_source_route"]
             and item["identity"]["source_id"] == target["source_id"]
-        ]
-        if len(matches) != 1:
+        }
+        if len(matches_by_item_id) != 1:
             return None
-        selected.append(matches[0])
+        selected.append(next(iter(matches_by_item_id.values())))
     parameters = StructureMatcherParameters(**method_spec["parameters"])
     request = StructureMatchRequest(
         first=ReferencedStructure(item=selected[0][1]),
@@ -1744,7 +2277,7 @@ def _render_spectral_methods(case_name: str, bundle_model: Any) -> list[dict[str
     )
 
     methods: list[dict[str, Any]] = []
-    for item in bundle_model.items:
+    for item in bundle_model.evidence_items:
         if not isinstance(item, ScientificArtifactItem):
             continue
         source_label = _safe_label(f"{item.identity.source}-{item.identity.source_id}")[
@@ -1795,6 +2328,61 @@ def _render_spectral_methods(case_name: str, bundle_model: Any) -> list[dict[str
     return methods
 
 
+def _derive_explicit_methods(
+    case_name: str,
+    bundle_capsules: list[dict[str, Any]],
+    spec: dict[str, Any],
+    existing_methods: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    """Run preregistered local methods over exact items in captured Bundles."""
+    from matrouter.evidence_contracts import EvidenceBundle
+
+    methods = [_portable_method_result(method) for method in (existing_methods or [])]
+    method_names = [method.get("method_name") for method in methods]
+    if len(method_names) != len(set(method_names)):
+        raise ValueError(f"{case_name}: duplicate explicit method result")
+    if case_name == "mos2-band-gap":
+        spectral_capsules = [
+            capsule
+            for capsule in bundle_capsules
+            if capsule["bundle_role"] == "target_followup"
+            and capsule["qualified_source_route"] == "materials_project"
+        ]
+        missing_spectral_methods = {
+            "render_band_structure",
+            "render_density_of_states",
+        } - set(method_names)
+        if missing_spectral_methods and len(spectral_capsules) == 1:
+            bundle_model = EvidenceBundle.model_validate(
+                wire(spectral_capsules[0]["evidence_bundle"])
+            )
+            methods.extend(
+                method
+                for method in _render_spectral_methods(case_name, bundle_model)
+                if method["method_name"] in missing_spectral_methods
+            )
+        if "match_structures" not in method_names:
+            structure_match = _match_preregistered_mos2_structures(
+                bundle_capsules, spec
+            )
+            if structure_match is not None:
+                methods.append(structure_match)
+    elif case_name == "lifepo4-stability":
+        thermo_capsules = [
+            capsule
+            for capsule in bundle_capsules
+            if capsule["bundle_role"] == "thermochemical"
+        ]
+        if "compute_phase_diagrams" not in method_names and len(thermo_capsules) == 1:
+            bundle_model = EvidenceBundle.model_validate(
+                wire(thermo_capsules[0]["evidence_bundle"])
+            )
+            phase_result = _compute_lifepo4_phase_diagram(bundle_model)
+            if phase_result is not None:
+                methods.append(_portable_method_result(phase_result))
+    return methods
+
+
 def _interpretation(
     result: dict[str, Any],
     spec: dict[str, Any],
@@ -1811,7 +2399,11 @@ def _interpretation(
         and str(json.loads(observation["context_json"]).get("modality")).lower()
         in {"experiment", "experimental"}
     ]
-    entry_sets = _case_items(result, "thermochemical_entry_set")
+    entry_sets = [
+        item
+        for item in _case_items(result, "scientific_artifact")
+        if item["artifact_type"] == "thermochemical_entry_set"
+    ]
     return {
         "retrieved_facts": {
             "qualified_route_count": aggregate["qualified_route_count"],
@@ -1822,16 +2414,17 @@ def _interpretation(
             "aggregate_distinct_provider_count": aggregate[
                 "source_record_provider_count"
             ],
-            "aggregate_status_counts": aggregate["status_counts"],
+            "aggregate_execution_status_counts": aggregate["execution_status_counts"],
+            "aggregate_record_result_counts": aggregate["record_result_counts"],
             "aggregate_completeness_counts": aggregate["record_completeness_counts"],
-            "rq2_source_record_exhaustion": result["rq2_source_record_exhaustion"],
+            "shared_discovery_ledger": result["shared_discovery_ledger"],
             "exact_target_audit": result["protocol_conformance"][
                 "stage_2_target_audit"
             ],
             "exact_target_artifacts": scientific_rows["artifacts"],
             "explicit_method_names": [row["method_name"] for row in methods],
             "thermochemical_entry_count": sum(
-                item["entry_count"] for item in entry_sets
+                _thermochemical_entry_count(item) for item in entry_sets
             ),
             "explicitly_identified_experimental_band_gap_observation_count": len(
                 explicitly_experimental_band_gaps
@@ -1839,7 +2432,7 @@ def _interpretation(
             "qualified_source_route_count_semantics": QUALIFIED_ROUTE_COUNT_SEMANTICS,
         },
         "stage_1_scope": STAGE_1_SCOPE,
-        "rq2_shard_scope": RQ2_SHARD_SCOPE,
+        "shared_discovery_scope": SHARED_DISCOVERY_SCOPE,
         "context_differences": spec["context_differences"],
         "allowed_statement": spec["allowed_statement"],
         "prohibited_statement": spec["prohibited_statement"],
@@ -1862,7 +2455,7 @@ def _phase_diagram_export_rows(result: dict[str, Any]) -> list[dict[str, Any]]:
     if len(entry_sets) != 1:
         return []
     entry_set = entry_sets[0]
-    entry_set_payload = json.loads(entry_set["entry_set_json"])
+    entry_set_payload = _artifact_content(entry_set)
     context = entry_set_payload["thermochemical_context"]
     energy_frame = context["energy_frame"]
     dataset_result = method["result"]["datasets"][0]
@@ -1900,14 +2493,14 @@ def _topology_soc_comparison_rows(result: dict[str, Any]) -> list[dict[str, Any]
     for item in _case_items(result, "scientific_artifact"):
         if item["artifact_type"] not in {"topology_no_soc", "topology_soc"}:
             continue
-        descriptor = json.loads(item["descriptor_json"])
+        descriptor = _artifact_content(item)
         structure_identity = descriptor["source_native_structure_identity"]
         rows.append(
             {
                 "case_name": result["case_name"],
                 "source": item["identity"]["source"],
                 "source_id": item["identity"]["source_id"],
-                "formula": descriptor["formula"],
+                "formula": descriptor["data"]["reduced_formula"],
                 "source_native_space_group_symbol": structure_identity["symbol"],
                 "source_native_space_group_number": structure_identity["number"],
                 "soc": descriptor["soc"],
@@ -1918,7 +2511,7 @@ def _topology_soc_comparison_rows(result: dict[str, Any]) -> list[dict[str, Any]
                     descriptor.get("source_native_indicators") or {}
                 ),
                 "artifact_item_id": item["item_id"],
-                "payload_sha256": descriptor["payload_sha256"],
+                "content_sha256": sha256_bytes(item["content"].encode()),
                 "evidence_semantics": "Deterministic descriptive view of the same source-native Bundle artifact; not new evidence or independent topology validation.",
                 "method_limitation": "MaterialsGalaxy reports this classification; MatRouter did not recompute topology invariants or surface states.",
                 "phase_equivalence_status": "Not assessed in the Bi2Se3 case; that case executed no explicit cross-source structure matching.",
@@ -2076,112 +2669,107 @@ def _assemble_run(
         AssembleEvidenceBundleRequest(
             evidence_run_id=run_id,
             requirement_ids=tuple(
-                sorted(requirement.requirement_id for requirement in requirements)
+                sorted({requirement.requirement_id for requirement in requirements})
             ),
             acquisition_ids=tuple(
-                sorted(acquisition.acquisition_id for acquisition in acquisitions)
+                sorted({acquisition.acquisition_id for acquisition in acquisitions})
             ),
         )
     )
 
 
-def _rq2_source_record_summary(
-    bundle_capsules: list[dict[str, Any]], primary_bundle: dict[str, Any]
+def _shared_discovery_summary(
+    primary_bundle: dict[str, Any], run_capacity: dict[str, Any]
 ) -> dict[str, Any]:
     from matrouter.evidence_contracts import SourceRecordItem
 
-    ready_routes = [
+    ready_routes = sorted(
         route["qualified_source"]
-        for route in sorted(
-            primary_bundle["routes"], key=lambda row: row["qualified_source"]
-        )
-        if route["state"] == "ready" and route["operation"] == "search_materials"
+        for route in primary_bundle["routes"]
+        if _route_is_ready(route) and route["operation"] == "search_materials"
+    )
+    executions = _bundle_execution_rows(primary_bundle)
+    record_items = _bundle_items(primary_bundle, "source_record")
+    record_identities = [
+        SourceRecordItem.model_validate(wire(item)).identity for item in record_items
     ]
-    shards = [
-        capsule
-        for capsule in bundle_capsules
-        if capsule["bundle_role"] == "source_record_exhaustion_shard"
-    ]
-    shard_routes = [capsule["qualified_source_route"] for capsule in shards]
-    outcomes: list[dict[str, Any]] = []
-    record_identities = []
-    for capsule in shards:
-        bundle = capsule["evidence_bundle"]
-        outcome_items = _bundle_items(bundle, "source_outcome")
-        if len(outcome_items) != 1:
-            raise ValueError("RQ2 source-record shard must have exactly one outcome")
-        outcome = outcome_items[0]["outcome"]
-        if outcome["source"] != capsule["qualified_source_route"]:
-            raise ValueError("RQ2 source-record shard outcome route mismatch")
-        outcomes.append(outcome)
-        record_identities.extend(
-            SourceRecordItem.model_validate(wire(item)).identity
-            for item in _bundle_items(bundle, "source_record")
-        )
     gaps = []
-    for outcome in outcomes:
-        completeness = outcome.get("record_completeness") or {}
-        if (outcome["status"], completeness.get("state")) in {
-            ("succeeded", "complete"),
-            ("empty", "empty"),
-        }:
+    for execution in executions:
+        completeness = execution.get("record_completeness") or {}
+        if execution["record_result"] in {"complete", "empty"}:
             continue
         gaps.append(
             {
-                "source": outcome["source"],
-                "status": outcome["status"],
+                "source": execution["qualified_source"],
+                "execution_status": execution["execution_status"],
+                "record_result": execution["record_result"],
                 "record_completeness": completeness.get("state"),
-                "record_count": outcome["record_count"],
+                "record_count": execution["source_record_count"],
                 "upstream_total": completeness.get("upstream_total"),
-                "reason_code": outcome["reason_code"],
+                "reason_code": execution["reason_code"],
                 "truncation_reason": completeness.get("truncation_reason"),
+                "warnings": execution["warnings"],
             }
         )
-    all_ready_routes_sharded = shard_routes == ready_routes
+    attempted_routes = sorted(row["qualified_source"] for row in executions)
+    source_record_requirements = [
+        requirement
+        for requirement in primary_bundle["requirements"]
+        if requirement["evidence_kind"] == "source_record"
+    ]
+    if len(source_record_requirements) != 1:
+        raise ValueError(
+            "authoritative discovery Bundle must have one source-record requirement"
+        )
     return {
-        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+        "semantics": "RQ1 route execution/closure and RQ2 source contribution/material landscape are deterministic views of this one authoritative all-qualified aggregate Bundle. No additional source-record acquisition contributes to either view.",
+        "authoritative_bundle_id": primary_bundle["bundle_id"],
+        "rq1_rq2_same_bundle": True,
+        "aggregate_source_records_call_count": 1,
+        "additional_source_record_acquisition_count": 0,
         "ready_route_count": len(ready_routes),
-        "shard_count": len(shards),
-        "shard_routes": shard_routes,
-        "shard_bundle_ids": [
-            capsule["evidence_bundle"]["bundle_id"] for capsule in shards
-        ],
-        "all_ready_routes_sharded": all_ready_routes_sharded,
-        "source_record_count": sum(row["record_count"] for row in outcomes),
-        "source_record_item_count": sum(
-            len(_bundle_items(capsule["evidence_bundle"], "source_record"))
-            for capsule in shards
-        ),
+        "attempted_route_count": len(attempted_routes),
+        "all_ready_routes_attempted": attempted_routes == ready_routes,
+        "source_record_count": len(record_items),
+        "source_record_item_count": len(record_items),
         "source_record_sources": sorted(
             {identity.source for identity in record_identities}
         ),
         "source_record_providers": sorted(
             {identity.provider for identity in record_identities}
         ),
-        "status_counts": dict(
-            sorted(Counter(row["status"] for row in outcomes).items())
+        "execution_status_counts": dict(
+            sorted(Counter(row["execution_status"] for row in executions).items())
+        ),
+        "record_result_counts": dict(
+            sorted(Counter(row["record_result"] for row in executions).items())
         ),
         "record_completeness_counts": dict(
             sorted(
                 Counter(
-                    (row.get("record_completeness") or {}).get("state", "missing")
-                    for row in outcomes
+                    row["record_completeness"]["state"]
+                    for row in executions
+                    if row["record_completeness"] is not None
                 ).items()
             )
         ),
-        "complete_inventory_eligible": all_ready_routes_sharded and not gaps,
+        "complete_inventory_eligible": attempted_routes == ready_routes and not gaps,
         "gap_count": len(gaps),
         "gaps": gaps,
+        "effective_operational_constraints": source_record_requirements[0][
+            "operational_constraints"
+        ],
+        "effective_product_run_capacity": run_capacity,
     }
 
 
-def acquire_source_record_layers(
+def acquire_authoritative_discovery(
     router: Any,
     *,
     case_name: str,
     formula: str,
 ) -> dict[str, Any]:
-    """Acquire the bounded RQ1 aggregate and non-selective per-route RQ2 shards."""
+    """Acquire the one authoritative discovery Bundle shared by RQ1 and RQ2."""
     from matrouter.tools.evidence import (
         AggregateSourceRecordsRequest,
         BeginEvidenceRunRequest,
@@ -2189,15 +2777,14 @@ def acquire_source_record_layers(
     )
     from matrouter.tools.run_state import SessionRunRegistry
 
-    primary_tools = EvidenceTools(router, SessionRunRegistry())
+    registry = SessionRunRegistry()
+    primary_tools = EvidenceTools(router, registry)
     primary_run = primary_tools.begin_evidence_run(BeginEvidenceRunRequest())
     discovery = _create_requirement(
         primary_tools,
         primary_run.evidence_run_id,
-        label=f"{case_name}-all-qualified-source-records",
         subject=_subject(formula=formula),
         kind="source_record",
-        use="Acquire the one primary all-qualified cross-source source-record Bundle through MatRouter's logical all-route fan-out.",
         constraints=_constraints(all_qualified=True),
     )
     primary_bundle_model = primary_tools.aggregate_source_records(
@@ -2216,6 +2803,20 @@ def acquire_source_record_layers(
     qualified_sources = [row.qualified_source for row in primary_routes]
     if len(qualified_sources) != len(set(qualified_sources)):
         raise ValueError("all-qualified catalog contains duplicate exact routes")
+    discovery_acquisitions = _registered_acquisitions(
+        registry,
+        primary_run.evidence_run_id,
+        requirement_ids={discovery.requirement_id},
+    )
+    if any(row.route.operation != "search_materials" for row in discovery_acquisitions):
+        raise ValueError(
+            "authoritative discovery ledger contains a non-search acquisition"
+        )
+    ready_route_count = sum(route.is_ready for route in primary_routes)
+    if len(discovery_acquisitions) != ready_route_count:
+        raise ValueError(
+            f"{case_name}: aggregate acquisition count does not match ready route count"
+        )
     raw_runs = [
         {
             "run_role": "primary_aggregate",
@@ -2223,7 +2824,9 @@ def acquire_source_record_layers(
             "run_capacity": primary_run.capacity.model_dump(mode="json"),
             "requirements": [discovery.model_dump(mode="json")],
             "routes": [route.model_dump(mode="json") for route in primary_routes],
-            "acquisitions": [],
+            "acquisitions": [
+                row.model_dump(mode="json") for row in discovery_acquisitions
+            ],
             "canonical_bundle": primary_bundle,
         }
     ]
@@ -2231,109 +2834,41 @@ def acquire_source_record_layers(
         {
             "bundle_role": "primary_aggregate",
             "qualified_source_route": None,
+            "run_capacity": primary_run.capacity.model_dump(mode="json"),
             "evidence_bundle": primary_bundle,
         }
     ]
-
-    ready_search_routes = [
-        route
-        for route in primary_routes
-        if route.state == "ready" and route.operation == "search_materials"
-    ]
-    for route_index, primary_route in enumerate(ready_search_routes):
-        shard_tools = EvidenceTools(router, SessionRunRegistry())
-        shard_run = shard_tools.begin_evidence_run(BeginEvidenceRunRequest())
-        shard_requirement = _create_requirement(
-            shard_tools,
-            shard_run.evidence_run_id,
-            label=(
-                f"{case_name}-{_safe_label(primary_route.qualified_source)}-"
-                "source-record-exhaustion"
-            ),
-            subject=_subject(formula=formula),
-            kind="source_record",
-            use=(
-                "Non-selective exact-route RQ2 source-record exhaustion shard; "
-                "kept separate from the RQ1 primary aggregate."
-            ),
-            constraints=_constraints(
-                sources=(primary_route.qualified_source,),
-                limit=shard_run.capacity.max_single_source_record_items,
-            ),
-        )
-        shard_routes = _route(shard_tools, shard_run.evidence_run_id, shard_requirement)
-        selected_routes = [
-            route
-            for route in shard_routes
-            if route.qualified_source == primary_route.qualified_source
-            and route.operation == "search_materials"
-            and route.state == "ready"
-        ]
-        if len(selected_routes) != 1:
-            raise ValueError(
-                f"{case_name}: ready primary route {primary_route.qualified_source} "
-                "did not resolve to one ready selected-source shard route"
-            )
-        acquisition = _execute(
-            shard_tools,
-            shard_run.evidence_run_id,
-            shard_requirement,
-            selected_routes[0],
-            f"paper-release-{case_name}-rq2-shard-{route_index:02d}",
-        )
-        shard_bundle_model = _assemble_run(
-            shard_tools,
-            shard_run.evidence_run_id,
-            [shard_requirement],
-            [acquisition],
-        )
-        shard_bundle = shard_bundle_model.model_dump(
-            mode="json", exclude_computed_fields=True
-        )
-        raw_runs.append(
-            _serialized_run(
-                run_role="source_record_exhaustion_shard",
-                qualified_source_route=primary_route.qualified_source,
-                run=shard_run,
-                requirements=[shard_requirement],
-                routes=shard_routes,
-                acquisitions=[acquisition],
-            )
-        )
-        bundle_capsules.append(
-            {
-                "bundle_role": "source_record_exhaustion_shard",
-                "qualified_source_route": primary_route.qualified_source,
-                "evidence_bundle": shard_bundle,
-            }
-        )
-
-    rq2_shard_summary = _rq2_source_record_summary(bundle_capsules, primary_bundle)
+    shared_summary = _shared_discovery_summary(
+        primary_bundle, primary_run.capacity.model_dump(mode="json")
+    )
 
     return {
+        "tools": primary_tools,
+        "registry": registry,
+        "run": primary_run,
+        "discovery_requirement": discovery,
+        "discovery_acquisitions": discovery_acquisitions,
         "raw_runs": raw_runs,
         "bundle_capsules": bundle_capsules,
         "primary_bundle_model": primary_bundle_model,
         "primary_routes": primary_routes,
         "qualified_sources": qualified_sources,
         "primary_summary": _aggregate_summary(primary_bundle),
-        "rq2_shard_summary": rq2_shard_summary,
+        "shared_discovery_summary": shared_summary,
+        "aggregate_source_records_call_count": 1,
     }
 
 
 def acquire_case(
     case_name: str,
     *,
+    full_run_id: str,
     raw_output_path: Path | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]]]:
     from matrouter import create_router
     from matrouter.evidence_contracts import SourceFilter
     from matrouter.evidence_contracts import canonical_json as matrouter_canonical_json
-    from matrouter.tools.evidence import (
-        BeginEvidenceRunRequest,
-        CapabilityRequest,
-        EvidenceTools,
-    )
+    from matrouter.tools.evidence import CapabilityRequest, EvidenceTools
     from matrouter.tools.run_state import SessionRunRegistry
 
     spec = case_spec(case_name)
@@ -2344,21 +2879,28 @@ def acquire_case(
         capability_tools = EvidenceTools(router, SessionRunRegistry())
         capability = capability_tools.inspect_evidence_capabilities(CapabilityRequest())
         capability_audit = _capability_audit(capability)
-        source_record_layers = acquire_source_record_layers(
+        discovery_ledger = acquire_authoritative_discovery(
             router,
             case_name=case_name,
             formula=formula,
         )
-        aggregate_bundle_model = source_record_layers["primary_bundle_model"]
-        qualified_sources = source_record_layers["qualified_sources"]
+        case_tools = discovery_ledger["tools"]
+        case_run = discovery_ledger["run"]
+        case_run_id = case_run.evidence_run_id
+        discovery_requirement = discovery_ledger["discovery_requirement"]
+        discovery_acquisitions = discovery_ledger["discovery_acquisitions"]
+        aggregate_bundle_model = discovery_ledger["primary_bundle_model"]
+        qualified_sources = discovery_ledger["qualified_sources"]
         aggregate_bundle = aggregate_bundle_model.model_dump(
             mode="json", exclude_computed_fields=True
         )
-        raw_runs = source_record_layers["raw_runs"]
-        bundle_capsules: list[dict[str, Any]] = source_record_layers["bundle_capsules"]
-        rq2_shard_summary = source_record_layers["rq2_shard_summary"]
+        raw_runs = discovery_ledger["raw_runs"]
+        bundle_capsules: list[dict[str, Any]] = discovery_ledger["bundle_capsules"]
+        shared_discovery_summary = discovery_ledger["shared_discovery_summary"]
         coverage = _aggregate_coverage_rows(case_name, aggregate_bundle)
         methods: list[dict[str, Any]] = []
+        case_requirements: list[Any] = [discovery_requirement]
+        case_acquisitions: list[Any] = list(discovery_acquisitions)
         target_specs_by_source: dict[str, list[dict[str, Any]]] = {}
         for target in spec["stage_2_targets"]:
             if target["enrichment_routes"]:
@@ -2371,42 +2913,9 @@ def acquire_case(
                 f"[{case_name}] exact-target follow-up {source_index + 1}/{len(target_specs_by_source)}: {source}",
                 flush=True,
             )
-            target_tools = EvidenceTools(router, SessionRunRegistry())
-            target_run = target_tools.begin_evidence_run(BeginEvidenceRunRequest())
-            target_run_id = target_run.evidence_run_id
             requirements: list[Any] = []
             routes: list[Any] = []
             acquisitions: list[Any] = []
-            target_discovery = _create_requirement(
-                target_tools,
-                target_run_id,
-                label=f"{case_name}-{_safe_label(source)}-exact-target-prerequisite",
-                subject=_subject(formula=formula),
-                kind="source_record",
-                use="Resolve only preregistered exact target identities required for declared follow-up artifacts; this is not a route-coverage run.",
-                constraints=_constraints(
-                    sources=(source,),
-                    limit=SOURCE_RECORD_SAFETY_LIMIT,
-                ),
-            )
-            requirements.append(target_discovery)
-            target_routes = _route(target_tools, target_run_id, target_discovery)
-            routes.extend(target_routes)
-            discovery_acquisitions: list[Any] = []
-            for route_index, target_route in enumerate(
-                sorted(target_routes, key=lambda row: row.route_id)
-            ):
-                if target_route.state != "ready":
-                    continue
-                acquisition = _execute(
-                    target_tools,
-                    target_run_id,
-                    target_discovery,
-                    target_route,
-                    f"paper-release-{case_name}-target-{source_index:02d}-{route_index:02d}",
-                )
-                discovery_acquisitions.append(acquisition)
-                acquisitions.append(acquisition)
             exact_refs = _all_exact_refs(discovery_acquisitions)
             for target in target_specs_by_source[source]:
                 matches = [
@@ -2420,8 +2929,8 @@ def acquire_case(
                 upstream, record_ref = matches[0]
                 for route_spec in target["enrichment_routes"]:
                     _add_bound_detail(
-                        tools=target_tools,
-                        run_id=target_run_id,
+                        tools=case_tools,
+                        run_id=case_run_id,
                         case_name=case_name,
                         formula=formula,
                         source=record_ref.source,
@@ -2433,82 +2942,72 @@ def acquire_case(
                         routes=routes,
                         acquisitions=acquisitions,
                     )
-            target_bundle_model = _assemble_run(
-                target_tools, target_run_id, requirements, acquisitions
-            )
-            target_bundle = target_bundle_model.model_dump(
-                mode="json", exclude_computed_fields=True
-            )
+            case_requirements.extend(requirements)
+            case_acquisitions.extend(acquisitions)
             raw_runs.append(
                 _serialized_run(
                     run_role="target_followup",
                     qualified_source_route=source,
-                    run=target_run,
+                    run=case_run,
                     requirements=requirements,
                     routes=routes,
                     acquisitions=acquisitions,
                 )
             )
-            bundle_capsules.append(
-                {
-                    "bundle_role": "target_followup",
-                    "qualified_source_route": source,
-                    "evidence_bundle": target_bundle,
-                }
-            )
-            if case_name == "mos2-band-gap" and source == "materials_project":
-                methods.extend(_render_spectral_methods(case_name, target_bundle_model))
-
-        if case_name == "mos2-band-gap":
-            structure_match = _match_preregistered_mos2_structures(
-                bundle_capsules, spec
-            )
-            if structure_match is not None:
-                methods.append(structure_match)
-
+            if acquisitions:
+                target_bundle_model = _assemble_run(
+                    case_tools,
+                    case_run_id,
+                    case_requirements,
+                    case_acquisitions,
+                )
+                target_bundle = target_bundle_model.model_dump(
+                    mode="json", exclude_computed_fields=True
+                )
+                bundle_capsules.append(
+                    {
+                        "bundle_role": "target_followup",
+                        "qualified_source_route": source,
+                        "run_capacity": case_run.capacity.model_dump(mode="json"),
+                        "evidence_bundle": target_bundle,
+                    }
+                )
         if case_name == "lifepo4-stability":
-            thermo_tools = EvidenceTools(router, SessionRunRegistry())
-            thermo_run = thermo_tools.begin_evidence_run(BeginEvidenceRunRequest())
-            thermo_run_id = thermo_run.evidence_run_id
             source_filter = SourceFilter(
                 source="materials_project",
                 filter_json=matrouter_canonical_json({"thermo_types": [THERMO_TYPE]}),
             )
             thermo = _create_requirement(
-                thermo_tools,
-                thermo_run_id,
-                label="lifepo4-materials-project-frame-compatible-entries",
+                case_tools,
+                case_run_id,
                 subject=_subject(elements=("Fe", "Li", "O", "P")),
                 kind="thermochemical_entries",
-                use="Exact source-compatible Li-Fe-O-P entry set for one explicit phase-diagram panel.",
                 constraints=_constraints(
                     sources=("materials_project",),
-                    limit=THERMOCHEMICAL_LIMIT,
                     filters=(source_filter,),
                 ),
             )
             thermo_requirements = [thermo]
-            thermo_routes = _route(thermo_tools, thermo_run_id, thermo)
+            thermo_routes = _route(case_tools, case_run_id, thermo)
             thermo_acquisitions: list[Any] = []
             for route in thermo_routes:
-                if (
-                    route.state == "ready"
-                    and route.operation == "get_thermochemical_entries"
-                ):
+                if route.is_ready and route.operation == "get_thermochemical_entries":
                     thermo_acquisitions.append(
                         _execute(
-                            thermo_tools,
-                            thermo_run_id,
+                            case_tools,
+                            case_run_id,
                             thermo,
                             route,
                             "paper-release-lifepo4-thermochemical-entries",
                         )
                     )
+            case_requirements.extend(thermo_requirements)
+            case_acquisitions.extend(thermo_acquisitions)
             thermo_bundle_model = _assemble_run(
-                thermo_tools,
-                thermo_run_id,
-                thermo_requirements,
-                thermo_acquisitions,
+                case_tools,
+                case_run_id,
+                case_requirements,
+                case_acquisitions,
             )
             thermo_bundle = thermo_bundle_model.model_dump(
                 mode="json", exclude_computed_fields=True
@@ -2517,7 +3016,7 @@ def acquire_case(
                 _serialized_run(
                     run_role="thermochemical",
                     qualified_source_route="materials_project",
-                    run=thermo_run,
+                    run=case_run,
                     requirements=thermo_requirements,
                     routes=thermo_routes,
                     acquisitions=thermo_acquisitions,
@@ -2527,36 +3026,38 @@ def acquire_case(
                 {
                     "bundle_role": "thermochemical",
                     "qualified_source_route": "materials_project",
+                    "run_capacity": case_run.capacity.model_dump(mode="json"),
                     "evidence_bundle": thermo_bundle,
                 }
             )
-            phase_result = _compute_lifepo4_phase_diagram(thermo_bundle_model)
-            if phase_result is not None:
-                methods.append(_portable_method_result(phase_result))
+        methods = _derive_explicit_methods(case_name, bundle_capsules, spec)
     finally:
         router.close()
 
     case_elapsed_seconds = round(time.monotonic() - case_started, 3)
     raw_capture = {
-        "schema_version": "matrouter.paper-live-capture/6",
+        "schema_version": "matrouter.paper-live-capture/8",
+        "full_run_id": full_run_id,
         "case_name": case_name,
         "protocol_version": PROTOCOL_VERSION,
         "release_binding": load_json(IDENTITY_PATH),
         "retrieval_strategy": {
             "stage_1": spec["stage_1"],
             "primary_aggregate": STAGE_1_SCOPE,
-            "rq2_source_record_exhaustion_shards": spec[
-                "rq2_source_record_exhaustion_shards"
-            ],
-            "rq2_shard_scope": RQ2_SHARD_SCOPE,
+            "shared_discovery_policy": spec["shared_discovery_policy"],
+            "shared_discovery_scope": SHARED_DISCOVERY_SCOPE,
             "stage_2_targets": spec["stage_2_targets"],
-            "stage_2_selection_rule": "only exact targets preregistered before the live run; target prerequisite searches and artifact acquisitions are follow-up Bundles, not route-coverage runs, and no target is dynamically replaced",
+            "stage_2_selection_rule": "only exact targets preregistered before the live run and present in the authoritative aggregate may be enriched; every detail or artifact attempt binds its exact initial discovery acquisition and record reference, no prerequisite source search is issued, and no target is dynamically replaced",
             "qualified_source_routes": qualified_sources,
         },
+        "evidence_run_count": 1,
+        "aggregate_source_records_call_count": discovery_ledger[
+            "aggregate_source_records_call_count"
+        ],
         "qualified_source_routes": qualified_sources,
         "capability_audit": capability_audit,
         "capability_snapshot": capability.model_dump(mode="json"),
-        "rq2_source_record_exhaustion": rq2_shard_summary,
+        "shared_discovery_ledger": shared_discovery_summary,
         "runs": raw_runs,
         "case_elapsed_seconds": case_elapsed_seconds,
     }
@@ -2564,11 +3065,12 @@ def acquire_case(
         write_json(raw_output_path, raw_capture)
     _, protocol_conformance = _capture_protocol_status(raw_capture, spec)
     result = {
-        "schema_version": "matrouter.paper-case-result/12",
+        "schema_version": "matrouter.paper-case-result/14",
+        "full_run_id": full_run_id,
         "case_name": case_name,
         "protocol_version": PROTOCOL_VERSION,
         "research_questions": COMMON_RESEARCH_QUESTIONS,
-        "rq2_source_record_exhaustion_shard_policy": RQ2_SHARD_POLICY,
+        "shared_discovery_policy": SHARED_DISCOVERY_POLICY,
         "rq3_method_applicability": spec["rq3_method_applicability"],
         "scientific_question": spec["scientific_question"],
         "task_spec": spec,
@@ -2578,7 +3080,7 @@ def acquire_case(
         "evidence_bundles": bundle_capsules,
         "primary_result_bundle_id": aggregate_bundle["bundle_id"],
         "aggregate": _aggregate_summary(aggregate_bundle),
-        "rq2_source_record_exhaustion": rq2_shard_summary,
+        "shared_discovery_ledger": shared_discovery_summary,
         "explicit_methods": methods,
         "case_elapsed_seconds": case_elapsed_seconds,
     }
@@ -2614,13 +3116,14 @@ def export_results(
         writer = csv.DictWriter(handle, fieldnames=list(source_outcome_audit[0]))
         writer.writeheader()
         writer.writerows(source_outcome_audit)
-    rq2_source_outcome_audit = [
-        row for result in results for row in _rq2_source_outcome_audit_rows(result)
-    ]
-    with (RESULTS / "rq2-source-outcome-audit.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rq2_source_outcome_audit[0]))
-        writer.writeheader()
-        writer.writerows(rq2_source_outcome_audit)
+    write_json(
+        RESULTS / "source-completeness-review.json",
+        _source_completeness_review(results),
+    )
+    write_json(
+        RESULTS / "rq1-rq2-shared-ledger-audit.json",
+        _rq1_rq2_shared_ledger_report(results),
+    )
     rows: list[dict[str, Any]] = []
     figure_cases: list[dict[str, Any]] = []
     scientific_exports: dict[str, list[dict[str, Any]]] = {
@@ -2638,7 +3141,7 @@ def export_results(
         topology_comparison_rows.extend(_topology_soc_comparison_rows(result))
         aggregate = result["aggregate"]
         landscape = result["material_landscape"]
-        rq2_summary = result["rq2_source_record_exhaustion"]
+        shared_summary = result["shared_discovery_ledger"]
         target_audit = result["protocol_conformance"]["stage_2_target_audit"]
         row = {
             "case_name": result["case_name"],
@@ -2656,22 +3159,28 @@ def export_results(
             "aggregate_distinct_provider_count": aggregate[
                 "source_record_provider_count"
             ],
-            "aggregate_status_counts_json": canonical_json(aggregate["status_counts"]),
+            "aggregate_execution_status_counts_json": canonical_json(
+                aggregate["execution_status_counts"]
+            ),
+            "aggregate_record_result_counts_json": canonical_json(
+                aggregate["record_result_counts"]
+            ),
             "aggregate_completeness_counts_json": canonical_json(
                 aggregate["record_completeness_counts"]
             ),
             "aggregate_capacity_limitation_count": len(
                 aggregate["capacity_limitations"]
             ),
-            "rq2_shard_count": rq2_summary["shard_count"],
-            "rq2_source_record_count": rq2_summary["source_record_count"],
-            "rq2_status_counts_json": canonical_json(rq2_summary["status_counts"]),
-            "rq2_completeness_counts_json": canonical_json(
-                rq2_summary["record_completeness_counts"]
-            ),
-            "rq2_gap_count": rq2_summary["gap_count"],
-            "rq2_gaps_json": canonical_json(rq2_summary["gaps"]),
-            "rq2_complete_inventory_eligible": rq2_summary[
+            "rq1_rq2_shared_bundle_id": shared_summary["authoritative_bundle_id"],
+            "aggregate_source_records_call_count": shared_summary[
+                "aggregate_source_records_call_count"
+            ],
+            "additional_source_record_acquisition_count": shared_summary[
+                "additional_source_record_acquisition_count"
+            ],
+            "shared_discovery_gap_count": shared_summary["gap_count"],
+            "shared_discovery_gaps_json": canonical_json(shared_summary["gaps"]),
+            "shared_discovery_complete_inventory_eligible": shared_summary[
                 "complete_inventory_eligible"
             ],
             "material_landscape_data_categories_json": canonical_json(
@@ -2692,8 +3201,9 @@ def export_results(
             ),
             "qualified_source_route_count_semantics": QUALIFIED_ROUTE_COUNT_SEMANTICS,
             "thermochemical_entry_count": sum(
-                item["entry_count"]
-                for item in _case_items(result, "thermochemical_entry_set")
+                _thermochemical_entry_count(item)
+                for item in _case_items(result, "scientific_artifact")
+                if item["artifact_type"] == "thermochemical_entry_set"
             ),
             "explicit_method_names_json": canonical_json(
                 [method["method_name"] for method in result["explicit_methods"]]
@@ -2727,7 +3237,8 @@ def export_results(
                     "qualified_route_count": aggregate["qualified_route_count"],
                     "ready_route_count": aggregate["ready_route_count"],
                     "attempted_route_count": aggregate["attempted_route_count"],
-                    "status_counts": aggregate["status_counts"],
+                    "execution_status_counts": aggregate["execution_status_counts"],
+                    "record_result_counts": aggregate["record_result_counts"],
                     "record_completeness_counts": aggregate[
                         "record_completeness_counts"
                     ],
@@ -2738,11 +3249,7 @@ def export_results(
                         "source_record_provider_count"
                     ],
                 },
-                "rq2_source_record_exhaustion": {
-                    key: value
-                    for key, value in rq2_summary.items()
-                    if key not in {"shard_bundle_ids", "shard_routes"}
-                },
+                "shared_discovery_ledger": shared_summary,
                 "data_categories_actually_present": landscape[
                     "data_categories_actually_present"
                 ],
@@ -2870,24 +3377,6 @@ def _validate_paper_observation_export_consistency(
             raise ValueError(f"{case_name}: observations.csv export drift")
 
 
-def _validate_rq2_source_outcome_export_consistency(
-    results_by_case: dict[str, dict[str, Any]],
-) -> None:
-    with (RESULTS / "rq2-source-outcome-audit.csv").open(newline="") as handle:
-        actual = list(csv.DictReader(handle))
-    expected_rows = [
-        row
-        for case_name in CASES
-        for row in _rq2_source_outcome_audit_rows(results_by_case[case_name])
-    ]
-    expected = [
-        {key: "" if value is None else str(value) for key, value in row.items()}
-        for row in expected_rows
-    ]
-    if actual != expected:
-        raise ValueError("rq2-source-outcome-audit.csv export drift")
-
-
 def _diagnose_stage1_product_blockers(
     case_name: str, outcomes: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -2895,14 +3384,7 @@ def _diagnose_stage1_product_blockers(
     blockers: list[dict[str, Any]] = []
     for outcome in outcomes:
         reason_code = outcome.get("reason_code")
-        message_field = outcome.get("message")
-        message = (
-            message_field.get("value")
-            if isinstance(message_field, dict) and message_field.get("present")
-            else message_field
-            if isinstance(message_field, str)
-            else None
-        )
+        message = outcome.get("message")
         http_match = re.search(
             r"\bHTTP\s+(400|404|405|422)\b", message or "", re.IGNORECASE
         )
@@ -2916,7 +3398,7 @@ def _diagnose_stage1_product_blockers(
             continue
         core = {
             "case_name": case_name,
-            "source": outcome.get("source"),
+            "source": outcome.get("qualified_source") or outcome.get("source"),
             "operation": outcome.get("operation"),
             "reason_code": reason_code,
             "diagnostic_category": category,
@@ -2938,15 +3420,14 @@ def _diagnose_stage1_product_blockers(
 
 
 def _diagnose_case_product_blockers(result: dict[str, Any]) -> list[dict[str, Any]]:
-    outcomes = [
-        item["outcome"]
+    executions = [
+        execution
         for capsule in result["evidence_bundles"]
         if capsule["bundle_role"] == "primary_aggregate"
-        for item in capsule["evidence_bundle"]["items"]
-        if item["item_kind"] == "source_outcome"
-        and item["outcome"]["operation"] == "search_materials"
+        for execution in _bundle_execution_rows(capsule["evidence_bundle"])
+        if execution["operation"] == "search_materials"
     ]
-    return _diagnose_stage1_product_blockers(result["case_name"], outcomes)
+    return _diagnose_stage1_product_blockers(result["case_name"], executions)
 
 
 def write_product_blockers(results: list[dict[str, Any]]) -> None:
@@ -2964,7 +3445,7 @@ def write_product_blockers(results: list[dict[str, Any]]) -> None:
         entry_sets = _complete_thermochemical_entry_sets(lifepo4)
         reproduction_path: Path | None = None
         failed_outcomes = [
-            outcome for outcome in outcomes if outcome["status"] == "failed"
+            outcome for outcome in outcomes if outcome["execution_status"] == "failed"
         ]
         raw_path = RAW / identity["package_version"] / "lifepo4-stability.json"
         if failed_outcomes and raw_path.is_file():
@@ -2974,7 +3455,7 @@ def write_product_blockers(results: list[dict[str, Any]]) -> None:
                 for run in raw["runs"]
                 for acquisition in run["acquisitions"]
                 if acquisition["route"]["operation"] == "get_thermochemical_entries"
-                and acquisition["outcome_draft"]["status"] == "failed"
+                and acquisition["outcome"]["execution_status"] == "failed"
             ]
             if len(failed_acquisitions) == 1:
                 acquisition = failed_acquisitions[0]
@@ -2986,7 +3467,7 @@ def write_product_blockers(results: list[dict[str, Any]]) -> None:
                 write_json(
                     reproduction_path,
                     {
-                        "schema_version": "matrouter.paper-typed-reproduction/1",
+                        "schema_version": "matrouter.paper-typed-reproduction/2",
                         "release_binding": {
                             "package": f"matrouter=={identity['package_version']}",
                             "tag": identity["release_tag"],
@@ -2996,7 +3477,7 @@ def write_product_blockers(results: list[dict[str, Any]]) -> None:
                         "raw_capture": str(raw_path.relative_to(ROOT)),
                         "requirement": acquisition["requirement"],
                         "route": acquisition["route"],
-                        "outcome_draft": acquisition["outcome_draft"],
+                        "outcome": acquisition["outcome"],
                         "second_network_request_issued": False,
                         "limitations": [
                             "This is the exact public-contract slice from the one preregistered full run, not a selective retry.",
@@ -3016,7 +3497,7 @@ def write_product_blockers(results: list[dict[str, Any]]) -> None:
                 "public_operation": "get_thermochemical_entries",
                 "exact_filter": {"thermo_types": [THERMO_TYPE]},
                 "chemical_system": ["Fe", "Li", "O", "P"],
-                "configured_entry_limit": THERMOCHEMICAL_LIMIT,
+                "engineering_ceiling_authority": "matrouter_product_defaults",
                 "typed_outcomes": outcomes,
                 "complete_entry_set_count": len(entry_sets),
                 "complete_entry_counts": [item["entry_count"] for item in entry_sets],
@@ -3033,7 +3514,7 @@ def write_product_blockers(results: list[dict[str, Any]]) -> None:
     write_json(
         RESULTS / "product-blockers.json",
         {
-            "schema_version": "matrouter.paper-product-blockers/1",
+            "schema_version": "matrouter.paper-product-blockers/2",
             "blocker_count": len(blockers),
             "blockers": blockers,
         },
@@ -3050,7 +3531,7 @@ def _bi2se3_topology_pair_present(result: dict[str, Any]) -> bool:
             continue
         if item["identity"]["source"] != "materialsgalaxy:topo_crystals":
             return False
-        descriptor = json.loads(item["descriptor_json"])
+        descriptor = _artifact_content(item)
         expected_soc = item["artifact_type"] == "topology_soc"
         if descriptor.get("soc") is not expected_soc:
             return False
@@ -3081,7 +3562,7 @@ def _method_inputs_bind_declared_bundles(
     if not isinstance(exact_inputs, list) or not exact_inputs:
         return False
     items_by_bundle = {
-        bundle["bundle_id"]: {item["item_id"] for item in bundle["items"]}
+        bundle["bundle_id"]: {item["item_id"] for item in bundle["evidence_items"]}
         for bundle in _case_bundles(result)
     }
     declared_bundle_ids = method.get("input_bundle_ids")
@@ -3104,9 +3585,7 @@ def _complete_spectral_artifact_ids(result: dict[str, Any]) -> set[str]:
         item["item_id"]
         for item in _case_items(result, "scientific_artifact")
         if item["artifact_type"] in {"band_structure", "density_of_states"}
-        and item.get("payload_content")
-        and item.get("payload_integrity_status") == "verified"
-        and item.get("payload_type")
+        and item.get("content")
         and item.get("identity", {}).get("source")
         and item.get("identity", {}).get("source_id")
     }
@@ -3115,7 +3594,7 @@ def _complete_spectral_artifact_ids(result: dict[str, Any]) -> set[str]:
 def _successful_spectral_render_input_ids(result: dict[str, Any]) -> set[str]:
     complete_artifacts = _complete_spectral_artifact_ids(result)
     items_by_bundle = {
-        bundle["bundle_id"]: {item["item_id"] for item in bundle["items"]}
+        bundle["bundle_id"]: {item["item_id"] for item in bundle["evidence_items"]}
         for bundle in _case_bundles(result)
     }
     successful: set[str] = set()
@@ -3150,8 +3629,7 @@ def _mos2_preregistered_methods_are_safe(result: dict[str, Any]) -> bool:
         if item.get("identity", {}).get("source") == "materials_project"
         and item.get("identity", {}).get("source_id") == "mp-2815"
         and item.get("artifact_type") in {"band_structure", "density_of_states"}
-        and item.get("payload_content")
-        and item.get("payload_integrity_status") == "verified"
+        and item.get("content")
     ]
     if len(target_artifacts) != 2 or {
         item["artifact_type"] for item in target_artifacts
@@ -3212,9 +3690,10 @@ def _mos2_preregistered_methods_are_safe(result: dict[str, Any]) -> bool:
 
 def _thermochemical_outcomes(result: dict[str, Any]) -> list[dict[str, Any]]:
     return [
-        item["outcome"]
-        for item in _case_items(result, "source_outcome")
-        if item["outcome"]["operation"] == "get_thermochemical_entries"
+        execution
+        for bundle in _case_bundles(result)
+        for execution in _bundle_execution_rows(bundle)
+        if execution["operation"] == "get_thermochemical_entries"
     ]
 
 
@@ -3224,14 +3703,15 @@ def _complete_thermochemical_entry_sets(
     complete_outcomes = [
         outcome
         for outcome in _thermochemical_outcomes(result)
-        if outcome["status"] == "succeeded"
-        and outcome.get("record_completeness", {}).get("state") == "complete"
+        if outcome["execution_status"] == "succeeded"
+        and (outcome.get("record_completeness") or {}).get("state") == "complete"
     ]
     entry_sets = [
         item
-        for item in _case_items(result, "thermochemical_entry_set")
-        if item.get("entry_set_json")
-        and item.get("entry_count", 0) >= 2
+        for item in _case_items(result, "scientific_artifact")
+        if item.get("artifact_type") == "thermochemical_entry_set"
+        and item.get("content")
+        and _thermochemical_entry_count(item) >= 2
         and item.get("identity", {}).get("source") == "materials_project"
     ]
     return entry_sets if len(complete_outcomes) == 1 else []
@@ -3264,7 +3744,7 @@ def _phase_diagram_method_is_safe(result: dict[str, Any]) -> bool:
         for capsule in result["evidence_bundles"]
         if any(
             item["item_id"] == entry_set["item_id"]
-            for item in capsule["evidence_bundle"]["items"]
+            for item in capsule["evidence_bundle"]["evidence_items"]
         )
     ]
     return (
@@ -3275,7 +3755,7 @@ def _phase_diagram_method_is_safe(result: dict[str, Any]) -> bool:
         and manifest_entry_set == entry_set
         and input_manifest.get("manifest_id")
         and isinstance(entries, list)
-        and len(entries) == entry_set["entry_count"]
+        and len(entries) == _thermochemical_entry_count(entry_set)
         and all(
             row.get("reference", {}).get("entry_set_item_id") == entry_set["item_id"]
             for row in entries
@@ -3382,8 +3862,8 @@ def write_internal_protocol_review(
         _phase_diagram_method_is_safe(lifepo4)
         if phase_methods
         else all(
-            outcome["status"] != "succeeded"
-            or outcome.get("record_completeness", {}).get("state") != "complete"
+            outcome["execution_status"] != "succeeded"
+            or (outcome.get("record_completeness") or {}).get("state") != "complete"
             for outcome in thermo_outcomes
         )
     )
@@ -3421,7 +3901,7 @@ def write_internal_protocol_review(
                 }
             )
     review = {
-        "schema_version": "matrouter.paper-internal-protocol-review/6",
+        "schema_version": "matrouter.paper-internal-protocol-review/8",
         "review_name": "internal_protocol_review",
         "review_kind": "deterministic_internal_protocol_and_scientific_boundary_checklist",
         "independence_claim": False,
@@ -3441,17 +3921,24 @@ def write_internal_protocol_review(
                 result["case_interpretation"]["stage_1_scope"] == STAGE_1_SCOPE
                 for result in results
             ),
-            "rq2_shards_cover_every_ready_primary_search_route_in_stable_order": all(
-                result["case_interpretation"]["rq2_shard_scope"] == RQ2_SHARD_SCOPE
-                and result["protocol_conformance"][
-                    "rq2_source_record_exhaustion_shards"
-                ]["passed"]
-                and result["rq2_source_record_exhaustion"]["all_ready_routes_sharded"]
+            "rq1_and_rq2_share_one_authoritative_discovery_ledger": all(
+                result["case_interpretation"]["shared_discovery_scope"]
+                == SHARED_DISCOVERY_SCOPE
+                and result["protocol_conformance"]["shared_discovery_ledger"]["passed"]
+                and result["shared_discovery_ledger"]["rq1_rq2_same_bundle"]
+                and result["shared_discovery_ledger"][
+                    "aggregate_source_records_call_count"
+                ]
+                == 1
+                and result["shared_discovery_ledger"][
+                    "additional_source_record_acquisition_count"
+                ]
+                == 0
                 for result in results
             ),
-            "rq2_incomplete_shards_never_claim_complete_inventory": all(
-                result["rq2_source_record_exhaustion"]["complete_inventory_eligible"]
-                == (result["rq2_source_record_exhaustion"]["gap_count"] == 0)
+            "incomplete_shared_discovery_never_claims_complete_inventory": all(
+                result["shared_discovery_ledger"]["complete_inventory_eligible"]
+                == (result["shared_discovery_ledger"]["gap_count"] == 0)
                 for result in results
             ),
             "paper_results_eligible_is_protocol_only": all(
@@ -3487,12 +3974,11 @@ def write_internal_protocol_review(
                 and result["material_landscape"]["all_declared_claims_supported"]
                 for result in results
             ),
-            "only_declared_run_roles_and_nonselective_rq2_shards": all(
+            "only_declared_single_ledger_run_roles": all(
                 all(
                     run["run_role"]
                     in {
                         "primary_aggregate",
-                        "source_record_exhaustion_shard",
                         "target_followup",
                         "thermochemical",
                     }
@@ -3613,9 +4099,9 @@ def write_internal_protocol_review(
                 result["protocol_conformance"]["capture_eligible_under_frozen_protocol"]
                 == (
                     result["protocol_conformance"]["single_primary_all_route_aggregate"]
-                    and result["protocol_conformance"][
-                        "rq2_source_record_exhaustion_shards"
-                    ]["passed"]
+                    and result["protocol_conformance"]["shared_discovery_ledger"][
+                        "passed"
+                    ]
                     and result["protocol_conformance"]["stage_2_target_audit"]["passed"]
                 )
                 for result in results
@@ -3636,7 +4122,7 @@ def write_internal_protocol_review(
                     "observations.csv",
                     "structures.csv",
                     "artifacts.csv",
-                    "rq2-source-outcome-audit.csv",
+                    "rq1-rq2-shared-ledger-audit.json",
                     "phase-diagram-entries.csv",
                     "topology-soc-comparison.csv",
                 )
@@ -3661,7 +4147,8 @@ def _paper_export_paths() -> tuple[Path, ...]:
         RESULTS / "cases.csv",
         RESULTS / "coverage.csv",
         RESULTS / "source-outcome-audit.csv",
-        RESULTS / "rq2-source-outcome-audit.csv",
+        RESULTS / "source-completeness-review.json",
+        RESULTS / "rq1-rq2-shared-ledger-audit.json",
         RESULTS / "observations.csv",
         RESULTS / "structures.csv",
         RESULTS / "artifacts.csv",
@@ -3706,10 +4193,8 @@ def preflight() -> dict[str, Any]:
             requirement = _create_requirement(
                 tools,
                 run.evidence_run_id,
-                label=f"{case_name}-preflight",
                 subject=_subject(formula=spec["formula"]),
                 kind="source_record",
-                use="Non-executing all-qualified exhaust-upstream preflight.",
                 constraints=_constraints(all_qualified=True),
             )
             routes = _route(tools, run.evidence_run_id, requirement)
@@ -3723,7 +4208,7 @@ def preflight() -> dict[str, Any]:
             ]
             if (
                 len(materials_galaxy_routes) != 1
-                or not materials_galaxy_routes[0].output_sources
+                or not materials_galaxy_routes[0].aggregate_sources
                 or any(
                     source.startswith("materialsgalaxy:") for source in route_sources
                 )
@@ -3734,8 +4219,8 @@ def preflight() -> dict[str, Any]:
             aggregate_route_snapshots[case_name] = [
                 {
                     "qualified_source": route.qualified_source,
-                    "output_sources": list(route.output_sources),
-                    "state": route.state,
+                    "aggregate_sources": list(route.aggregate_sources),
+                    "state": "ready" if route.is_ready else "requires_configuration",
                 }
                 for route in routes
             ]
@@ -3770,9 +4255,7 @@ def _assert_final_release_binding(identity: dict[str, Any]) -> None:
         expected = ", ".join(
             f"{field}={value}" for field, value in FINAL_RELEASE_BINDING.items()
         )
-        raise RuntimeError(
-            f"final v0.9.2 release-bound run is pending; expected {expected}"
-        )
+        raise RuntimeError(f"v0.10.2 release-bound run is pending; expected {expected}")
 
 
 def _planned_raw_paths(identity: dict[str, Any]) -> dict[str, Path]:
@@ -3782,34 +4265,250 @@ def _planned_raw_paths(identity: dict[str, Any]) -> dict[str, Path]:
     }
 
 
+def _capture_protocol_document(
+    *,
+    identity: dict[str, Any],
+    full_run_id: str,
+    runtime_distribution: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "schema_version": "matrouter.paper-capture-protocol/1",
+        "full_run_id": full_run_id,
+        "protocol_version": PROTOCOL_VERSION,
+        "release_binding": identity,
+        "runtime_distribution": runtime_distribution,
+        "execution_mode": "one_complete_nonselective_three_case_capture",
+        "case_order": list(CASES),
+        "research_questions": COMMON_RESEARCH_QUESTIONS,
+        "stage_1_scope": STAGE_1_SCOPE,
+        "shared_discovery_policy": SHARED_DISCOVERY_POLICY,
+        "shared_discovery_scope": SHARED_DISCOVERY_SCOPE,
+        "case_specs": [
+            {
+                "case_name": case_name,
+                "path": f"cases/{case_name}.json",
+                "sha256": file_sha256(ROOT / "cases" / f"{case_name}.json"),
+                "spec": case_spec(case_name),
+            }
+            for case_name in CASES
+        ],
+        "runner_path": "experiment.py",
+        "runner_sha256": file_sha256(Path(__file__)),
+        "selective_rerun_permitted": False,
+    }
+
+
+def _write_capture_log(
+    path: Path, full_run_id: str, events: list[dict[str, Any]]
+) -> None:
+    write_json(
+        path,
+        {
+            "schema_version": "matrouter.paper-capture-log/1",
+            "full_run_id": full_run_id,
+            "events": events,
+        },
+    )
+
+
+def _portable_abort_message(exc: BaseException) -> str:
+    message = str(exc)
+    for private_path in (str(Path.home()), str(ROOT), "/private/tmp"):
+        message = message.replace(private_path, "<private-path>")
+    message = re.sub(
+        r"(?i)(api[_-]?key|token|secret)(\s*[=:]\s*)[^\s,;]+",
+        r"\1\2<redacted>",
+        message,
+    )
+    return message[:1000]
+
+
 def run_all() -> None:
-    live_run_started = time.monotonic()
+    if not FORMAL_CAPTURE_ENABLED:
+        raise RuntimeError(FORMAL_CAPTURE_PAUSE_REASON)
     identity = verify_release_identity()
     _assert_final_release_binding(identity)
+    final_raw_directory = RAW / identity["package_version"]
     planned_raw_paths = _planned_raw_paths(identity)
-    existing_raw_paths = [path for path in planned_raw_paths.values() if path.exists()]
-    if existing_raw_paths:
+    if final_raw_directory.exists():
         raise FileExistsError(
             "planned final raw capture already exists; no active outputs were cleared: "
-            + ", ".join(str(path) for path in existing_raw_paths)
+            + str(final_raw_directory)
         )
     preflight_result = preflight()
     if preflight_result["release_identity"] != identity:
         raise ValueError("preflight release identity drift")
+    runtime_distribution = _runtime_distribution_audit()
+    full_run_id = _new_full_run_id(identity["package_version"])
+    capture_started_at = _utc_now()
+    live_run_started = time.monotonic()
+    staging_directory = RAW / ".staging" / full_run_id
+    staging_directory.mkdir(parents=True, exist_ok=False)
+    protocol_path = staging_directory / "protocol.json"
+    log_path = staging_directory / "run-log.json"
+    write_json(
+        protocol_path,
+        _capture_protocol_document(
+            identity=identity,
+            full_run_id=full_run_id,
+            runtime_distribution=runtime_distribution,
+        ),
+    )
+    events: list[dict[str, Any]] = [
+        {
+            "event": "full_capture_started",
+            "at_utc": capture_started_at,
+            "case_order": list(CASES),
+            "release": f"matrouter=={identity['package_version']}",
+        }
+    ]
+    _write_capture_log(log_path, full_run_id, events)
     _clear_active_results()
     results: list[dict[str, Any]] = []
     coverage: list[dict[str, Any]] = []
+    raw_sha256_by_case: dict[str, str] = {}
+    active_case: str | None = None
+    try:
+        for case_index, case_name in enumerate(CASES, start=1):
+            active_case = case_name
+            events.append(
+                {
+                    "event": "case_started",
+                    "at_utc": _utc_now(),
+                    "case_name": case_name,
+                    "case_index": case_index,
+                    "case_count": len(CASES),
+                }
+            )
+            _write_capture_log(log_path, full_run_id, events)
+            print(f"[{case_name}] starting", flush=True)
+            staging_raw_path = staging_directory / f"{case_name}.json"
+            _raw, result, case_coverage = acquire_case(
+                case_name,
+                full_run_id=full_run_id,
+                raw_output_path=staging_raw_path,
+            )
+            result_path = CASE_RESULTS / f"{case_name}.json"
+            write_json(result_path, result)
+            results.append(result)
+            coverage.extend(case_coverage)
+            raw_sha256_by_case[case_name] = file_sha256(staging_raw_path)
+            events.append(
+                {
+                    "event": "case_completed",
+                    "at_utc": _utc_now(),
+                    "case_name": case_name,
+                    "case_elapsed_seconds": result["case_elapsed_seconds"],
+                    "rq1_attempted_route_count": result["aggregate"][
+                        "attempted_route_count"
+                    ],
+                    "shared_discovery_source_record_count": result[
+                        "shared_discovery_ledger"
+                    ]["source_record_count"],
+                    "aggregate_source_records_call_count": result[
+                        "shared_discovery_ledger"
+                    ]["aggregate_source_records_call_count"],
+                }
+            )
+            _write_capture_log(log_path, full_run_id, events)
+            print(
+                f"[{case_name}] captured in {result['case_elapsed_seconds']:.3f}s",
+                flush=True,
+            )
+        active_case = None
+        capture_completed_at = _utc_now()
+        events.append(
+            {
+                "event": "full_capture_completed",
+                "at_utc": capture_completed_at,
+                "captured_cases": list(CASES),
+                "selective_rerun": False,
+            }
+        )
+        _write_capture_log(log_path, full_run_id, events)
+        capture_files = [
+            {
+                "path": f"{case_name}.json",
+                "sha256": raw_sha256_by_case[case_name],
+                "role": "case_live_capture",
+            }
+            for case_name in CASES
+        ]
+        capture_files.extend(
+            [
+                {
+                    "path": "protocol.json",
+                    "sha256": file_sha256(protocol_path),
+                    "role": "frozen_protocol_snapshot",
+                },
+                {
+                    "path": "run-log.json",
+                    "sha256": file_sha256(log_path),
+                    "role": "structured_execution_log",
+                },
+            ]
+        )
+        write_json(
+            staging_directory / "capture-manifest.json",
+            {
+                "schema_version": "matrouter.paper-capture-manifest/1",
+                "status": "complete_immutable_three_case_capture",
+                "full_run_id": full_run_id,
+                "protocol_version": PROTOCOL_VERSION,
+                "release_binding": identity,
+                "runtime_distribution": runtime_distribution,
+                "capture_started_at_utc": capture_started_at,
+                "capture_completed_at_utc": capture_completed_at,
+                "case_order": list(CASES),
+                "all_cases_captured_once": True,
+                "selective_rerun": False,
+                "files": capture_files,
+            },
+        )
+        staging_directory.rename(final_raw_directory)
+    except BaseException as exc:
+        events.append(
+            {
+                "event": "full_capture_abandoned",
+                "at_utc": _utc_now(),
+                "active_case": active_case,
+                "exception_type": type(exc).__name__,
+                "reason": _portable_abort_message(exc),
+                "selective_retry_permitted": False,
+                "restart_requirement": "A replacement attempt must rerun all three cases from the beginning.",
+            }
+        )
+        _write_capture_log(log_path, full_run_id, events)
+        write_json(
+            staging_directory / "aborted-manifest.json",
+            {
+                "schema_version": "matrouter.paper-aborted-capture/1",
+                "status": "abandoned_incomplete_full_capture",
+                "full_run_id": full_run_id,
+                "release": f"matrouter=={identity['package_version']}",
+                "protocol_version": PROTOCOL_VERSION,
+                "captured_case_prefix": [
+                    case_name for case_name in CASES if case_name in raw_sha256_by_case
+                ],
+                "active_case": active_case,
+                "exception_type": type(exc).__name__,
+                "reason": _portable_abort_message(exc),
+                "selective_retry_permitted": False,
+            },
+        )
+        abandoned_directory = (
+            RAW / "aborted" / identity["package_version"] / full_run_id
+        )
+        abandoned_directory.parent.mkdir(parents=True, exist_ok=True)
+        staging_directory.rename(abandoned_directory)
+        raise
+
+    raw_paths = planned_raw_paths
     entries: list[dict[str, Any]] = []
-    raw_paths: dict[str, Path] = {}
-    for case_name in CASES:
-        print(f"[{case_name}] starting", flush=True)
-        raw_path = planned_raw_paths[case_name]
-        _raw, result, case_coverage = acquire_case(case_name, raw_output_path=raw_path)
+    for result in results:
+        case_name = result["case_name"]
+        raw_path = raw_paths[case_name]
         result_path = CASE_RESULTS / f"{case_name}.json"
-        raw_paths[case_name] = raw_path
-        write_json(result_path, result)
-        results.append(result)
-        coverage.extend(case_coverage)
         entries.append(
             {
                 "case_name": case_name,
@@ -3818,14 +4517,10 @@ def run_all() -> None:
                 "result_path": str(result_path.relative_to(ROOT)),
                 "result_sha256": file_sha256(result_path),
                 "bundle_ids": [bundle["bundle_id"] for bundle in _case_bundles(result)],
-                "rq2_source_record_exhaustion": result["rq2_source_record_exhaustion"],
+                "shared_discovery_ledger": result["shared_discovery_ledger"],
                 "case_spec_sha256": file_sha256(ROOT / "cases" / f"{case_name}.json"),
                 "paper_result_status": result["paper_result_status"],
             }
-        )
-        print(
-            f"[{case_name}] captured in {result['case_elapsed_seconds']:.3f}s",
-            flush=True,
         )
     export_results(results, coverage)
     write_product_blockers(results)
@@ -3835,7 +4530,8 @@ def run_all() -> None:
         for result in results
     ) and all(result["paper_results_eligible"] for result in results)
     manifest = {
-        "schema_version": "matrouter.paper-manifest/14",
+        "schema_version": "matrouter.paper-manifest/16",
+        "full_run_id": full_run_id,
         "experiment_id": experiment_id(identity),
         "status": (
             "three_case_frozen_protocol_complete"
@@ -3856,7 +4552,7 @@ def run_all() -> None:
         ),
         "protocol_version": PROTOCOL_VERSION,
         "research_questions": COMMON_RESEARCH_QUESTIONS,
-        "rq2_source_record_exhaustion_shard_policy": RQ2_SHARD_POLICY,
+        "shared_discovery_policy": SHARED_DISCOVERY_POLICY,
         "rq3_method_applicability": {
             result["case_name"]: result["rq3_method_applicability"]
             for result in results
@@ -3864,6 +4560,15 @@ def run_all() -> None:
         "core_boundary": "MatRouter routes source-qualified evidence and exact method inputs; the Agent builds the case-specific material landscape and scientific handoff.",
         "reference_assessments_enabled": False,
         "release_identity": identity,
+        "runtime_distribution": runtime_distribution,
+        "raw_capture_manifest": {
+            "path": str(
+                (final_raw_directory / "capture-manifest.json").relative_to(ROOT)
+            ),
+            "sha256": file_sha256(final_raw_directory / "capture-manifest.json"),
+        },
+        "capture_started_at_utc": capture_started_at,
+        "capture_completed_at_utc": capture_completed_at,
         "capability_preflight": preflight_result["capability_audit"],
         "live_run_duration_seconds": round(time.monotonic() - live_run_started, 3),
         "runner_sha256": file_sha256(Path(__file__)),
@@ -3874,6 +4579,203 @@ def run_all() -> None:
         ],
     }
     write_json(RESULTS / "manifest.json", manifest)
+
+
+def _capability_preflight_from_completed_raw(
+    raw_by_case: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    baseline = raw_by_case[CASES[0]]["capability_audit"]
+    if any(
+        raw_by_case[case_name]["capability_audit"] != baseline for case_name in CASES
+    ):
+        raise ValueError("capability audit drifted within the completed three-case run")
+    snapshots: dict[str, list[dict[str, Any]]] = {}
+    for case_name in CASES:
+        primary_runs = [
+            run
+            for run in raw_by_case[case_name]["runs"]
+            if run["run_role"] == "primary_aggregate"
+        ]
+        if len(primary_runs) != 1:
+            raise ValueError(f"{case_name}: expected one primary aggregate run")
+        snapshots[case_name] = [
+            {
+                "qualified_source": route["qualified_source"],
+                "aggregate_sources": _route_aggregate_sources(route),
+                "state": _route_state(route),
+            }
+            for route in primary_runs[0]["routes"]
+        ]
+    route_counts = {len(rows) for rows in snapshots.values()}
+    if len(route_counts) != 1:
+        raise ValueError("qualified aggregate route count drifted across cases")
+    return {
+        **baseline,
+        "aggregate_route_snapshots": snapshots,
+        "qualified_aggregate_execution_route_count": route_counts.pop(),
+    }
+
+
+def report_completed_capture() -> None:
+    """Build derived reports from the immutable completed capture without network I/O."""
+    identity = verify_release_identity()
+    _assert_final_release_binding(identity)
+    capture_directory = RAW / identity["package_version"]
+    capture_manifest_path = capture_directory / "capture-manifest.json"
+    if not capture_manifest_path.is_file() and not FORMAL_CAPTURE_ENABLED:
+        raise RuntimeError(FORMAL_CAPTURE_PAUSE_REASON)
+    capture_manifest = load_json(capture_manifest_path)
+    full_run_id = capture_manifest.get("full_run_id")
+    runtime_distribution = _runtime_distribution_audit()
+    if (
+        capture_manifest.get("schema_version") != "matrouter.paper-capture-manifest/1"
+        or capture_manifest.get("status") != "complete_immutable_three_case_capture"
+        or not isinstance(full_run_id, str)
+        or not full_run_id
+        or capture_manifest.get("protocol_version") != PROTOCOL_VERSION
+        or capture_manifest.get("release_binding") != identity
+        or capture_manifest.get("runtime_distribution") != runtime_distribution
+        or capture_manifest.get("case_order") != list(CASES)
+        or capture_manifest.get("all_cases_captured_once") is not True
+        or capture_manifest.get("selective_rerun") is not False
+    ):
+        raise ValueError("report requires one completed immutable 0.10.2 capture")
+    for captured_file in capture_manifest.get("files", []):
+        path = capture_directory / captured_file["path"]
+        if (
+            path.parent != capture_directory
+            or file_sha256(path) != captured_file["sha256"]
+        ):
+            raise ValueError(f"raw capture file drift: {captured_file['path']}")
+
+    raw_paths = _planned_raw_paths(identity)
+    raw_by_case = {case_name: load_json(raw_paths[case_name]) for case_name in CASES}
+    results: list[dict[str, Any]] = []
+    coverage: list[dict[str, Any]] = []
+    for case_name in CASES:
+        raw = raw_by_case[case_name]
+        result_path = CASE_RESULTS / f"{case_name}.json"
+        result = load_json(result_path)
+        if (
+            raw.get("schema_version") != "matrouter.paper-live-capture/8"
+            or raw.get("full_run_id") != full_run_id
+            or raw.get("case_name") != case_name
+            or raw.get("release_binding") != identity
+            or result.get("schema_version") != "matrouter.paper-case-result/14"
+            or result.get("full_run_id") != full_run_id
+            or result.get("case_name") != case_name
+        ):
+            raise ValueError(f"{case_name}: completed capture/result binding mismatch")
+        replayed = replay_case(case_name, raw_paths[case_name])
+        if canonical_bytes(result["evidence_bundles"]) != canonical_bytes(replayed):
+            raise ValueError(f"{case_name}: completed result does not replay from raw")
+        spec = case_spec(case_name)
+        if result.get("task_spec") != spec:
+            raise ValueError(f"{case_name}: completed result case-spec drift")
+        methods = _derive_explicit_methods(
+            case_name, replayed, spec, result["explicit_methods"]
+        )
+        result["evidence_bundles"] = replayed
+        result["explicit_methods"] = methods
+        result["material_landscape"] = _material_landscape_trace(result, spec)
+        result["unresolved_product_blockers"] = _diagnose_case_product_blockers(result)
+        result["paper_results_eligible"] = _case_paper_eligible(result)
+        result["paper_result_status"] = _paper_result_status(result)
+        result["case_interpretation"] = _interpretation(
+            result, spec, result["coverage_matrix"], methods
+        )
+        write_json(result_path, result)
+        results.append(result)
+        coverage.extend(result["coverage_matrix"])
+
+    export_results(results, coverage)
+    write_product_blockers(results)
+    write_internal_protocol_review(results, raw_paths)
+    paper_results_eligible = all(
+        result["protocol_conformance"]["capture_eligible_under_frozen_protocol"]
+        for result in results
+    ) and all(result["paper_results_eligible"] for result in results)
+    entries = []
+    for result in results:
+        case_name = result["case_name"]
+        raw_path = raw_paths[case_name]
+        result_path = CASE_RESULTS / f"{case_name}.json"
+        entries.append(
+            {
+                "case_name": case_name,
+                "raw_path": str(raw_path.relative_to(ROOT)),
+                "raw_sha256": file_sha256(raw_path),
+                "result_path": str(result_path.relative_to(ROOT)),
+                "result_sha256": file_sha256(result_path),
+                "bundle_ids": [bundle["bundle_id"] for bundle in _case_bundles(result)],
+                "shared_discovery_ledger": result["shared_discovery_ledger"],
+                "case_spec_sha256": file_sha256(ROOT / "cases" / f"{case_name}.json"),
+                "paper_result_status": result["paper_result_status"],
+            }
+        )
+    started_at = capture_manifest["capture_started_at_utc"]
+    completed_at = capture_manifest["capture_completed_at_utc"]
+    duration = (
+        datetime.fromisoformat(completed_at) - datetime.fromisoformat(started_at)
+    ).total_seconds()
+    manifest = {
+        "schema_version": "matrouter.paper-manifest/16",
+        "full_run_id": full_run_id,
+        "experiment_id": experiment_id(identity),
+        "status": (
+            "three_case_frozen_protocol_complete"
+            if paper_results_eligible
+            else "three_case_frozen_protocol_run_ineligible"
+        ),
+        "case_count": 3,
+        "paper_results_eligible": paper_results_eligible,
+        "paper_results_eligibility_semantics": PAPER_ELIGIBILITY_SEMANTICS,
+        "ineligibility_reasons": (
+            []
+            if paper_results_eligible
+            else [
+                f"{result['case_name']} did not meet its preregistered case-level eligibility condition or has an unresolved product blocker."
+                for result in results
+                if not result["paper_results_eligible"]
+            ]
+        ),
+        "protocol_version": PROTOCOL_VERSION,
+        "research_questions": COMMON_RESEARCH_QUESTIONS,
+        "shared_discovery_policy": SHARED_DISCOVERY_POLICY,
+        "rq3_method_applicability": {
+            result["case_name"]: result["rq3_method_applicability"]
+            for result in results
+        },
+        "core_boundary": "MatRouter routes source-qualified evidence and exact method inputs; the Agent builds the case-specific material landscape and scientific handoff.",
+        "reference_assessments_enabled": False,
+        "release_identity": identity,
+        "runtime_distribution": runtime_distribution,
+        "raw_capture_manifest": {
+            "path": str(capture_manifest_path.relative_to(ROOT)),
+            "sha256": file_sha256(capture_manifest_path),
+        },
+        "capture_started_at_utc": started_at,
+        "capture_completed_at_utc": completed_at,
+        "capability_preflight": _capability_preflight_from_completed_raw(raw_by_case),
+        "live_run_duration_seconds": round(duration, 3),
+        "runner_sha256": file_sha256(Path(__file__)),
+        "case_results": entries,
+        "exports": [
+            {"path": str(path.relative_to(ROOT)), "sha256": file_sha256(path)}
+            for path in _paper_export_paths()
+        ],
+    }
+    write_json(RESULTS / "manifest.json", manifest)
+    print(
+        canonical_json(
+            {
+                "full_run_id": full_run_id,
+                "status": manifest["status"],
+                "paper_results_eligible": paper_results_eligible,
+                "case_count": len(results),
+            }
+        )
+    )
 
 
 def replay_case(case_name: str, raw_path: Path | None = None) -> list[dict[str, Any]]:
@@ -3897,10 +4799,26 @@ def replay_case(case_name: str, raw_path: Path | None = None) -> list[dict[str, 
     raw = load_json(raw_path)
     capsules: list[dict[str, Any]] = []
     role_names = {
-        "source_record_exhaustion_shard": "source_record_exhaustion_shard",
         "target_followup": "target_followup",
         "thermochemical": "thermochemical",
     }
+    primary_run = next(
+        run for run in raw["runs"] if run["run_role"] == "primary_aggregate"
+    )
+    primary_requirements = tuple(
+        EvidenceRequirement.model_validate(wire(row))
+        for row in primary_run["requirements"]
+    )
+    primary_routes = tuple(
+        RouteCandidate.model_validate(wire(row)) for row in primary_run["routes"]
+    )
+    primary_acquisitions = tuple(
+        EvidenceAcquisitionResult.model_validate(wire(value))
+        for value in primary_run["acquisitions"]
+    )
+    cumulative_requirements = list(primary_requirements)
+    cumulative_routes = list(primary_routes)
+    cumulative_acquisitions = list(primary_acquisitions)
     for run in raw["runs"]:
         if run["run_role"] == "primary_aggregate":
             bundle = EvidenceBundle.model_validate(wire(run["canonical_bundle"]))
@@ -3908,31 +4826,38 @@ def replay_case(case_name: str, raw_path: Path | None = None) -> list[dict[str, 
                 {
                     "bundle_role": "primary_aggregate",
                     "qualified_source_route": None,
+                    "run_capacity": run["run_capacity"],
                     "evidence_bundle": bundle.model_dump(
                         mode="json", exclude_computed_fields=True
                     ),
                 }
             )
             continue
-        requirements = tuple(
+        closure_requirements = tuple(
             EvidenceRequirement.model_validate(wire(row)) for row in run["requirements"]
         )
-        routes = tuple(
+        closure_routes = tuple(
             RouteCandidate.model_validate(wire(row)) for row in run["routes"]
         )
-        acquisitions = tuple(
+        closure_acquisitions = tuple(
             EvidenceAcquisitionResult.model_validate(wire(row))
             for row in run["acquisitions"]
         )
+        cumulative_requirements.extend(closure_requirements)
+        cumulative_routes.extend(closure_routes)
+        cumulative_acquisitions.extend(closure_acquisitions)
         bundle = assemble_acquired_evidence_bundle(
             AcquisitionBundleAssemblyRequest(
-                requirements=requirements, routes=routes, acquisitions=acquisitions
+                requirements=tuple(cumulative_requirements),
+                routes=tuple(cumulative_routes),
+                acquisitions=tuple(cumulative_acquisitions),
             )
         )
         capsules.append(
             {
                 "bundle_role": role_names[run["run_role"]],
                 "qualified_source_route": run["qualified_source_route"],
+                "run_capacity": run["run_capacity"],
                 "evidence_bundle": bundle.model_dump(
                     mode="json", exclude_computed_fields=True
                 ),
@@ -3945,6 +4870,14 @@ def refresh_derived_outputs() -> None:
     from matrouter.evidence_contracts import EvidenceBundle
 
     manifest = load_json(RESULTS / "manifest.json")
+    if (
+        manifest.get("schema_version") != "matrouter.paper-manifest/16"
+        or manifest.get("release_identity", {}).get("package_version") != "0.10.2"
+        or not manifest.get("full_run_id")
+    ):
+        raise ValueError(
+            "refresh accepts only a completed 0.10.2 capture; legacy Bundle outputs have no compatibility path"
+        )
     manifest_entries = {row["case_name"]: row for row in manifest["case_results"]}
     results: list[dict[str, Any]] = []
     coverage: list[dict[str, Any]] = []
@@ -3956,31 +4889,33 @@ def refresh_derived_outputs() -> None:
         bundle_capsules = replay_case(case_name)
         for capsule in bundle_capsules:
             EvidenceBundle.model_validate(wire(capsule["evidence_bundle"]))
-        methods = [
-            _portable_method_result(method) for method in result["explicit_methods"]
-        ]
+        methods = _derive_explicit_methods(
+            case_name, bundle_capsules, spec, result["explicit_methods"]
+        )
         actual_strategy, protocol_conformance = _capture_protocol_status(raw, spec)
-        result["schema_version"] = "matrouter.paper-case-result/12"
+        result["schema_version"] = "matrouter.paper-case-result/14"
+        result["full_run_id"] = raw["full_run_id"]
         result["protocol_version"] = PROTOCOL_VERSION
         result["research_questions"] = COMMON_RESEARCH_QUESTIONS
-        result["rq2_source_record_exhaustion_shard_policy"] = RQ2_SHARD_POLICY
+        result["shared_discovery_policy"] = SHARED_DISCOVERY_POLICY
         result["rq3_method_applicability"] = spec["rq3_method_applicability"]
         result["scientific_question"] = spec["scientific_question"]
         result["task_spec"] = spec
         result["actual_retrieval_strategy"] = actual_strategy
         result["protocol_conformance"] = protocol_conformance
         result["evidence_bundles"] = bundle_capsules
-        aggregate_bundles = [
-            capsule["evidence_bundle"]
+        aggregate_capsules = [
+            capsule
             for capsule in bundle_capsules
             if capsule["bundle_role"] == "primary_aggregate"
         ]
-        if len(aggregate_bundles) != 1:
+        if len(aggregate_capsules) != 1:
             raise ValueError(f"{case_name}: expected one primary aggregate Bundle")
-        result["primary_result_bundle_id"] = aggregate_bundles[0]["bundle_id"]
-        result["aggregate"] = _aggregate_summary(aggregate_bundles[0])
-        result["rq2_source_record_exhaustion"] = _rq2_source_record_summary(
-            bundle_capsules, aggregate_bundles[0]
+        aggregate_bundle = aggregate_capsules[0]["evidence_bundle"]
+        result["primary_result_bundle_id"] = aggregate_bundle["bundle_id"]
+        result["aggregate"] = _aggregate_summary(aggregate_bundle)
+        result["shared_discovery_ledger"] = _shared_discovery_summary(
+            aggregate_bundle, aggregate_capsules[0]["run_capacity"]
         )
         result["explicit_methods"] = methods
         result["material_landscape"] = _material_landscape_trace(result, spec)
@@ -3997,7 +4932,7 @@ def refresh_derived_outputs() -> None:
     export_results(results, coverage)
     write_product_blockers(results)
     write_internal_protocol_review(results)
-    manifest["schema_version"] = "matrouter.paper-manifest/14"
+    manifest["schema_version"] = "matrouter.paper-manifest/16"
     identity = load_json(IDENTITY_PATH)
     manifest["experiment_id"] = experiment_id(identity)
     paper_results_eligible = all(
@@ -4011,7 +4946,7 @@ def refresh_derived_outputs() -> None:
     )
     manifest["protocol_version"] = PROTOCOL_VERSION
     manifest["research_questions"] = COMMON_RESEARCH_QUESTIONS
-    manifest["rq2_source_record_exhaustion_shard_policy"] = RQ2_SHARD_POLICY
+    manifest["shared_discovery_policy"] = SHARED_DISCOVERY_POLICY
     manifest["core_boundary"] = (
         "MatRouter routes source-qualified evidence and exact method inputs; the Agent "
         "builds the case-specific material landscape and scientific handoff."
@@ -4035,7 +4970,7 @@ def refresh_derived_outputs() -> None:
     for entry in manifest["case_results"]:
         result = next(row for row in results if row["case_name"] == entry["case_name"])
         entry["paper_result_status"] = result["paper_result_status"]
-        entry["rq2_source_record_exhaustion"] = result["rq2_source_record_exhaustion"]
+        entry["shared_discovery_ledger"] = result["shared_discovery_ledger"]
         entry["result_sha256"] = file_sha256(ROOT / entry["result_path"])
         entry["case_spec_sha256"] = file_sha256(
             ROOT / "cases" / f"{entry['case_name']}.json"
@@ -4051,12 +4986,39 @@ def refresh_derived_outputs() -> None:
 def validate() -> None:
     from matrouter.evidence_contracts import EvidenceBundle
 
+    identity = verify_release_identity()
+    current_specs = {case_name: case_spec(case_name) for case_name in CASES}
+    if not FORMAL_CAPTURE_ENABLED:
+        active_capture = RAW / identity["package_version"]
+        if active_capture.exists():
+            raise ValueError(
+                "formal capture is paused but an active release-bound raw directory exists"
+            )
+        staging_root = RAW / ".staging"
+        if staging_root.exists() and any(staging_root.iterdir()):
+            raise ValueError(
+                "formal capture is paused but a staged capture still exists"
+            )
+        manifest_path = RESULTS / "manifest.json"
+        if manifest_path.is_file():
+            existing_manifest = load_json(manifest_path)
+            if (
+                existing_manifest.get("release_identity", {}).get("package_version")
+                == identity["package_version"]
+            ):
+                raise ValueError(
+                    "formal capture is paused but results still claim the configured active release"
+                )
+        invalidated = list(
+            (RAW / "invalidated" / identity["package_version"]).glob("*.json")
+        )
+        if not invalidated:
+            raise ValueError("paused capture state lacks an invalidation audit marker")
+        return
     if not (RESULTS / "manifest.json").is_file():
         raise FileNotFoundError(
             "current-protocol result manifest has not been generated; final release-bound run is pending"
         )
-    identity = verify_release_identity()
-    current_specs = {case_name: case_spec(case_name) for case_name in CASES}
     manifest = load_json(RESULTS / "manifest.json")
     if manifest.get("experiment_id") != experiment_id(identity):
         raise ValueError(
@@ -4068,17 +5030,72 @@ def validate() -> None:
         )
     if manifest.get("case_count") != 3:
         raise ValueError("manifest must declare exactly three cases")
-    if manifest.get("schema_version") != "matrouter.paper-manifest/14":
+    if manifest.get("schema_version") != "matrouter.paper-manifest/16":
         raise ValueError(
             "manifest schema mismatch; the forward protocol requires a fresh full "
             "release-bound acquisition and must not refresh frozen legacy results"
         )
+    full_run_id = manifest.get("full_run_id")
+    if not isinstance(full_run_id, str) or not full_run_id:
+        raise ValueError("manifest full-run identity is missing")
+    runtime_distribution = _runtime_distribution_audit()
+    if manifest.get("runtime_distribution") != runtime_distribution:
+        raise ValueError("manifest runtime distribution audit drift")
+    expected_capture_manifest_path = (
+        RAW / identity["package_version"] / "capture-manifest.json"
+    )
+    capture_manifest_ref = manifest.get("raw_capture_manifest") or {}
+    if capture_manifest_ref.get("path") != str(
+        expected_capture_manifest_path.relative_to(ROOT)
+    ) or capture_manifest_ref.get("sha256") != file_sha256(
+        expected_capture_manifest_path
+    ):
+        raise ValueError("raw capture-manifest binding drift")
+    capture_manifest = load_json(expected_capture_manifest_path)
+    if (
+        capture_manifest.get("schema_version") != "matrouter.paper-capture-manifest/1"
+        or capture_manifest.get("status") != "complete_immutable_three_case_capture"
+        or capture_manifest.get("full_run_id") != full_run_id
+        or capture_manifest.get("protocol_version") != PROTOCOL_VERSION
+        or capture_manifest.get("release_binding") != identity
+        or capture_manifest.get("runtime_distribution") != runtime_distribution
+        or capture_manifest.get("case_order") != list(CASES)
+        or capture_manifest.get("all_cases_captured_once") is not True
+        or capture_manifest.get("selective_rerun") is not False
+    ):
+        raise ValueError("raw capture manifest is not the completed full-run contract")
+    capture_directory = expected_capture_manifest_path.parent
+    for captured_file in capture_manifest.get("files", []):
+        path = capture_directory / captured_file["path"]
+        if (
+            path.parent != capture_directory
+            or file_sha256(path) != captured_file["sha256"]
+        ):
+            raise ValueError(f"raw capture file drift: {captured_file['path']}")
+    protocol_snapshot = load_json(capture_directory / "protocol.json")
+    if (
+        protocol_snapshot.get("schema_version") != "matrouter.paper-capture-protocol/1"
+        or protocol_snapshot.get("full_run_id") != full_run_id
+        or protocol_snapshot.get("release_binding") != identity
+        or protocol_snapshot.get("runtime_distribution") != runtime_distribution
+        or protocol_snapshot.get("case_order") != list(CASES)
+        or protocol_snapshot.get("selective_rerun_permitted") is not False
+    ):
+        raise ValueError("frozen capture protocol drift")
+    capture_log = load_json(capture_directory / "run-log.json")
+    if (
+        capture_log.get("schema_version") != "matrouter.paper-capture-log/1"
+        or capture_log.get("full_run_id") != full_run_id
+        or not capture_log.get("events")
+        or capture_log["events"][-1].get("event") != "full_capture_completed"
+    ):
+        raise ValueError("structured full-run log is incomplete")
     if manifest.get("protocol_version") != PROTOCOL_VERSION:
         raise ValueError("manifest protocol identity mismatch")
     if manifest.get("research_questions") != COMMON_RESEARCH_QUESTIONS:
         raise ValueError("manifest research-question mismatch")
-    if manifest.get("rq2_source_record_exhaustion_shard_policy") != RQ2_SHARD_POLICY:
-        raise ValueError("manifest RQ2 exhaustion-shard policy mismatch")
+    if manifest.get("shared_discovery_policy") != SHARED_DISCOVERY_POLICY:
+        raise ValueError("manifest shared discovery policy mismatch")
     if (
         manifest.get("paper_results_eligibility_semantics")
         != PAPER_ELIGIBILITY_SEMANTICS
@@ -4106,19 +5123,23 @@ def validate() -> None:
         result = load_json(ROOT / entry["result_path"])
         results_by_case[entry["case_name"]] = result
         raw = load_json(ROOT / entry["raw_path"])
-        if result.get("schema_version") != "matrouter.paper-case-result/12":
+        if (
+            result.get("full_run_id") != full_run_id
+            or raw.get("full_run_id") != full_run_id
+        ):
+            raise ValueError(f"{entry['case_name']}: full-run identity drift")
+        if result.get("schema_version") != "matrouter.paper-case-result/14":
             raise ValueError(f"{entry['case_name']}: result schema mismatch")
         if result.get("protocol_version") != PROTOCOL_VERSION:
             raise ValueError(f"{entry['case_name']}: result protocol mismatch")
         if raw.get("protocol_version") != PROTOCOL_VERSION:
             raise ValueError(f"{entry['case_name']}: raw protocol mismatch")
-        if raw.get("schema_version") != "matrouter.paper-live-capture/6":
+        if raw.get("schema_version") != "matrouter.paper-live-capture/8":
             raise ValueError(f"{entry['case_name']}: raw capture schema mismatch")
         if any(
             run.get("run_role")
             not in {
                 "primary_aggregate",
-                "source_record_exhaustion_shard",
                 "target_followup",
                 "thermochemical",
             }
@@ -4127,8 +5148,8 @@ def validate() -> None:
             raise ValueError(f"{entry['case_name']}: unsupported run role")
         if result.get("research_questions") != COMMON_RESEARCH_QUESTIONS:
             raise ValueError(f"{entry['case_name']}: research-question mismatch")
-        if result.get("rq2_source_record_exhaustion_shard_policy") != RQ2_SHARD_POLICY:
-            raise ValueError(f"{entry['case_name']}: RQ2 shard policy mismatch")
+        if result.get("shared_discovery_policy") != SHARED_DISCOVERY_POLICY:
+            raise ValueError(f"{entry['case_name']}: shared discovery policy mismatch")
         if (
             result.get("paper_results_eligibility_semantics")
             != PAPER_ELIGIBILITY_SEMANTICS
@@ -4143,7 +5164,7 @@ def validate() -> None:
             raise ValueError(f"{entry['case_name']}: active task spec mismatch")
         required_result_fields = {
             "aggregate",
-            "rq2_source_record_exhaustion",
+            "shared_discovery_ledger",
             "primary_result_bundle_id",
             "material_landscape",
             "unresolved_product_blockers",
@@ -4189,13 +5210,15 @@ def validate() -> None:
             raise ValueError(f"{entry['case_name']}: primary result identity drift")
         if result["aggregate"] != _aggregate_summary(aggregate_bundle):
             raise ValueError(f"{entry['case_name']}: aggregate summary drift")
-        expected_rq2_summary = _rq2_source_record_summary(
-            result["evidence_bundles"], aggregate_bundle
+        expected_shared_summary = _shared_discovery_summary(
+            aggregate_bundle, aggregate_capsules[0]["run_capacity"]
         )
-        if result["rq2_source_record_exhaustion"] != expected_rq2_summary:
-            raise ValueError(f"{entry['case_name']}: RQ2 shard summary drift")
-        if raw.get("rq2_source_record_exhaustion") != expected_rq2_summary:
-            raise ValueError(f"{entry['case_name']}: raw RQ2 shard summary drift")
+        if result["shared_discovery_ledger"] != expected_shared_summary:
+            raise ValueError(f"{entry['case_name']}: shared discovery summary drift")
+        if raw.get("shared_discovery_ledger") != expected_shared_summary:
+            raise ValueError(
+                f"{entry['case_name']}: raw shared discovery summary drift"
+            )
         if result["material_landscape"] != _material_landscape_trace(result, spec):
             raise ValueError(f"{entry['case_name']}: material-landscape trace drift")
         trace_path = RESULTS / "case-traces" / f"{entry['case_name']}.json"
@@ -4211,12 +5234,14 @@ def validate() -> None:
             raise ValueError(f"{entry['case_name']}: paper-result status drift")
         if entry.get("paper_result_status") != result["paper_result_status"]:
             raise ValueError(f"{entry['case_name']}: manifest case status drift")
-        if entry.get("rq2_source_record_exhaustion") != expected_rq2_summary:
-            raise ValueError(f"{entry['case_name']}: manifest RQ2 summary drift")
+        if entry.get("shared_discovery_ledger") != expected_shared_summary:
+            raise ValueError(
+                f"{entry['case_name']}: manifest shared discovery summary drift"
+            )
         bundle_item_ids = {
             item["item_id"]
             for bundle in _case_bundles(result)
-            for item in bundle["items"]
+            for item in bundle["evidence_items"]
         }
         method_input_ids = {
             item_id
@@ -4235,14 +5260,25 @@ def validate() -> None:
                 f"{entry['case_name']}: explicit method crosses exact Bundle authority"
             )
     _validate_paper_observation_export_consistency(results_by_case)
-    _validate_rq2_source_outcome_export_consistency(results_by_case)
+    ordered_results = [results_by_case[case_name] for case_name in CASES]
+    if load_json(
+        RESULTS / "source-completeness-review.json"
+    ) != _source_completeness_review(ordered_results):
+        raise ValueError("source-completeness-review.json export drift")
+    if load_json(
+        RESULTS / "rq1-rq2-shared-ledger-audit.json"
+    ) != _rq1_rq2_shared_ledger_report(ordered_results):
+        raise ValueError("rq1-rq2-shared-ledger-audit.json export drift")
     for export in manifest["exports"]:
         if file_sha256(ROOT / export["path"]) != export["sha256"]:
             raise ValueError(f"export digest drift: {export['path']}")
     forbidden = (str(Path.home()), str(Path("/private/tmp")))
-    for path in [ROOT / row["raw_path"] for row in manifest["case_results"]] + [
-        ROOT / row["result_path"] for row in manifest["case_results"]
-    ]:
+    paths_to_scan = (
+        [ROOT / row["raw_path"] for row in manifest["case_results"]]
+        + [ROOT / row["result_path"] for row in manifest["case_results"]]
+        + list(capture_directory.glob("*.json"))
+    )
+    for path in paths_to_scan:
         text = path.read_text()
         if any(value in text for value in forbidden):
             raise ValueError(f"{path}: absolute host path leaked")
@@ -4288,6 +5324,7 @@ def main() -> None:
     sub.add_parser("preflight")
     sub.add_parser("verify")
     sub.add_parser("refresh")
+    sub.add_parser("report")
     replay_parser = sub.add_parser("replay")
     replay_parser.add_argument("--case", choices=CASES, required=True)
     args = parser.parse_args()
@@ -4299,10 +5336,13 @@ def main() -> None:
         smoke()
     elif args.command == "verify":
         validate()
-        for case_name in CASES:
-            replay_case(case_name)
+        if FORMAL_CAPTURE_ENABLED:
+            for case_name in CASES:
+                replay_case(case_name)
     elif args.command == "refresh":
         refresh_derived_outputs()
+    elif args.command == "report":
+        report_completed_capture()
     else:
         print(
             canonical_json(

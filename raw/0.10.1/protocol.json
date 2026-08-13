@@ -1,0 +1,616 @@
+{
+  "schema_version": "matrouter.paper-capture-protocol/1",
+  "full_run_id": "matrouter-0.10.1-full-20260812T224424Z-70697ca61797",
+  "protocol_version": "matrouter.paper-three-case-protocol",
+  "release_binding": {
+    "schema_version": "matrouter.paper-product-identity/8",
+    "status": "verified_pypi_release",
+    "package_name": "matrouter",
+    "package_version": "0.10.1",
+    "public_VERSION": "0.10.1",
+    "product_commit": "70001cee7faf7dc514f8fb8f1dc403b16e31a4d5",
+    "release_tag": "v0.10.1",
+    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.10.1",
+    "release_published_at": "2026-08-12T22:29:10Z",
+    "pypi_url": "https://pypi.org/project/matrouter/0.10.1/",
+    "wheel_filename": "matrouter-0.10.1-py3-none-any.whl",
+    "wheel_size_bytes": 275236,
+    "wheel_sha256": "0d77e3bdcd99ed9adbd030907be8219b66b609f8df45a3cbfb5ec57b83f05d9e",
+    "sdist_filename": "matrouter-0.10.1.tar.gz",
+    "sdist_size_bytes": 659781,
+    "sdist_sha256": "85815cc56a8fdea7a1e37ab3cc4362177704092547a5d9411ae7f1ca550eba51",
+    "pypi_provenance": {
+      "publisher": "publish.yml on MatRouter/matrouter",
+      "source_repository_commit": "70001cee7faf7dc514f8fb8f1dc403b16e31a4d5",
+      "source_repository_ref": "refs/tags/v0.10.1",
+      "publication_workflow": "publish.yml@70001cee7faf7dc514f8fb8f1dc403b16e31a4d5",
+      "trigger_event": "release",
+      "trusted_publishing": true
+    },
+    "distribution_metadata": {
+      "metadata_version": "2.5",
+      "name": "matrouter",
+      "version": "0.10.1",
+      "requires_python": ">=3.11",
+      "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
+      "repository": "https://github.com/MatRouter/matrouter"
+    },
+    "runtime_dependencies": {
+      "mp-api": "0.46.4",
+      "emmet-core": "0.87.1",
+      "pymatgen-core": "2026.5.18",
+      "pymatgen": "2026.5.4"
+    },
+    "product_contract_identity": {
+      "matrouter_owned_identity_epochs": false,
+      "retired_fields_absent": [
+        "schema_version",
+        "payload_schema_id",
+        "contract_version"
+      ],
+      "compatibility_reader_or_alias": false
+    },
+    "route_contract": {
+      "route_candidate_aggregate_sources": true,
+      "materials_galaxy_summary_execution_route": "materialsgalaxy",
+      "materials_galaxy_child_record_sources_are_provenance": true,
+      "aggregate_max_parallel_source_workers": 8,
+      "stable_order_aggregation": true,
+      "per_source_pagination": "sequential"
+    },
+    "evidence_bundle_contract": {
+      "scientific_items_field": "evidence_items",
+      "execution_ledger_field": "executions",
+      "outcome_and_warnings_embedded_per_execution": true,
+      "execution_status_values": [
+        "succeeded",
+        "failed"
+      ],
+      "record_completeness_values": [
+        "complete",
+        "truncated",
+        "upstream_total_unknown"
+      ],
+      "record_result_is_derived_not_stored": true,
+      "record_result_values": [
+        "complete",
+        "empty",
+        "truncated",
+        "upstream_total_unknown",
+        "failed"
+      ],
+      "max_source_records": 512,
+      "max_evidence_items": 1024,
+      "max_executions": 512,
+      "max_bundle_canonical_bytes": 16000000
+    },
+    "core_profile": {
+      "tool_count": 13,
+      "tools": [
+        "begin_evidence_run",
+        "list_source_files",
+        "download_source_file",
+        "inspect_evidence_capabilities",
+        "create_evidence_requirement",
+        "route_evidence_requirements",
+        "aggregate_source_records",
+        "execute_evidence_route",
+        "assemble_evidence_bundle",
+        "match_structures",
+        "compute_phase_diagrams",
+        "render_band_structure",
+        "render_density_of_states"
+      ],
+      "terminal_object": "EvidenceBundle"
+    }
+  },
+  "runtime_distribution": {
+    "distribution_name": "matrouter",
+    "distribution_version": "0.10.1",
+    "public_VERSION": "0.10.1",
+    "metadata_version": "2.5",
+    "requires_python": ">=3.11",
+    "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
+    "imported_package_path": "site-packages/matrouter",
+    "distribution_package_path": "site-packages/matrouter",
+    "imported_path_matches_distribution": true,
+    "direct_url_json_absent": true,
+    "product_source_pythonpath_entries": 0,
+    "registry_distribution_verified": true
+  },
+  "execution_mode": "one_complete_nonselective_three_case_capture",
+  "case_order": [
+    "mos2-band-gap",
+    "lifepo4-stability",
+    "bi2se3-topology"
+  ],
+  "research_questions": {
+    "RQ1": "Within the declared catalog, configuration, scope, and budgets, does one all-qualified aggregate attempt every capability-matched route and preserve each typed outcome and RecordCompleteness?",
+    "RQ2": "What material-data landscape does that same authoritative aggregate Bundle support—sources, data categories, scientific contexts, specialist data, completeness, and explicit gaps—and how does that landscape guide the next research step?",
+    "RQ3": "Can an Agent use the aggregate to locate preregistered exact source-bound records and artifacts for explicit lightweight methods, while making unsupported heavy calculations an explicit external handoff rather than a proxy result?"
+  },
+  "stage_1_scope": "RQ1 and RQ2 share one aggregate_source_records call and one authoritative discovery Bundle. MatRouter performs bounded parallel cross-source execution over all parsed qualified routes with ordered_parallel_map (at most eight workers), preserves stable route-order aggregation, and keeps pagination within each source sequential. The evaluation declares only all_qualified plus exhaust_upstream; MatRouter owns the effective records, pages, elapsed-time, normalized-byte, and Bundle-closure engineering ceilings. Capacity stops remain explicit in RecordCompleteness. Outcomes and warnings are embedded in executions and do not consume the scientific-item budget. All ready qualified routes are attempted, but not every upstream record is claimed retrieved. RQ1 projects route execution and closure; RQ2 projects source contributions and material-data context from the same executions and source-record items.",
+  "shared_discovery_policy": {
+    "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+    "source_scope": "all_qualified",
+    "record_scope": "exhaust_upstream",
+    "engineering_ceiling_authority": "matrouter_product_defaults",
+    "evaluation_ceiling_overrides": [],
+    "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+    "per_source_pagination": "sequential",
+    "additional_source_record_acquisitions": 0,
+    "analysis_views": [
+      "RQ1",
+      "RQ2"
+    ],
+    "authoritative_bundle_count": 1
+  },
+  "shared_discovery_scope": "Each case has exactly one source-record acquisition: one all-qualified, exhaust-upstream aggregate_source_records call. The evaluation supplies no records, pages, elapsed-time, normalized-byte, or Bundle-closure ceiling overrides; the installed MatRouter release owns those engineering defaults and the capture records their effective values. RQ1 and RQ2 are two deterministic views of this single authority ledger; no second discovery or selected-source supplement is permitted.",
+  "case_specs": [
+    {
+      "case_name": "mos2-band-gap",
+      "path": "cases/mos2-band-gap.json",
+      "sha256": "1b89fe22fccecd730204c9efa5f0bff080d083afbef216e58f92c20e5acc2cf5",
+      "spec": {
+        "schema_version": "matrouter.paper-case-spec/13",
+        "case_name": "mos2-band-gap",
+        "formula": "MoS2",
+        "research_question_ids": [
+          "RQ1",
+          "RQ2",
+          "RQ3"
+        ],
+        "material_landscape": {
+          "cross_source_union_adds": [
+            {
+              "statement": "The aggregate places COD crystal records beside AFLOW and Materials Project computed structure records, exposing multiple source-qualified structural and phase candidates without treating formula identity as phase identity.",
+              "supporting_contributions": [
+                {
+                  "source": "cod",
+                  "data_categories": [
+                    "structure_or_phase"
+                  ]
+                },
+                {
+                  "source": "aflow",
+                  "data_categories": [
+                    "structure_or_phase"
+                  ]
+                },
+                {
+                  "source": "materials_project",
+                  "data_categories": [
+                    "structure_or_phase"
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": "The same landscape includes 2D C2DB electronic context and bulk or three-dimensional electronic records from Materials Project and NOMAD, so the dimensionality, method, functional, and SOC context actually returned by those sources can be inspected before selecting exact follow-ups; direct, indirect, or optical gap modality remains a gap when the source does not declare it.",
+              "supporting_contributions": [
+                {
+                  "source": "c2db",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "electronic_property"
+                  ]
+                },
+                {
+                  "source": "materials_project",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "electronic_property"
+                  ]
+                },
+                {
+                  "source": "nomad",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "electronic_property"
+                  ]
+                }
+              ]
+            }
+          ],
+          "researcher_use": "Use the cross-source landscape to separate 2D and bulk candidates and their calculation contexts, then inspect only the preregistered exact structures and Materials Project spectral artifacts needed for the declared comparison and plots.",
+          "external_handoff": "A phase-resolved experiment-computation comparison or new many-body/DFT calculation requires separately identified experimental gap data and external electronic-structure workflows over phase-matched inputs."
+        },
+        "rq3_method_applicability": {
+          "status": "applicable",
+          "expected_method_names": [
+            "match_structures",
+            "render_band_structure",
+            "render_density_of_states"
+          ],
+          "success_policy": "all_preregistered",
+          "reason": "Two preregistered exact structures can enter one transparent StructureMatcher call, and complete exact MP band/DOS artifacts can each be rendered once without hidden retrieval or case logic inside MatRouter core."
+        },
+        "scientific_question": "What multi-source structural and electronic evidence is available for MoS2, with bulk/monolayer, phase, functional, SOC, directness, and calculation/experiment context kept distinct?",
+        "stage_1": {
+          "evidence_kind": "source_record",
+          "source_scope": "all_qualified",
+          "record_scope": "exhaust_upstream",
+          "engineering_ceiling_authority": "matrouter_product_defaults",
+          "evaluation_ceiling_overrides": []
+        },
+        "shared_discovery_policy": {
+          "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+          "source_scope": "all_qualified",
+          "record_scope": "exhaust_upstream",
+          "engineering_ceiling_authority": "matrouter_product_defaults",
+          "evaluation_ceiling_overrides": [],
+          "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+          "per_source_pagination": "sequential",
+          "additional_source_record_acquisitions": 0,
+          "analysis_views": [
+            "RQ1",
+            "RQ2"
+          ],
+          "authoritative_bundle_count": 1
+        },
+        "stage_2_targets": [
+          {
+            "qualified_source_route": "c2db",
+            "source_id": "1MoS2-1",
+            "scientific_role": "Preregistered 2D p-6m2 PBE+SOC source-summary band-gap and context record; C2DB exposes no band-structure or DOS artifact route for this record.",
+            "selection_timing": "Fixed before the live run from the declared scientific role and source context; never replaced dynamically.",
+            "enrichment_routes": []
+          },
+          {
+            "qualified_source_route": "materials_project",
+            "source_id": "mp-2815",
+            "scientific_role": "Preregistered bulk P6_3/mmc (space group 194) exact electronic-artifact demonstration target.",
+            "selection_timing": "Fixed before the live run from the declared scientific role and source context; never replaced dynamically.",
+            "enrichment_routes": [
+              {
+                "evidence_kind": "structure",
+                "operation": "get_structure"
+              },
+              {
+                "evidence_kind": "band_structure",
+                "operation": "get_band_structure"
+              },
+              {
+                "evidence_kind": "density_of_states",
+                "operation": "get_density_of_states"
+              }
+            ]
+          },
+          {
+            "qualified_source_route": "aflow",
+            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_644246",
+            "scientific_role": "Preregistered exact AFLOW 3D periodic six-site structure for one transparent structural comparison with Materials Project mp-2815; other structures are outside this method input.",
+            "selection_timing": "Fixed before the live run from the declared exact structural comparison; never replaced dynamically.",
+            "enrichment_routes": [
+              {
+                "evidence_kind": "structure",
+                "operation": "get_structure"
+              }
+            ]
+          }
+        ],
+        "explicit_structure_method": {
+          "method": "match_structures",
+          "first": {
+            "qualified_source_route": "aflow",
+            "source_id": "aflowlib.duke.edu:AFLOWDATA/ICSD_WEB/HEX/Mo1S2_ICSD_644246"
+          },
+          "second": {
+            "qualified_source_route": "materials_project",
+            "source_id": "mp-2815"
+          },
+          "parameters": {
+            "ltol": 0.2,
+            "stol": 0.3,
+            "angle_tol": 5.0,
+            "primitive_cell": true,
+            "scale": true,
+            "attempt_supercell": false,
+            "allow_subset": false,
+            "comparator": "element",
+            "supercell_size": "num_sites",
+            "ignored_species": [],
+            "symmetric": true,
+            "skip_structure_reduction": false
+          },
+          "interpretation_limit": "A match states only that these two exact structures match under these parameters. It does not establish electronic, magnetic, or topological phase identity."
+        },
+        "retrieval_strategy": "RQ1 and RQ2 share one authoritative all_qualified + exhaust_upstream aggregate_source_records call. MatRouter retains its bounded ordered_parallel_map fan-out (at most eight independent source routes), stable route-order aggregation, and sequential pagination within each source. The evaluation supplies no records, pages, elapsed-time, normalized-byte, or Bundle-closure engineering ceiling overrides; the installed product release owns those defaults and every effective value and typed stop remains auditable in the captured requirement, run capacity, executions, and RecordCompleteness. RQ1 reports coverage and closure while RQ2 maps source contributions and scientific context from the same source-record items. Exact follow-up uses only preregistered records present in that aggregate and binds their original acquisition and record reference; it issues no second source search.",
+        "context_differences": [
+          "Formula identity does not establish bulk versus monolayer or a polytype.",
+          "Computed and experimental records, functionals, SOC settings, and direct/indirect gaps are not interchangeable.",
+          "A scalar band gap is not a band structure or density of states.",
+          "COD experimental crystal structures are structural evidence, not experimental band-gap observations."
+        ],
+        "allowed_statement": "Describe this result as a capacity-bounded multi-source structural and electronic landscape. Report each source-qualified gap, structure, and exact spectral artifact only with the dimensional, phase, method, functional, SOC, directness, or modality context its source actually declares; do not infer a missing direct, indirect, or optical designation. State only that the preregistered AFLOW and Materials Project exact bulk structures match under the declared StructureMatcher parameters; this does not establish electronic, magnetic, or topological phase identity. An explicit spectral render is a derived view of the same exact artifact and adds no source evidence.",
+        "prohibited_statement": "Do not report a universal MoS2 band gap or a phase-resolved MoS2 gap answer, merge records by formula, infer a shared 2H bulk, 1H monolayer, or other phase without explicit structure matching, count COD experimental structures as experimental band-gap observations, or treat retrieval/rendering as independent experimental validation.",
+        "missing_evidence": [
+          "This run retrieved no band-gap observation explicitly identified as experimental; COD experimental structures do not supply an experimental band gap.",
+          "The returned band-gap observations do not declare direct, indirect, or optical modality; that context remains unresolved rather than inferred.",
+          "Only the preregistered AFLOW and Materials Project exact bulk structures enter one fixed-parameter match; phase equivalence remains unresolved for every other cross-source record, the 2D C2DB target, and different polytypes.",
+          "The result is a capacity-bounded multi-source material landscape, not a phase-resolved MoS2 gap answer.",
+          "Any calculation or phase context absent from a returned source-qualified record remains unknown.",
+          "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim.",
+          "A missing parsed band/DOS artifact is not evidence that the source has no spectrum."
+        ],
+        "next_action": "Any phase-resolved comparison beyond the one preregistered AFLOW-to-Materials-Project exact-structure match requires separately declared exact inputs; obtain separately identified experimental band-gap observations for an experiment-computation comparison and do not collapse this evidence to one MoS2 gap."
+      }
+    },
+    {
+      "case_name": "lifepo4-stability",
+      "path": "cases/lifepo4-stability.json",
+      "sha256": "f581aaf03bec18cf767fc2640471f8ab61efa53cd2acd11b03e705b0f2f087e7",
+      "spec": {
+        "schema_version": "matrouter.paper-case-spec/13",
+        "case_name": "lifepo4-stability",
+        "formula": "LiFePO4",
+        "research_question_ids": [
+          "RQ1",
+          "RQ2",
+          "RQ3"
+        ],
+        "material_landscape": {
+          "cross_source_union_adds": [
+            {
+              "statement": "The aggregate places experimental COD structure records beside computed structures from Materials Project, making source-qualified structural candidates visible before any thermodynamic conclusion is attempted.",
+              "supporting_contributions": [
+                {
+                  "source": "cod",
+                  "data_categories": [
+                    "structure_or_phase"
+                  ]
+                },
+                {
+                  "source": "materials_project",
+                  "data_categories": [
+                    "structure_or_phase"
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": "Materials Project and OPTIMADE ODBX records contribute source-qualified formation-energy or hull-related quantities with their own semantics, allowing the researcher to distinguish catalog evidence from the later exact compatible-entry hull calculation.",
+              "supporting_contributions": [
+                {
+                  "source": "materials_project",
+                  "data_categories": [
+                    "thermodynamic_property"
+                  ]
+                },
+                {
+                  "source": "optimade:optimade-misc.odbx.science",
+                  "data_categories": [
+                    "thermodynamic_property"
+                  ]
+                }
+              ]
+            }
+          ],
+          "researcher_use": "Use the aggregate to inventory source-native structures and energetic statements, then rely on the separately acquired complete Materials Project compatibility-mixed entry set for the one frame-bound convex-hull calculation.",
+          "external_handoff": "Finite-temperature free energies, kinetic accessibility, reaction pathways, and synthesizability require external phonon, thermodynamic, kinetic, or experimental workflows; the zero-temperature hull is not a proxy for them."
+        },
+        "rq3_method_applicability": {
+          "status": "applicable",
+          "expected_method_names": [
+            "compute_phase_diagrams"
+          ],
+          "success_policy": "at_least_one",
+          "reason": "A complete exact Materials Project compatibility-mixed entry set can enter the explicit phase-diagram method without reconstructing or mixing inputs."
+        },
+        "scientific_question": "What multi-source formation-energy and source-native stability evidence is available for LiFePO4, and what does one exact frame-compatible Materials Project entry set support under an explicit convex-hull calculation?",
+        "stage_1": {
+          "evidence_kind": "source_record",
+          "source_scope": "all_qualified",
+          "record_scope": "exhaust_upstream",
+          "engineering_ceiling_authority": "matrouter_product_defaults",
+          "evaluation_ceiling_overrides": []
+        },
+        "shared_discovery_policy": {
+          "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+          "source_scope": "all_qualified",
+          "record_scope": "exhaust_upstream",
+          "engineering_ceiling_authority": "matrouter_product_defaults",
+          "evaluation_ceiling_overrides": [],
+          "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+          "per_source_pagination": "sequential",
+          "additional_source_record_acquisitions": 0,
+          "analysis_views": [
+            "RQ1",
+            "RQ2"
+          ],
+          "authoritative_bundle_count": 1
+        },
+        "stage_2_targets": [],
+        "explicit_method_input_route": {
+          "evidence_kind": "thermochemical_entries",
+          "operation": "get_thermochemical_entries",
+          "source": "materials_project",
+          "chemical_system": [
+            "Fe",
+            "Li",
+            "O",
+            "P"
+          ],
+          "thermo_type": "GGA_GGA+U_R2SCAN",
+          "scientific_role": "Preregistered exact thermochemical method input; the primary aggregate Bundle carries source-native formation-energy and stability fields without repeated per-record enrichment.",
+          "selection_timing": "Fixed before the live run; never replaced dynamically.",
+          "scope_note": "This chemical-system route is separate from record-target Stage 2. It requests one complete exact Materials Project GGA/GGA+U/r2SCAN compatibility-mixed entry set without an evaluation-owned numeric retrieval budget; the product-returned effective contract, exact thermo_type, dataset snapshot, correction scheme, frame, and completeness remain bound to the Bundle item, and incompleteness forbids a hull panel."
+        },
+        "retrieval_strategy": "RQ1 and RQ2 share one authoritative all_qualified + exhaust_upstream aggregate_source_records call. MatRouter retains its bounded ordered_parallel_map fan-out (at most eight independent source routes), stable route-order aggregation, and sequential pagination within each source. The evaluation supplies no records, pages, elapsed-time, normalized-byte, or Bundle-closure engineering ceiling overrides; the installed product release owns those defaults and every effective value and typed stop remains auditable in the captured requirement, run capacity, executions, and RecordCompleteness. RQ1 reports coverage and closure while RQ2 maps source contributions and scientific context from the same source-record items. The preregistered thermochemical acquisition is an explicit same-case-ledger method input, not a second discovery, and may feed one hull only when its exact single-source, single-frame compatible entry set is complete.",
+        "context_differences": [
+          "Formation energy is distinct from energy above hull and a source-native stability label.",
+          "The phase-diagram input is the Materials Project GGA/GGA+U/r2SCAN compatibility-mixed frame for thermo_type GGA_GGA+U_R2SCAN and its exact dataset snapshot; it is not one functional or one homogeneous DFT method.",
+          "The 1e-6 eV/atom on-hull threshold is a numerical classification tolerance, not DFT uncertainty, physical accuracy, or a confidence interval; continuous energy_above_hull_eV_per_atom remains the quantitative result.",
+          "An explicit finite-entry-set hull is distinct from finite-temperature stability, universal stability, synthesizability, or kinetic accessibility."
+        ],
+        "allowed_statement": "Report source-native energetic fields under their own definitions and report continuous energy above hull plus the tolerance-relative on-hull classification only for the exact Materials Project GGA/GGA+U/r2SCAN compatibility-mixed entry set, dataset snapshot, frame, implementation, and 1e-6 eV/atom numerical tolerance.",
+        "prohibited_statement": "Do not describe the compatibility-mixed frame as one functional or one kind of DFT, treat 1e-6 eV/atom as uncertainty or confidence, infer hull stability from negative formation energy, mix sources or energy frames, identify an olivine or other phase from formula alone, or generalize the finite exact-set result to finite-temperature stability, universal stability, or synthesizability.",
+        "missing_evidence": [
+          "Source records with unknown hull construction or correction context cannot support cross-source numerical comparison.",
+          "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim.",
+          "The exact compatible-entry route reports no finite-temperature free energies, kinetic accessibility, or experimental synthesis evidence.",
+          "A failed or incomplete thermochemical route is failed or incomplete evidence, not a verified-empty result and not a hull input."
+        ],
+        "next_action": "Use the exported continuous energy_above_hull_eV_per_atom values with the exact entry-set/frame/snapshot identifiers; any finite-temperature, phase-identity, or synthesizability claim requires separate evidence."
+      }
+    },
+    {
+      "case_name": "bi2se3-topology",
+      "path": "cases/bi2se3-topology.json",
+      "sha256": "49f634f7c6f3fae4f620e3f3d1096b7a7d9032cbb969ee7748f8e4dfe2d17146",
+      "spec": {
+        "schema_version": "matrouter.paper-case-spec/13",
+        "case_name": "bi2se3-topology",
+        "formula": "Bi2Se3",
+        "research_question_ids": [
+          "RQ1",
+          "RQ2",
+          "RQ3"
+        ],
+        "material_landscape": {
+          "cross_source_union_adds": [
+            {
+              "statement": "The aggregate combines general crystal and electronic records from COD, Materials Project, NOMAD, AFLOW, and other qualified sources with MaterialsGalaxy/Materiae source-native topology records for the same formula.",
+              "supporting_contributions": [
+                {
+                  "source": "cod",
+                  "data_categories": [
+                    "structure_or_phase"
+                  ]
+                },
+                {
+                  "source": "materials_project",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "electronic_property"
+                  ]
+                },
+                {
+                  "source": "nomad",
+                  "data_categories": [
+                    "electronic_property"
+                  ]
+                },
+                {
+                  "source": "aflow",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "electronic_property"
+                  ]
+                },
+                {
+                  "source": "materialsgalaxy:topo_crystals",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "source_native_topology"
+                  ]
+                }
+              ]
+            },
+            {
+              "statement": "MaterialsGalaxy contributes exact R-3m and Pnma topology labels under no-SOC and SOC request contexts, while the broader aggregate supplies separately attributed structural and scalar electronic context rather than an independent topology verdict.",
+              "supporting_contributions": [
+                {
+                  "source": "materialsgalaxy:topo_crystals",
+                  "data_categories": [
+                    "source_native_topology"
+                  ]
+                },
+                {
+                  "source": "materials_project",
+                  "data_categories": [
+                    "structure_or_phase",
+                    "electronic_property"
+                  ]
+                }
+              ]
+            }
+          ],
+          "researcher_use": "Use the general cross-source landscape to identify candidate phases and electronic context, then inspect the two preregistered MaterialsGalaxy records as source-native SOC-conditioned reports without treating them as independently verified topology.",
+          "external_handoff": "Independent validation requires phase-compatible DFT and Wannier-based workflows such as WannierTools to recompute invariants and surface states; MatRouter exposes no topology validator and no unrelated lightweight method substitutes for that calculation."
+        },
+        "rq3_method_applicability": {
+          "status": "not_applicable",
+          "expected_method_names": [],
+          "success_policy": "not_applicable",
+          "reason": "MatRouter exposes no general explicit topology-validation method; this case evaluates exact source-native SOC-conditioned topology acquisition only."
+        },
+        "scientific_question": "What source-native SOC-conditioned topology data does MaterialsGalaxy report for Bi2Se3, and how do other qualified structural and electronic records broaden the physical context without becoming a universal topology verdict?",
+        "stage_1": {
+          "evidence_kind": "source_record",
+          "source_scope": "all_qualified",
+          "record_scope": "exhaust_upstream",
+          "engineering_ceiling_authority": "matrouter_product_defaults",
+          "evaluation_ceiling_overrides": []
+        },
+        "shared_discovery_policy": {
+          "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+          "source_scope": "all_qualified",
+          "record_scope": "exhaust_upstream",
+          "engineering_ceiling_authority": "matrouter_product_defaults",
+          "evaluation_ceiling_overrides": [],
+          "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+          "per_source_pagination": "sequential",
+          "additional_source_record_acquisitions": 0,
+          "analysis_views": [
+            "RQ1",
+            "RQ2"
+          ],
+          "authoritative_bundle_count": 1
+        },
+        "stage_2_targets": [
+          {
+            "qualified_source_route": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-35598",
+            "scientific_role": "Preregistered R-3m phase record used by the source-native no-SOC/SOC descriptive comparison.",
+            "selection_timing": "Fixed before the live run from the declared phase-by-SOC table; never replaced dynamically.",
+            "enrichment_routes": [
+              {
+                "evidence_kind": "topology_no_soc",
+                "operation": "get_material_property"
+              },
+              {
+                "evidence_kind": "topology_soc",
+                "operation": "get_material_property"
+              }
+            ]
+          },
+          {
+            "qualified_source_route": "materialsgalaxy:topo_crystals",
+            "source_id": "mg-2145449",
+            "scientific_role": "Preregistered Pnma phase record used by the source-native no-SOC/SOC descriptive comparison.",
+            "selection_timing": "Fixed before the live run from the declared phase-by-SOC table; never replaced dynamically.",
+            "enrichment_routes": [
+              {
+                "evidence_kind": "topology_no_soc",
+                "operation": "get_material_property"
+              },
+              {
+                "evidence_kind": "topology_soc",
+                "operation": "get_material_property"
+              }
+            ]
+          }
+        ],
+        "retrieval_strategy": "RQ1 and RQ2 share one authoritative all_qualified + exhaust_upstream aggregate_source_records call. MatRouter retains its bounded ordered_parallel_map fan-out (at most eight independent source routes), stable route-order aggregation, and sequential pagination within each source. The evaluation supplies no records, pages, elapsed-time, normalized-byte, or Bundle-closure engineering ceiling overrides; the installed product release owns those defaults and every effective value and typed stop remains auditable in the captured requirement, run capacity, executions, and RecordCompleteness. RQ1 reports coverage and closure while RQ2 maps source contributions and scientific context from the same source-record items. Exact follow-up enriches only preregistered mg-35598 and mg-2145449 when present in the aggregate, binds their original acquisition and record reference, issues no second source search, and adds no topology validator.",
+        "context_differences": [
+          "Formula identity does not prove the same crystal phase across sources.",
+          "Source-native topology labels depend on the source definition, method, SOC setting, and exact record.",
+          "MaterialsGalaxy reports distinct R-3m and Pnma records for the same formula; their no-SOC/SOC comparison is a descriptive view of existing artifacts, not new evidence.",
+          "Structural, scalar electronic, and topology records can be complementary while remaining non-comparable."
+        ],
+        "allowed_statement": "State that MaterialsGalaxy reports each captured topology class and indicator under its exact record, source-native structure identity, and SOC context. Present the R-3m/Pnma by no-SOC/SOC table only as a deterministic descriptive view of those same Bundle artifacts, alongside separately attributed evidence from other qualified source routes.",
+        "prohibited_statement": "Do not claim MatRouter recomputed topology invariants or surface states or independently validated topology classifications, promote one source label to universal truth, treat the derived comparison table as new evidence, infer trivial topology from missing artifacts, or merge records solely by Bi2Se3 formula.",
+        "missing_evidence": [
+          "Missing SOC, method, phase, invariant, or surface-state context remains unknown rather than negative evidence.",
+          "No cross-source structure matching was executed, so cross-source phase equivalence remains unresolved.",
+          "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim."
+        ],
+        "next_action": "Select phase-compatible exact inputs, then hand off independent topology-invariant and surface-state validation to external DFT and Wannier-based workflows such as WannierTools; cross-source phase matching remains a separately declared analysis."
+      }
+    }
+  ],
+  "runner_path": "experiment.py",
+  "runner_sha256": "2738f8a8ed5de32f93b688f2322fff77235df7fb945a01613e600b5b01b53de4",
+  "selective_rerun_permitted": false
+}

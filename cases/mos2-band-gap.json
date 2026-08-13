@@ -1,5 +1,5 @@
 {
-  "schema_version": "matrouter.paper-case-spec/11",
+  "schema_version": "matrouter.paper-case-spec/13",
   "case_name": "mos2-band-gap",
   "formula": "MoS2",
   "research_question_ids": ["RQ1", "RQ2", "RQ3"],
@@ -36,22 +36,20 @@
     "evidence_kind": "source_record",
     "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
-    "record_safety_limit_per_route": 60,
-    "max_pages_per_route": 100,
-    "max_elapsed_seconds_per_route": 300.0,
-    "max_normalized_bytes_per_route": 100000000,
-    "public_bundle_item_limit": 512,
-    "public_bundle_canonical_byte_limit": 16000000
+    "engineering_ceiling_authority": "matrouter_product_defaults",
+    "evaluation_ceiling_overrides": []
   },
-  "rq2_source_record_exhaustion_shards": {
-    "selection": "every_ready_primary_search_materials_execution_route_in_stable_exact_route_order",
-    "source_scope": "selected",
+  "shared_discovery_policy": {
+    "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+    "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
-    "record_limit": "begin_evidence_run.capacity.max_single_source_record_items",
-    "max_pages_per_route": 100,
-    "max_elapsed_seconds_per_route": 300.0,
-    "max_normalized_bytes_per_route": 100000000,
-    "bundle_policy": "one_bounded_evidence_run_and_bundle_per_exact_execution_route"
+    "engineering_ceiling_authority": "matrouter_product_defaults",
+    "evaluation_ceiling_overrides": [],
+    "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+    "per_source_pagination": "sequential",
+    "additional_source_record_acquisitions": 0,
+    "analysis_views": ["RQ1", "RQ2"],
+    "authoritative_bundle_count": 1
   },
   "stage_2_targets": [
     {
@@ -89,7 +87,7 @@
     "parameters": {"ltol": 0.2, "stol": 0.3, "angle_tol": 5.0, "primitive_cell": true, "scale": true, "attempt_supercell": false, "allow_subset": false, "comparator": "element", "supercell_size": "num_sites", "ignored_species": [], "symmetric": true, "skip_structure_reduction": false},
     "interpretation_limit": "A match states only that these two exact structures match under these parameters. It does not establish electronic, magnetic, or topological phase identity."
   },
-  "retrieval_strategy": "RQ1 uses one aggregate_source_records call with bounded parallel cross-source execution (at most eight workers), stable-order aggregation, and fair sharing of the public 512-item/16-MB primary Bundle; its typed outcomes and completeness states are the route-accounting result, not an all-records landscape. RQ2 then runs one independent selected-source exhaust-upstream Evidence run and Bundle for every ready primary search_materials execution route in stable exact-route order, taking each record limit from begin_evidence_run.capacity.max_single_source_record_items while preserving the declared page, time, and byte ceilings. Shard records remain source-qualified and are never merged or deduplicated across routes. MaterialsGalaxy remains one provider-level execution route; child dataset identities are record provenance, not child outcomes. Exact follow-up still uses only the three preregistered targets and never substitutes records discovered by the shards.",
+  "retrieval_strategy": "RQ1 and RQ2 share one authoritative all_qualified + exhaust_upstream aggregate_source_records call. MatRouter retains its bounded ordered_parallel_map fan-out (at most eight independent source routes), stable route-order aggregation, and sequential pagination within each source. The evaluation supplies no records, pages, elapsed-time, normalized-byte, or Bundle-closure engineering ceiling overrides; the installed product release owns those defaults and every effective value and typed stop remains auditable in the captured requirement, run capacity, executions, and RecordCompleteness. RQ1 reports coverage and closure while RQ2 maps source contributions and scientific context from the same source-record items. Exact follow-up uses only preregistered records present in that aggregate and binds their original acquisition and record reference; it issues no second source search.",
   "context_differences": [
     "Formula identity does not establish bulk versus monolayer or a polytype.",
     "Computed and experimental records, functionals, SOC settings, and direct/indirect gaps are not interchangeable.",
@@ -104,7 +102,7 @@
     "Only the preregistered AFLOW and Materials Project exact bulk structures enter one fixed-parameter match; phase equivalence remains unresolved for every other cross-source record, the 2D C2DB target, and different polytypes.",
     "The result is a capacity-bounded multi-source material landscape, not a phase-resolved MoS2 gap answer.",
     "Any calculation or phase context absent from a returned source-qualified record remains unknown.",
-    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
+    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim.",
     "A missing parsed band/DOS artifact is not evidence that the source has no spectrum."
   ],
   "next_action": "Any phase-resolved comparison beyond the one preregistered AFLOW-to-Materials-Project exact-structure match requires separately declared exact inputs; obtain separately identified experimental band-gap observations for an experiment-computation comparison and do not collapse this evidence to one MoS2 gap."

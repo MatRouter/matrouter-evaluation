@@ -1,6 +1,6 @@
 {
   "status": "release_bound_three_case_results",
-  "stage_1_scope": "RQ1 uses one aggregate_source_records call for bounded parallel cross-source execution over all parsed qualified routes (at most eight workers), preserves stable-order aggregation, and returns one primary EvidenceBundle. Per-source pagination remains sequential. The public 512-item/16-MB capacity is shared by execution route; capacity and safety stops remain typed partial or truncated. All qualified routes are attempted, but not every upstream record is claimed retrieved.",
+  "stage_1_scope": "RQ1 and RQ2 share one aggregate_source_records call and one authoritative discovery Bundle. MatRouter performs bounded parallel cross-source execution over all parsed qualified routes with ordered_parallel_map (at most eight workers), preserves stable route-order aggregation, and keeps pagination within each source sequential. The evaluation declares only all_qualified plus exhaust_upstream; MatRouter owns the effective records, pages, elapsed-time, normalized-byte, and Bundle-closure engineering ceilings. Capacity stops remain explicit in RecordCompleteness. Outcomes and warnings are embedded in executions and do not consume the scientific-item budget. All ready qualified routes are attempted, but not every upstream record is claimed retrieved. RQ1 projects route execution and closure; RQ2 projects source contributions and material-data context from the same executions and source-record items.",
   "qualified_source_route_count_semantics": "Counts refer to qualified execution routes, not statistically independent evidence units. MaterialsGalaxy summary is one provider-level execution route; child dataset names on returned records are exact provenance, not additional execution outcomes.",
   "case_count": 3,
   "cases": [
@@ -11,30 +11,34 @@
         "qualified_route_count": 32,
         "ready_route_count": 32,
         "attempted_route_count": 32,
-        "status_counts": {
-          "empty": 13,
+        "execution_status_counts": {
           "failed": 3,
-          "partial": 2,
-          "succeeded": 14
+          "succeeded": 29
+        },
+        "record_result_counts": {
+          "complete": 16,
+          "empty": 13,
+          "failed": 3
         },
         "record_completeness_counts": {
-          "complete": 14,
-          "empty": 13,
-          "failed": 3,
-          "truncated": 2
+          "complete": 29
         },
-        "capacity_limitation_count": 2,
-        "source_record_count": 116,
+        "capacity_limitation_count": 0,
+        "source_record_count": 481,
         "distinct_source_count": 18,
         "distinct_provider_count": 12
       },
-      "rq2_source_record_exhaustion": {
-        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+      "shared_discovery_ledger": {
+        "semantics": "RQ1 route execution/closure and RQ2 source contribution/material landscape are deterministic views of this one authoritative all-qualified aggregate Bundle. No additional source-record acquisition contributes to either view.",
+        "authoritative_bundle_id": "sha256:e3e12aae9e42ff11a3873967ff935a850eb152e0976f073f12358dcddd12f23f",
+        "rq1_rq2_same_bundle": true,
+        "aggregate_source_records_call_count": 1,
+        "additional_source_record_acquisition_count": 0,
         "ready_route_count": 32,
-        "shard_count": 32,
-        "all_ready_routes_sharded": true,
-        "source_record_count": 510,
-        "source_record_item_count": 510,
+        "attempted_route_count": 32,
+        "all_ready_routes_attempted": true,
+        "source_record_count": 481,
+        "source_record_item_count": 481,
         "source_record_sources": [
           "aflow",
           "alexandria",
@@ -53,8 +57,7 @@
           "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
           "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
           "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
-          "optimade:optimade.openmaterialsdb.se",
-          "oqmd"
+          "optimade:optimade.openmaterialsdb.se"
         ],
         "source_record_providers": [
           "AFLOW",
@@ -65,44 +68,96 @@
           "Materials Project",
           "MaterialsGalaxy",
           "NOMAD",
-          "OQMD",
           "optimade-misc.odbx.science",
           "optimade.2dmatpedia.org",
           "optimade.materialscloud.org",
           "optimade.openmaterialsdb.se"
         ],
-        "status_counts": {
+        "execution_status_counts": {
+          "failed": 3,
+          "succeeded": 29
+        },
+        "record_result_counts": {
+          "complete": 16,
           "empty": 13,
-          "failed": 2,
-          "succeeded": 17
+          "failed": 3
         },
         "record_completeness_counts": {
-          "complete": 17,
-          "empty": 13,
-          "failed": 2
+          "complete": 29
         },
         "complete_inventory_eligible": false,
-        "gap_count": 2,
+        "gap_count": 3,
         "gaps": [
           {
+            "source": "oqmd",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_http_unavailable",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"service_failure\",\"message\":\"HTTP 502 Bad Gateway for https://oqmd.org/oqmdapi/formationenergy?fields=name%2Centry_id%2Cicsd_id%2Cprototype%2Cntypes%2Cnatoms%2Cvolume%2Cdelta_e%2Cband_gap%2Cstability%2Cspacegroup&limit=512&format=json&composition=MoS2&offset=0\",\"reason_code\":\"upstream_http_unavailable\",\"source\":\"oqmd\"}"
+              }
+            ]
+          },
+          {
             "source": "mpds",
-            "status": "failed",
-            "record_completeness": "failed",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
             "record_count": 0,
             "upstream_total": null,
             "reason_code": "upstream_access_denied",
-            "truncation_reason": null
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"access_blocker\",\"message\":\"HTTP 402 PAYMENT REQUIRED for https://api.mpds.io/v0/download/facet?q=%7B%22formulae%22%3A%22MoS2%22%2C%22props%22%3A%22atomic+structure%22%7D&pagesize=1000&dtype=1&fmt=json&page=0\",\"reason_code\":\"upstream_access_denied\",\"source\":\"mpds\"}"
+              }
+            ]
           },
           {
             "source": "optimade:mpddoptimade.phaseslab.org",
-            "status": "failed",
-            "record_completeness": "failed",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
             "record_count": 0,
             "upstream_total": null,
-            "reason_code": "upstream_timeout",
-            "truncation_reason": null
+            "reason_code": "upstream_connection_error",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"service_failure\",\"message\":\"Server disconnected without sending a response.\",\"reason_code\":\"upstream_connection_error\",\"source\":\"optimade:mpddoptimade.phaseslab.org\"}"
+              }
+            ]
           }
-        ]
+        ],
+        "effective_operational_constraints": {
+          "sources": [],
+          "limit": 10000,
+          "retrieval": {
+            "record_scope": "exhaust_upstream",
+            "max_pages": 10000,
+            "max_elapsed_seconds": 300.0,
+            "max_bytes": 1000000000
+          },
+          "prefer_no_api_key": true,
+          "filters": []
+        },
+        "effective_product_run_capacity": {
+          "max_evidence_items": 1024,
+          "max_bundle_canonical_bytes": 16000000,
+          "max_executions": 512,
+          "max_source_records": 512
+        }
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -216,7 +271,7 @@
         "Only the preregistered AFLOW and Materials Project exact bulk structures enter one fixed-parameter match; phase equivalence remains unresolved for every other cross-source record, the 2D C2DB target, and different polytypes.",
         "The result is a capacity-bounded multi-source material landscape, not a phase-resolved MoS2 gap answer.",
         "Any calculation or phase context absent from a returned source-qualified record remains unknown.",
-        "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
+        "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim.",
         "A missing parsed band/DOS artifact is not evidence that the source has no spectrum."
       ],
       "prohibited_claim": "Do not report a universal MoS2 band gap or a phase-resolved MoS2 gap answer, merge records by formula, infer a shared 2H bulk, 1H monolayer, or other phase without explicit structure matching, count COD experimental structures as experimental band-gap observations, or treat retrieval/rendering as independent experimental validation."
@@ -228,30 +283,34 @@
         "qualified_route_count": 32,
         "ready_route_count": 32,
         "attempted_route_count": 32,
-        "status_counts": {
-          "empty": 13,
+        "execution_status_counts": {
           "failed": 3,
-          "partial": 5,
-          "succeeded": 11
+          "succeeded": 29
+        },
+        "record_result_counts": {
+          "complete": 16,
+          "empty": 13,
+          "failed": 3
         },
         "record_completeness_counts": {
-          "complete": 11,
-          "empty": 13,
-          "failed": 3,
-          "truncated": 5
+          "complete": 29
         },
-        "capacity_limitation_count": 5,
-        "source_record_count": 115,
+        "capacity_limitation_count": 0,
+        "source_record_count": 465,
         "distinct_source_count": 16,
         "distinct_provider_count": 12
       },
-      "rq2_source_record_exhaustion": {
-        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+      "shared_discovery_ledger": {
+        "semantics": "RQ1 route execution/closure and RQ2 source contribution/material landscape are deterministic views of this one authoritative all-qualified aggregate Bundle. No additional source-record acquisition contributes to either view.",
+        "authoritative_bundle_id": "sha256:383ec8f771312f9bc6f473db08779f6a5fe350774bb253254ed6549bde0d6ce6",
+        "rq1_rq2_same_bundle": true,
+        "aggregate_source_records_call_count": 1,
+        "additional_source_record_acquisition_count": 0,
         "ready_route_count": 32,
-        "shard_count": 32,
-        "all_ready_routes_sharded": true,
-        "source_record_count": 469,
-        "source_record_item_count": 469,
+        "attempted_route_count": 32,
+        "all_ready_routes_attempted": true,
+        "source_record_count": 465,
+        "source_record_item_count": 465,
         "source_record_sources": [
           "aflow",
           "alexandria",
@@ -268,8 +327,7 @@
           "optimade:optimade.materialscloud.org/main/mc3d-pbe-v1",
           "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v1",
           "optimade:optimade.materialscloud.org/main/mc3d-pbesol-v2",
-          "optimade:optimade.openmaterialsdb.se",
-          "oqmd"
+          "optimade:optimade.openmaterialsdb.se"
         ],
         "source_record_providers": [
           "AFLOW",
@@ -279,45 +337,97 @@
           "Materials Project",
           "MaterialsGalaxy",
           "NOMAD",
-          "OQMD",
           "optimade-gnome.odbx.science",
           "optimade-misc.odbx.science",
           "optimade.2dmatpedia.org",
           "optimade.materialscloud.org",
           "optimade.openmaterialsdb.se"
         ],
-        "status_counts": {
+        "execution_status_counts": {
+          "failed": 3,
+          "succeeded": 29
+        },
+        "record_result_counts": {
+          "complete": 16,
           "empty": 13,
-          "failed": 2,
-          "succeeded": 17
+          "failed": 3
         },
         "record_completeness_counts": {
-          "complete": 17,
-          "empty": 13,
-          "failed": 2
+          "complete": 29
         },
         "complete_inventory_eligible": false,
-        "gap_count": 2,
+        "gap_count": 3,
         "gaps": [
           {
-            "source": "mpds",
-            "status": "failed",
-            "record_completeness": "failed",
+            "source": "oqmd",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
             "record_count": 0,
             "upstream_total": null,
-            "reason_code": "upstream_access_denied",
-            "truncation_reason": null
+            "reason_code": "upstream_http_unavailable",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"service_failure\",\"message\":\"HTTP 502 Bad Gateway for https://oqmd.org/oqmdapi/formationenergy?fields=name%2Centry_id%2Cicsd_id%2Cprototype%2Cntypes%2Cnatoms%2Cvolume%2Cdelta_e%2Cband_gap%2Cstability%2Cspacegroup&limit=512&format=json&composition=LiFePO4&offset=0\",\"reason_code\":\"upstream_http_unavailable\",\"source\":\"oqmd\"}"
+              }
+            ]
           },
           {
             "source": "optimade:mpddoptimade.phaseslab.org",
-            "status": "failed",
-            "record_completeness": "failed",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
             "record_count": 0,
             "upstream_total": null,
-            "reason_code": "upstream_timeout",
-            "truncation_reason": null
+            "reason_code": "upstream_connection_error",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"service_failure\",\"message\":\"Server disconnected without sending a response.\",\"reason_code\":\"upstream_connection_error\",\"source\":\"optimade:mpddoptimade.phaseslab.org\"}"
+              }
+            ]
+          },
+          {
+            "source": "mpds",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"access_blocker\",\"message\":\"HTTP 402 PAYMENT REQUIRED for https://api.mpds.io/v0/download/facet?q=%7B%22formulae%22%3A%22LiFePO4%22%2C%22props%22%3A%22atomic+structure%22%7D&pagesize=1000&dtype=1&fmt=json&page=0\",\"reason_code\":\"upstream_access_denied\",\"source\":\"mpds\"}"
+              }
+            ]
           }
-        ]
+        ],
+        "effective_operational_constraints": {
+          "sources": [],
+          "limit": 10000,
+          "retrieval": {
+            "record_scope": "exhaust_upstream",
+            "max_pages": 10000,
+            "max_elapsed_seconds": 300.0,
+            "max_bytes": 1000000000
+          },
+          "prefer_no_api_key": true,
+          "filters": []
+        },
+        "effective_product_run_capacity": {
+          "max_evidence_items": 1024,
+          "max_bundle_canonical_bytes": 16000000,
+          "max_executions": 512,
+          "max_source_records": 512
+        }
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -374,7 +484,7 @@
       "external_handoff": "Finite-temperature free energies, kinetic accessibility, reaction pathways, and synthesizability require external phonon, thermodynamic, kinetic, or experimental workflows; the zero-temperature hull is not a proxy for them.",
       "unresolved_gaps": [
         "Source records with unknown hull construction or correction context cannot support cross-source numerical comparison.",
-        "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim.",
+        "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim.",
         "The exact compatible-entry route reports no finite-temperature free energies, kinetic accessibility, or experimental synthesis evidence.",
         "A failed or incomplete thermochemical route is failed or incomplete evidence, not a verified-empty result and not a hull input."
       ],
@@ -387,28 +497,32 @@
         "qualified_route_count": 32,
         "ready_route_count": 32,
         "attempted_route_count": 32,
-        "status_counts": {
+        "execution_status_counts": {
+          "failed": 3,
+          "succeeded": 29
+        },
+        "record_result_counts": {
+          "complete": 15,
           "empty": 14,
-          "failed": 2,
-          "partial": 2,
-          "succeeded": 14
+          "failed": 3
         },
         "record_completeness_counts": {
-          "complete": 14,
-          "empty": 14,
-          "failed": 2,
-          "truncated": 2
+          "complete": 29
         },
-        "capacity_limitation_count": 2,
-        "source_record_count": 88,
-        "distinct_source_count": 16,
-        "distinct_provider_count": 12
+        "capacity_limitation_count": 0,
+        "source_record_count": 152,
+        "distinct_source_count": 15,
+        "distinct_provider_count": 11
       },
-      "rq2_source_record_exhaustion": {
-        "semantics": "Every ready primary search route receives one stable-order selected-source exhaust-upstream run. Complete inventory eligibility requires every shard to be complete or verified empty; all other states remain explicit gaps.",
+      "shared_discovery_ledger": {
+        "semantics": "RQ1 route execution/closure and RQ2 source contribution/material landscape are deterministic views of this one authoritative all-qualified aggregate Bundle. No additional source-record acquisition contributes to either view.",
+        "authoritative_bundle_id": "sha256:2f82e9d5247afdc454060abbf3253c139788fe6c269d35a3f891d69736c54657",
+        "rq1_rq2_same_bundle": true,
+        "aggregate_source_records_call_count": 1,
+        "additional_source_record_acquisition_count": 0,
         "ready_route_count": 32,
-        "shard_count": 32,
-        "all_ready_routes_sharded": true,
+        "attempted_route_count": 32,
+        "all_ready_routes_attempted": true,
         "source_record_count": 152,
         "source_record_item_count": 152,
         "source_record_sources": [
@@ -441,47 +555,91 @@
           "optimade.2dmatpedia.org",
           "optimade.materialscloud.org"
         ],
-        "status_counts": {
-          "empty": 14,
+        "execution_status_counts": {
           "failed": 3,
-          "succeeded": 15
+          "succeeded": 29
         },
-        "record_completeness_counts": {
+        "record_result_counts": {
           "complete": 15,
           "empty": 14,
           "failed": 3
+        },
+        "record_completeness_counts": {
+          "complete": 29
         },
         "complete_inventory_eligible": false,
         "gap_count": 3,
         "gaps": [
           {
-            "source": "mpds",
-            "status": "failed",
-            "record_completeness": "failed",
-            "record_count": 0,
-            "upstream_total": null,
-            "reason_code": "upstream_access_denied",
-            "truncation_reason": null
-          },
-          {
             "source": "optimade:mpddoptimade.phaseslab.org",
-            "status": "failed",
-            "record_completeness": "failed",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
             "record_count": 0,
             "upstream_total": null,
-            "reason_code": "upstream_timeout",
-            "truncation_reason": null
+            "reason_code": "upstream_connection_error",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"service_failure\",\"message\":\"Server disconnected without sending a response.\",\"reason_code\":\"upstream_connection_error\",\"source\":\"optimade:mpddoptimade.phaseslab.org\"}"
+              }
+            ]
           },
           {
             "source": "oqmd",
-            "status": "failed",
-            "record_completeness": "failed",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
             "record_count": 0,
             "upstream_total": null,
-            "reason_code": "upstream_timeout",
-            "truncation_reason": null
+            "reason_code": "upstream_http_unavailable",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"service_failure\",\"message\":\"HTTP 502 Bad Gateway for https://oqmd.org/oqmdapi/formationenergy?fields=name%2Centry_id%2Cicsd_id%2Cprototype%2Cntypes%2Cnatoms%2Cvolume%2Cdelta_e%2Cband_gap%2Cstability%2Cspacegroup&limit=512&format=json&composition=Bi2Se3&offset=0\",\"reason_code\":\"upstream_http_unavailable\",\"source\":\"oqmd\"}"
+              }
+            ]
+          },
+          {
+            "source": "mpds",
+            "execution_status": "failed",
+            "record_result": "failed",
+            "record_completeness": null,
+            "record_count": 0,
+            "upstream_total": null,
+            "reason_code": "upstream_access_denied",
+            "truncation_reason": null,
+            "warnings": [
+              {
+                "reason_code": "source_warning",
+                "failure_type": null,
+                "message": "{\"failure_type\":\"access_blocker\",\"message\":\"HTTP 402 PAYMENT REQUIRED for https://api.mpds.io/v0/download/facet?q=%7B%22formulae%22%3A%22Bi2Se3%22%2C%22props%22%3A%22atomic+structure%22%7D&pagesize=1000&dtype=1&fmt=json&page=0\",\"reason_code\":\"upstream_access_denied\",\"source\":\"mpds\"}"
+              }
+            ]
           }
-        ]
+        ],
+        "effective_operational_constraints": {
+          "sources": [],
+          "limit": 10000,
+          "retrieval": {
+            "record_scope": "exhaust_upstream",
+            "max_pages": 10000,
+            "max_elapsed_seconds": 300.0,
+            "max_bytes": 1000000000
+          },
+          "prefer_no_api_key": true,
+          "filters": []
+        },
+        "effective_product_run_capacity": {
+          "max_evidence_items": 1024,
+          "max_bundle_canonical_bytes": 16000000,
+          "max_executions": 512,
+          "max_source_records": 512
+        }
       },
       "data_categories_actually_present": [
         "electronic_property",
@@ -579,7 +737,7 @@
       "unresolved_gaps": [
         "Missing SOC, method, phase, invariant, or surface-state context remains unknown rather than negative evidence.",
         "No cross-source structure matching was executed, so cross-source phase equivalence remains unresolved.",
-        "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim."
+        "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim."
       ],
       "prohibited_claim": "Do not claim MatRouter recomputed topology invariants or surface states or independently validated topology classifications, promote one source label to universal truth, treat the derived comparison table as new evidence, infer trivial topology from missing artifacts, or merge records solely by Bi2Se3 formula."
     }

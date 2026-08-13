@@ -1,0 +1,16 @@
+{
+  "schema_version": "matrouter.paper-invalidated-capture/1",
+  "status": "invalidated_noncanonical_capture",
+  "full_run_id": "matrouter-0.10.1-full-20260812T224139Z-83e2b2c70437",
+  "release": "matrouter==0.10.1",
+  "protocol_version": "matrouter.paper-three-case-protocol",
+  "invalidated_at_utc": "2026-08-12T22:42:16.751722Z",
+  "active_case": "mos2-band-gap",
+  "captured_case_prefix": [],
+  "reason_code": "incomplete_case_ledger_closure_in_evaluation_harness",
+  "reason": "The follow-up assembly omitted other attempts already present in the same case ledger; MatRouter rejected the incomplete closure before any case capture completed.",
+  "canonical_use_permitted": false,
+  "raw_capture_retained": false,
+  "selective_retry_permitted": false,
+  "restart_requirement": "The replacement attempt reruns all three cases from the beginning."
+}

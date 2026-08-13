@@ -1,0 +1,161 @@
+{
+  "schema_version": "matrouter.paper-capture-manifest/1",
+  "status": "complete_immutable_three_case_capture",
+  "full_run_id": "matrouter-0.10.2-full-20260812T234402Z-773b4ee50ec3",
+  "protocol_version": "matrouter.paper-three-case-protocol",
+  "release_binding": {
+    "schema_version": "matrouter.paper-product-identity/8",
+    "status": "verified_pypi_release",
+    "package_name": "matrouter",
+    "package_version": "0.10.2",
+    "public_VERSION": "0.10.2",
+    "product_commit": "bb163755f05be59f74b4d2d19875dfd2bc497b4b",
+    "release_tag": "v0.10.2",
+    "release_url": "https://github.com/MatRouter/matrouter/releases/tag/v0.10.2",
+    "release_published_at": "2026-08-12T23:29:48Z",
+    "pypi_url": "https://pypi.org/project/matrouter/0.10.2/",
+    "wheel_filename": "matrouter-0.10.2-py3-none-any.whl",
+    "wheel_size_bytes": 275261,
+    "wheel_sha256": "21d6e7c40b2a313d728d88fe9becb42ec5b8fa3daafaf5786c7e049337900010",
+    "sdist_filename": "matrouter-0.10.2.tar.gz",
+    "sdist_size_bytes": 660395,
+    "sdist_sha256": "ed24f0ced59e6a118f22d7bb943944ac42842c72f684b1640f7568b56fe0c6c7",
+    "pypi_provenance": {
+      "publisher": "publish.yml on MatRouter/matrouter",
+      "source_repository_commit": "bb163755f05be59f74b4d2d19875dfd2bc497b4b",
+      "source_repository_ref": "refs/tags/v0.10.2",
+      "publication_workflow": "publish.yml@bb163755f05be59f74b4d2d19875dfd2bc497b4b",
+      "workflow_run_id": 31651096283,
+      "workflow_run_url": "https://github.com/MatRouter/matrouter/actions/runs/31651096283",
+      "workflow_run_conclusion": "success",
+      "trigger_event": "release",
+      "trusted_publishing": true
+    },
+    "distribution_metadata": {
+      "metadata_version": "2.5",
+      "name": "matrouter",
+      "version": "0.10.2",
+      "requires_python": ">=3.11",
+      "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
+      "repository": "https://github.com/MatRouter/matrouter"
+    },
+    "runtime_dependencies": {
+      "mp-api": "0.46.4",
+      "emmet-core": "0.87.1",
+      "pymatgen-core": "2026.5.18",
+      "pymatgen": "2026.5.4"
+    },
+    "product_contract_identity": {
+      "matrouter_owned_identity_epochs": false,
+      "retired_fields_absent": [
+        "schema_version",
+        "payload_schema_id",
+        "contract_version"
+      ],
+      "compatibility_reader_or_alias": false
+    },
+    "route_contract": {
+      "route_candidate_aggregate_sources": true,
+      "materials_galaxy_summary_execution_route": "materialsgalaxy",
+      "materials_galaxy_child_record_sources_are_provenance": true,
+      "aggregate_max_parallel_source_workers": 8,
+      "stable_order_aggregation": true,
+      "per_source_pagination": "sequential"
+    },
+    "evidence_bundle_contract": {
+      "scientific_items_field": "evidence_items",
+      "execution_ledger_field": "executions",
+      "outcome_and_warnings_embedded_per_execution": true,
+      "execution_status_values": [
+        "succeeded",
+        "failed"
+      ],
+      "record_completeness_values": [
+        "complete",
+        "truncated",
+        "upstream_total_unknown"
+      ],
+      "record_result_is_derived_not_stored": true,
+      "record_result_values": [
+        "complete",
+        "empty",
+        "truncated",
+        "upstream_total_unknown",
+        "failed"
+      ],
+      "max_source_records": 512,
+      "max_evidence_items": 1024,
+      "max_executions": 512,
+      "max_bundle_canonical_bytes": 16000000
+    },
+    "core_profile": {
+      "tool_count": 13,
+      "tools": [
+        "begin_evidence_run",
+        "list_source_files",
+        "download_source_file",
+        "inspect_evidence_capabilities",
+        "create_evidence_requirement",
+        "route_evidence_requirements",
+        "aggregate_source_records",
+        "execute_evidence_route",
+        "assemble_evidence_bundle",
+        "match_structures",
+        "compute_phase_diagrams",
+        "render_band_structure",
+        "render_density_of_states"
+      ],
+      "terminal_object": "EvidenceBundle"
+    }
+  },
+  "runtime_distribution": {
+    "distribution_name": "matrouter",
+    "distribution_version": "0.10.2",
+    "public_VERSION": "0.10.2",
+    "metadata_version": "2.5",
+    "requires_python": ">=3.11",
+    "summary": "Agent-native routing and provenance-preserving aggregation substrate for materials data.",
+    "imported_package_path": "site-packages/matrouter",
+    "distribution_package_path": "site-packages/matrouter",
+    "imported_path_matches_distribution": true,
+    "direct_url_json_absent": true,
+    "product_source_pythonpath_entries": 0,
+    "registry_distribution_verified": true
+  },
+  "capture_started_at_utc": "2026-08-12T23:44:02.715818Z",
+  "capture_completed_at_utc": "2026-08-12T23:48:40.054536Z",
+  "case_order": [
+    "mos2-band-gap",
+    "lifepo4-stability",
+    "bi2se3-topology"
+  ],
+  "all_cases_captured_once": true,
+  "selective_rerun": false,
+  "files": [
+    {
+      "path": "mos2-band-gap.json",
+      "sha256": "3d0cc3597463fa14e7cadfc441fdc621a813861c7b890960da26d73393f7a00b",
+      "role": "case_live_capture"
+    },
+    {
+      "path": "lifepo4-stability.json",
+      "sha256": "ce324f42c68a10fe74d47cdd5ba7476a37910299592cfefc7a5c9524e2c29286",
+      "role": "case_live_capture"
+    },
+    {
+      "path": "bi2se3-topology.json",
+      "sha256": "83b1b0c0ac2d535be6d9c3b2588730326cc6c5b2b7d2cbbafd62fef911c35535",
+      "role": "case_live_capture"
+    },
+    {
+      "path": "protocol.json",
+      "sha256": "2e5f8195bce16d5824cf021a2d1d7fb2dac0c2846d67b3bb2fbf10e8279b750d",
+      "role": "frozen_protocol_snapshot"
+    },
+    {
+      "path": "run-log.json",
+      "sha256": "ba48aa5725680bf2dcec661916f8d530159b7c53fa2e97e1377cb538dab7b903",
+      "role": "structured_execution_log"
+    }
+  ]
+}

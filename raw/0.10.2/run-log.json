@@ -1,0 +1,74 @@
+{
+  "schema_version": "matrouter.paper-capture-log/1",
+  "full_run_id": "matrouter-0.10.2-full-20260812T234402Z-773b4ee50ec3",
+  "events": [
+    {
+      "event": "full_capture_started",
+      "at_utc": "2026-08-12T23:44:02.715818Z",
+      "case_order": [
+        "mos2-band-gap",
+        "lifepo4-stability",
+        "bi2se3-topology"
+      ],
+      "release": "matrouter==0.10.2"
+    },
+    {
+      "event": "case_started",
+      "at_utc": "2026-08-12T23:44:02.721264Z",
+      "case_name": "mos2-band-gap",
+      "case_index": 1,
+      "case_count": 3
+    },
+    {
+      "event": "case_completed",
+      "at_utc": "2026-08-12T23:45:25.570012Z",
+      "case_name": "mos2-band-gap",
+      "case_elapsed_seconds": 81.94,
+      "rq1_attempted_route_count": 32,
+      "shared_discovery_source_record_count": 481,
+      "aggregate_source_records_call_count": 1
+    },
+    {
+      "event": "case_started",
+      "at_utc": "2026-08-12T23:45:25.570369Z",
+      "case_name": "lifepo4-stability",
+      "case_index": 2,
+      "case_count": 3
+    },
+    {
+      "event": "case_completed",
+      "at_utc": "2026-08-12T23:48:01.336099Z",
+      "case_name": "lifepo4-stability",
+      "case_elapsed_seconds": 152.576,
+      "rq1_attempted_route_count": 32,
+      "shared_discovery_source_record_count": 465,
+      "aggregate_source_records_call_count": 1
+    },
+    {
+      "event": "case_started",
+      "at_utc": "2026-08-12T23:48:01.336539Z",
+      "case_name": "bi2se3-topology",
+      "case_index": 3,
+      "case_count": 3
+    },
+    {
+      "event": "case_completed",
+      "at_utc": "2026-08-12T23:48:40.054279Z",
+      "case_name": "bi2se3-topology",
+      "case_elapsed_seconds": 38.25,
+      "rq1_attempted_route_count": 32,
+      "shared_discovery_source_record_count": 152,
+      "aggregate_source_records_call_count": 1
+    },
+    {
+      "event": "full_capture_completed",
+      "at_utc": "2026-08-12T23:48:40.054536Z",
+      "captured_cases": [
+        "mos2-band-gap",
+        "lifepo4-stability",
+        "bi2se3-topology"
+      ],
+      "selective_rerun": false
+    }
+  ]
+}

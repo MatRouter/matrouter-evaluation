@@ -1,5 +1,5 @@
 {
-  "schema_version": "matrouter.paper-case-spec/11",
+  "schema_version": "matrouter.paper-case-spec/13",
   "case_name": "bi2se3-topology",
   "formula": "Bi2Se3",
   "research_question_ids": ["RQ1", "RQ2", "RQ3"],
@@ -37,22 +37,20 @@
     "evidence_kind": "source_record",
     "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
-    "record_safety_limit_per_route": 60,
-    "max_pages_per_route": 100,
-    "max_elapsed_seconds_per_route": 300.0,
-    "max_normalized_bytes_per_route": 100000000,
-    "public_bundle_item_limit": 512,
-    "public_bundle_canonical_byte_limit": 16000000
+    "engineering_ceiling_authority": "matrouter_product_defaults",
+    "evaluation_ceiling_overrides": []
   },
-  "rq2_source_record_exhaustion_shards": {
-    "selection": "every_ready_primary_search_materials_execution_route_in_stable_exact_route_order",
-    "source_scope": "selected",
+  "shared_discovery_policy": {
+    "acquisition": "exactly_one_all_qualified_aggregate_source_records_call_per_case",
+    "source_scope": "all_qualified",
     "record_scope": "exhaust_upstream",
-    "record_limit": "begin_evidence_run.capacity.max_single_source_record_items",
-    "max_pages_per_route": 100,
-    "max_elapsed_seconds_per_route": 300.0,
-    "max_normalized_bytes_per_route": 100000000,
-    "bundle_policy": "one_bounded_evidence_run_and_bundle_per_exact_execution_route"
+    "engineering_ceiling_authority": "matrouter_product_defaults",
+    "evaluation_ceiling_overrides": [],
+    "aggregate_fanout": "product_ordered_parallel_map_max_8_with_stable_route_order",
+    "per_source_pagination": "sequential",
+    "additional_source_record_acquisitions": 0,
+    "analysis_views": ["RQ1", "RQ2"],
+    "authoritative_bundle_count": 1
   },
   "stage_2_targets": [
     {
@@ -76,7 +74,7 @@
       ]
     }
   ],
-  "retrieval_strategy": "RQ1 uses one aggregate_source_records call with bounded parallel cross-source execution (at most eight workers), stable-order aggregation, and fair sharing of the public 512-item/16-MB primary Bundle; its typed outcomes and completeness states are the route-accounting result, not an all-records landscape. RQ2 then runs one independent selected-source exhaust-upstream Evidence run and Bundle for every ready primary search_materials execution route in stable exact-route order, taking each record limit from begin_evidence_run.capacity.max_single_source_record_items while preserving the declared page, time, and byte ceilings. Shard records remain source-qualified and are never merged or deduplicated across routes. MaterialsGalaxy remains one provider-level execution route; child dataset identities are record provenance, not child outcomes. Exact follow-up still enriches only preregistered mg-35598 and mg-2145449; shard records cannot replace either target, and no topology validator is added.",
+  "retrieval_strategy": "RQ1 and RQ2 share one authoritative all_qualified + exhaust_upstream aggregate_source_records call. MatRouter retains its bounded ordered_parallel_map fan-out (at most eight independent source routes), stable route-order aggregation, and sequential pagination within each source. The evaluation supplies no records, pages, elapsed-time, normalized-byte, or Bundle-closure engineering ceiling overrides; the installed product release owns those defaults and every effective value and typed stop remains auditable in the captured requirement, run capacity, executions, and RecordCompleteness. RQ1 reports coverage and closure while RQ2 maps source contributions and scientific context from the same source-record items. Exact follow-up enriches only preregistered mg-35598 and mg-2145449 when present in the aggregate, binds their original acquisition and record reference, issues no second source search, and adds no topology validator.",
   "context_differences": [
     "Formula identity does not prove the same crystal phase across sources.",
     "Source-native topology labels depend on the source definition, method, SOC setting, and exact record.",
@@ -88,7 +86,7 @@
   "missing_evidence": [
     "Missing SOC, method, phase, invariant, or surface-state context remains unknown rather than negative evidence.",
     "No cross-source structure matching was executed, so cross-source phase equivalence remains unresolved.",
-    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed partial or truncated outcomes and prevents an all-upstream-records claim."
+    "The all-qualified aggregate attempts every parsed qualified route, but fair Bundle-capacity sharing or a safety ceiling can yield typed truncation or upstream-total-unknown results and prevents an all-upstream-records claim."
   ],
   "next_action": "Select phase-compatible exact inputs, then hand off independent topology-invariant and surface-state validation to external DFT and Wannier-based workflows such as WannierTools; cross-source phase matching remains a separately declared analysis."
 }

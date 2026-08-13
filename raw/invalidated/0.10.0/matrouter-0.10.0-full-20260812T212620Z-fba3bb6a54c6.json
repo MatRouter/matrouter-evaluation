@@ -1,0 +1,10 @@
+{
+  "schema_version": "matrouter.paper-invalidated-capture/1",
+  "status": "invalidated_noncanonical_capture",
+  "full_run_id": "matrouter-0.10.0-full-20260812T212620Z-fba3bb6a54c6",
+  "release": "matrouter==0.10.0",
+  "protocol_violation": "The capture used a withdrawn dual-retrieval design: one all-qualified aggregate for RQ1 followed by independent selected-source acquisitions for RQ2.",
+  "canonical_use_permitted": false,
+  "raw_capture_retained": false,
+  "replacement_requirement": "Rerun all three cases from the beginning with exactly one aggregate_source_records discovery acquisition per case; derive RQ1 and RQ2 from that shared ledger."
+}
